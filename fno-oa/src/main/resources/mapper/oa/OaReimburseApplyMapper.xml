@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fno.back.oa.mapper.OaReimburseApplyMapper">
+    
+    <resultMap type="OaReimburseApply" id="OaReimburseApplyResult">
+        <result property="id"    column="id"    />
+        <result property="tenantId"    column="tenant_id"    />
+        <result property="userId"    column="user_id"    />
+        <result property="deptId"    column="dept_id"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="status"    column="status"    />
+        <result property="flowKey"    column="flow_key"    />
+        <result property="flowInsId"    column="flow_ins_id"    />
+        <result property="applyTitle"    column="apply_title"    />
+        <result property="submitTime"    column="submit_time"    />
+        <result property="billcode"    column="billcode"    />
+        <result property="remark"    column="remark"    />
+        <result property="totalAmt"    column="total_amt"    />
+        <result property="billType"    column="bill_type"    />
+        <result property="month"    column="month"    />
+        <result property="des"    column="des"    />
+        <result property="city"    column="city"    />
+        <result property="startTime"    column="start_time"    />
+        <result property="endTime"    column="end_time"    />
+        <result property="billCount"    column="bill_count"    />
+        <result property="imgUrl"    column="img_url"    />
+
+        <result property="days"    column="days"    />
+        <result property="standardSubsidy"    column="standard_subsidy"    />
+        <result property="subsidyAmt"    column="subsidy_amt"    />
+        <result property="billAmt"    column="bill_amt"    />
+
+    </resultMap>
+
+    <resultMap id="OaReimburseApplyoaReimburseFeeitemResult" type="OaReimburseApply" extends="OaReimburseApplyResult">
+        <collection property="oaReimburseFeeitemList" notNullColumn="sub_id" javaType="java.util.List" resultMap="oaReimburseFeeitemResult" />
+    </resultMap>
+
+    <resultMap type="oaReimburseFeeitem" id="oaReimburseFeeitemResult">
+        <result property="id"    column="sub_id"    />
+        <result property="createBy"    column="sub_create_by"    />
+        <result property="createTime"    column="sub_create_time"    />
+        <result property="updateBy"    column="sub_update_by"    />
+        <result property="updateTime"    column="sub_update_time"    />
+        <result property="remark"    column="sub_remark"    />
+        <result property="reimburseId"    column="sub_reimburse_id"    />
+        <result property="itemAmt"    column="sub_item_amt"    />
+        <result property="year"    column="sub_year"    />
+        <result property="month"    column="sub_month"    />
+        <result property="billType"    column="sub_bill_type"    />
+        <result property="billCount"    column="sub_bill_count"    />
+        <result property="startCity"    column="sub_start_city"    />
+        <result property="endCity"    column="sub_end_city"    />
+        <result property="billDate"    column="sub_bill_date"    />
+        <result property="dayCount"    column="sub_day_count"    />
+        <result property="standardSubsidy"    column="sub_standard_subsidy"    />
+        <result property="itemType"    column="sub_item_type"    />
+        <result property="stayCity"    column="sub_stay_city"    />
+    </resultMap>
+
+    <sql id="selectOaReimburseApplyVo">
+        select id,tenant_id, user_id, dept_id, create_by, create_time, update_by, update_time, status, flow_key, flow_ins_id, apply_title, submit_time,
+               billcode, remark, total_amt, bill_type, month, des, city, start_time, end_time, bill_count, img_url, days,  standard_subsidy, subsidy_amt, bill_amt
+        from oa_reimburse_apply
+    </sql>
+
+    <select id="selectOaReimburseApplyList" parameterType="OaReimburseApply" resultMap="OaReimburseApplyResult">
+        <include refid="selectOaReimburseApplyVo"/>
+        <where>  
+            <if test="userId != null "> and user_id = #{userId}</if>
+            <if test="tenantId != null "> and tenant_id = #{tenantId}</if>
+            <if test="deptId != null "> and dept_id = #{deptId}</if>
+            <if test="status != null  and status != ''"> and status = #{status}</if>
+            <if test="applyTitle != null  and applyTitle != ''"> and apply_title like concat('%', #{applyTitle}, '%')</if>
+            <if test="billcode != null  and billcode != ''"> and billcode = #{billcode}</if>
+            <if test="billType != null  and billType != ''"> and bill_type = #{billType}</if>
+            <if test="month != null  and month != ''"> and month = #{month}</if>
+            <if test="createBy != null and createBy != ''"> and create_by = #{createBy}</if>
+        </where>
+    </select>
+    
+    <select id="selectOaReimburseApplyById" parameterType="Long" resultMap="OaReimburseApplyoaReimburseFeeitemResult">
+        select a.id,a.tenant_id, a.user_id, a.dept_id, a.create_by, a.create_time, a.update_by, a.update_time, a.status, a.flow_key, a.flow_ins_id, a.apply_title, a.submit_time,
+               a.billcode, a.remark, a.total_amt, a.bill_type, a.month, a.des, a.city, a.start_time, a.end_time, a.bill_count,a.img_url, a.days, a.standard_subsidy, a.subsidy_amt, a.bill_amt,
+        b.id as sub_id, b.create_by as sub_create_by, b.create_time as sub_create_time, b.update_by as sub_update_by, b.update_time as sub_update_time, b.remark as sub_remark,
+        b.reimburse_id as sub_reimburse_id, b.item_amt as sub_item_amt, b.year as sub_year, b.month as sub_month, b.bill_type as sub_bill_type, b.bill_count as sub_bill_count,
+        b.start_city as sub_start_city, b.end_city as sub_end_city, b.bill_date as sub_bill_date, b.day_count as sub_day_count, b.standard_subsidy as sub_standard_subsidy,
+        b.item_type as sub_item_type, b.stay_city as sub_stay_city
+        from oa_reimburse_apply a
+        left join oa_reimburse_feeitem b on b.reimburse_id = a.id
+        where a.id = #{id}
+    </select>
+        
+    <insert id="insertOaReimburseApply" parameterType="OaReimburseApply" useGeneratedKeys="true" keyProperty="id">
+        insert into oa_reimburse_apply
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="userId != null">user_id,</if>
+            <if test="tenantId != null">tenant_id,</if>
+            <if test="deptId != null">dept_id,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="status != null">status,</if>
+            <if test="flowKey != null">flow_key,</if>
+            <if test="flowInsId != null">flow_ins_id,</if>
+            <if test="applyTitle != null">apply_title,</if>
+            <if test="submitTime != null">submit_time,</if>
+            <if test="billcode != null">billcode,</if>
+            <if test="remark != null">remark,</if>
+            <if test="totalAmt != null">total_amt,</if>
+            <if test="billType != null">bill_type,</if>
+            <if test="month != null and month != ''">month,</if>
+            <if test="des != null">des,</if>
+            <if test="city != null and city != ''">city,</if>
+            <if test="startTime != null">start_time,</if>
+            <if test="endTime != null">end_time,</if>
+            <if test="billCount != null">bill_count,</if>
+            <if test="imgUrl != null">img_url,</if>
+            <if test="days != null">days,</if>
+            <if test="standardSubsidy != null">standard_subsidy,</if>
+            <if test="subsidyAmt != null">subsidy_amt,</if>
+            <if test="billAmt != null">bill_amt,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="userId != null">#{userId},</if>
+            <if test="tenantId != null">#{tenantId},</if>
+            <if test="deptId != null">#{deptId},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="status != null">#{status},</if>
+            <if test="flowKey != null">#{flowKey},</if>
+            <if test="flowInsId != null">#{flowInsId},</if>
+            <if test="applyTitle != null">#{applyTitle},</if>
+            <if test="submitTime != null">#{submitTime},</if>
+            <if test="billcode != null">#{billcode},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="totalAmt != null">#{totalAmt},</if>
+            <if test="billType != null">#{billType},</if>
+            <if test="month != null and month != ''">#{month},</if>
+            <if test="des != null">#{des},</if>
+            <if test="city != null and city != ''">#{city},</if>
+            <if test="startTime != null">#{startTime},</if>
+            <if test="endTime != null">#{endTime},</if>
+            <if test="billCount != null">#{billCount},</if>
+            <if test="imgUrl != null">#{imgUrl},</if>
+            <if test="days != null">#{days},</if>
+            <if test="standardSubsidy != null">#{standardSubsidy},</if>
+            <if test="subsidyAmt != null">#{subsidyAmt},</if>
+            <if test="billAmt != null">#{billAmt},</if>
+         </trim>
+    </insert>
+
+    <update id="updateOaReimburseApply" parameterType="OaReimburseApply">
+        update oa_reimburse_apply
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="userId != null">user_id = #{userId},</if>
+            <if test="tenantId != null">tenant_id = #{tenantId},</if>
+            <if test="deptId != null">dept_id = #{deptId},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="flowKey != null">flow_key = #{flowKey},</if>
+            <if test="flowInsId != null">flow_ins_id = #{flowInsId},</if>
+            <if test="applyTitle != null">apply_title = #{applyTitle},</if>
+            <if test="submitTime != null">submit_time = #{submitTime},</if>
+            <if test="billcode != null">billcode = #{billcode},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="totalAmt != null">total_amt = #{totalAmt},</if>
+            <if test="billType != null">bill_type = #{billType},</if>
+            <if test="month != null and month != ''">month = #{month},</if>
+            <if test="des != null">des = #{des},</if>
+            <if test="city != null and city != ''">city = #{city},</if>
+            <if test="startTime != null">start_time = #{startTime},</if>
+            <if test="endTime != null">end_time = #{endTime},</if>
+            <if test="billCount != null">bill_count = #{billCount},</if>
+            <if test="imgUrl != null">img_url = #{imgUrl},</if>
+            <if test="days != null">days = #{days},</if>
+            <if test="standardSubsidy != null">standard_subsidy = #{standardSubsidy},</if>
+            <if test="subsidyAmt != null">subsidy_amt = #{subsidyAmt},</if>
+            <if test="billAmt != null">bill_amt = #{billAmt},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteOaReimburseApplyById" parameterType="Long">
+        delete from oa_reimburse_apply where id = #{id}
+    </delete>
+
+    <delete id="deleteOaReimburseApplyByIds" parameterType="String">
+        delete from oa_reimburse_apply where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+    <delete id="deleteoaReimburseFeeitemByReimburseIds" parameterType="String">
+        delete from oa_reimburse_feeitem where reimburse_id in 
+        <foreach item="reimburseId" collection="array" open="(" separator="," close=")">
+            #{reimburseId}
+        </foreach>
+    </delete>
+
+    <delete id="deleteoaReimburseFeeitemByReimburseId" parameterType="Long">
+        delete from oa_reimburse_feeitem where reimburse_id = #{reimburseId}
+    </delete>
+
+    <insert id="batchoaReimburseFeeitem">
+        insert into oa_reimburse_feeitem( id, create_by, create_time, update_by, update_time, remark, reimburse_id, item_amt, year, month, bill_type, bill_count, start_city, end_city, bill_date, day_count, standard_subsidy, item_type, stay_city) values
+		<foreach item="item" index="index" collection="list" separator=",">
+            ( #{item.id}, #{item.createBy}, #{item.createTime}, #{item.updateBy}, #{item.updateTime}, #{item.remark}, #{item.reimburseId}, #{item.itemAmt}, #{item.year}, #{item.month}, #{item.billType}, #{item.billCount}, #{item.startCity}, #{item.endCity}, #{item.billDate}, #{item.dayCount}, #{item.standardSubsidy}, #{item.itemType}, #{item.stayCity})
+        </foreach>
+    </insert>
+</mapper>

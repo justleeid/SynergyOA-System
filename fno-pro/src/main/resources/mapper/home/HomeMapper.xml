@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fno.back.home.mapper.HomeMapper">
+
+
+
+    <select id="getItemCountData"  resultType="Map">
+        select
+--                 (select count(*) from crm_customer) customer,
+--                 (select count(*) from hrm_staff_induction) staff,
+--                 (select count(*) from act_hi_procinst) audit,
+--                 (select sum(total_amt) from oa_reimburse_apply) reimburse,
+--                 (select count(*) from oa_send_task where schedule_status != '2') sendTask,
+--                 (select count(*) from pl_supplier) supplier,
+--                 (select count(*) from pl_depot_bill) bill,
+--                 (select count(*) from pl_material) material,
+            (15) customer,(148) staff,(25) audit,(246778) reimburse,(34) sendTask,(167) supplier,(3678) bill,(26789) material
+        from dual
+    </select>
+    <select id="queryLastUpdateList" resultType="java.util.Map">
+
+        select * from sys_last_update order by uptime desc
+
+    </select>
+
+</mapper>

@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fno.back.oa.mapper.OaTaxNumMapper">
+    
+    <resultMap type="OaTaxNum" id="OaTaxNumResult">
+        <result property="id"    column="id"    />
+        <result property="tenantId"    column="tenant_id"    />
+        <result property="taxNum"    column="tax_num"    />
+        <result property="companyName"    column="company_name"    />
+        <result property="legalPerson"    column="legal_person"    />
+        <result property="type"    column="type"    />
+        <result property="establishDate"    column="establish_date"    />
+        <result property="address"    column="address"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+    </resultMap>
+
+    <sql id="selectOaTaxNumVo">
+        select id, tenant_id, tax_num, company_name, legal_person, type, establish_date, address, create_by, create_time, update_by, update_time, remark from oa_tax_num
+    </sql>
+
+    <select id="selectOaTaxNumList" parameterType="OaTaxNum" resultMap="OaTaxNumResult">
+        <include refid="selectOaTaxNumVo"/>
+        <where>
+            <if test="tenantId != null and tenantId != 0"> and tenant_id = #{tenantId}</if>
+            <if test="taxNum != null  and taxNum != ''"> and tax_num like concat('%', #{taxNum}, '%')</if>
+            <if test="companyName != null  and companyName != ''"> and company_name like concat('%', #{companyName}, '%')</if>
+            <if test="legalPerson != null  and legalPerson != ''"> and legal_person like concat('%', #{legalPerson}, '%')</if>
+            <if test="type != null  and type != ''"> and type = #{type}</if>
+            <if test="establishDate != null "> and establish_date = #{establishDate}</if>
+            <if test="address != null  and address != ''"> and address = #{address}</if>
+        </where>
+    </select>
+    
+    <select id="selectOaTaxNumById" parameterType="Long" resultMap="OaTaxNumResult">
+        <include refid="selectOaTaxNumVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertOaTaxNum" parameterType="OaTaxNum" useGeneratedKeys="true" keyProperty="id">
+        insert into oa_tax_num
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="tenantId != null and tenantId != 0">tenant_id,</if>
+            <if test="taxNum != null and taxNum != ''">tax_num,</if>
+            <if test="companyName != null and companyName != ''">company_name,</if>
+            <if test="legalPerson != null">legal_person,</if>
+            <if test="type != null">type,</if>
+            <if test="establishDate != null">establish_date,</if>
+            <if test="address != null">address,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="tenantId != null and tenantId != 0">tenant_id,</if>
+            <if test="taxNum != null and taxNum != ''">#{taxNum},</if>
+            <if test="companyName != null and companyName != ''">#{companyName},</if>
+            <if test="legalPerson != null">#{legalPerson},</if>
+            <if test="type != null">#{type},</if>
+            <if test="establishDate != null">#{establishDate},</if>
+            <if test="address != null">#{address},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+         </trim>
+    </insert>
+
+    <update id="updateOaTaxNum" parameterType="OaTaxNum">
+        update oa_tax_num
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="taxNum != null and taxNum != ''">tax_num = #{taxNum},</if>
+            <if test="companyName != null and companyName != ''">company_name = #{companyName},</if>
+            <if test="legalPerson != null">legal_person = #{legalPerson},</if>
+            <if test="type != null">type = #{type},</if>
+            <if test="establishDate != null">establish_date = #{establishDate},</if>
+            <if test="address != null">address = #{address},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteOaTaxNumById" parameterType="Long">
+        delete from oa_tax_num where id = #{id}
+    </delete>
+
+    <delete id="deleteOaTaxNumByIds" parameterType="String">
+        delete from oa_tax_num where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

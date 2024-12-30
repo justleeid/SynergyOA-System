@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fno.back.oa.mapper.OaSealApplyMapper">
+    
+    <resultMap type="OaSealApply" id="OaSealApplyResult">
+        <result property="id"    column="id"    />
+        <result property="tenantId"    column="tenant_id"    />
+        <result property="userId"    column="user_id"    />
+        <result property="deptId"    column="dept_id"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="status"    column="status"    />
+        <result property="flowKey"    column="flow_key"    />
+        <result property="flowInsId"    column="flow_ins_id"    />
+        <result property="applyTitle"    column="apply_title"    />
+        <result property="submitTime"    column="submit_time"    />
+        <result property="billCode"    column="bill_code"    />
+        <result property="remark"    column="remark"    />
+        <result property="sealType"    column="seal_type"    />
+        <result property="useTime"    column="use_time"    />
+        <result property="backTime"    column="back_time"    />
+        <result property="useInfo"    column="use_info"    />
+        <result property="billType"    column="bill_type"    />
+
+        <result property="sealId"    column="seal_id"    />
+        <result property="sealName"    column="seal_name"    />
+    </resultMap>
+
+    <sql id="selectOaSealApplyVo">
+        select a.id, a.tenant_id, a.user_id, a.dept_id, a.create_by, a.create_time, a.update_by, a.update_time, a.status, a.flow_key, a.flow_ins_id,
+               a.apply_title, a.submit_time, a.bill_code, a.remark, a.seal_type, a.use_time, a.back_time, a.use_info ,a.bill_type, a.seal_id,
+               s.name seal_name
+        from oa_seal_apply a left join oa_bd_seal s on a.seal_id = s.id
+    </sql>
+
+    <select id="selectOaSealApplyList" parameterType="OaSealApply" resultMap="OaSealApplyResult">
+        <include refid="selectOaSealApplyVo"/>
+        <where>  
+            <if test="userId != null "> and a.user_id = #{userId}</if>
+            <if test="tenantId != null "> and a.tenant_id = #{tenantId}</if>
+            <if test="deptId != null "> and a.dept_id = #{deptId}</if>
+            <if test="status != null  and status != ''"> and a.status = #{status}</if>
+            <if test="flowKey != null  and flowKey != ''"> and a.flow_key = #{flowKey}</if>
+            <if test="flowInsId != null  and flowInsId != ''"> and a.flow_ins_id = #{flowInsId}</if>
+            <if test="applyTitle != null  and applyTitle != ''"> and a.apply_title = #{applyTitle}</if>
+            <if test="submitTime != null "> and a.submit_time = #{submitTime}</if>
+            <if test="billCode != null  and billCode != ''"> and a.bill_code = #{billCode}</if>
+            <if test="remark != null  and remark != ''"> and a.remark like concat('%', #{remark}, '%')</if>
+            <if test="sealType != null  and sealType != ''"> and a.seal_type = #{sealType}</if>
+            <if test="useTime != null "> and a.use_time = #{useTime}</if>
+            <if test="backTime != null "> and a.back_time = #{backTime}</if>
+            <if test="useInfo != null  and useInfo != ''"> and a.use_info = #{useInfo}</if>
+            <if test="billType != null  and billType != ''"> and a.bill_type = #{billType}</if>
+            <if test="createBy != null and createBy != ''"> and a.create_by = #{createBy}</if>
+            <if test="sealId != null"> and a.seal_id = #{sealId}</if>
+        </where>
+    </select>
+    
+    <select id="selectOaSealApplyById" parameterType="Long" resultMap="OaSealApplyResult">
+        <include refid="selectOaSealApplyVo"/>
+        where a.id = #{id}
+    </select>
+        
+    <insert id="insertOaSealApply" parameterType="OaSealApply" useGeneratedKeys="true" keyProperty="id">
+        insert into oa_seal_apply
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="userId != null">user_id,</if>
+            <if test="tenantId != null">tenant_id,</if>
+            <if test="deptId != null">dept_id,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="status != null">status,</if>
+            <if test="flowKey != null">flow_key,</if>
+            <if test="flowInsId != null">flow_ins_id,</if>
+            <if test="applyTitle != null">apply_title,</if>
+            <if test="submitTime != null">submit_time,</if>
+            <if test="billCode != null">bill_code,</if>
+            <if test="remark != null">remark,</if>
+            <if test="sealType != null">seal_type,</if>
+            <if test="useTime != null">use_time,</if>
+            <if test="backTime != null">back_time,</if>
+            <if test="useInfo != null">use_info,</if>
+            <if test="billType != null">bill_type,</if>
+
+            <if test="sealId != null">seal_id,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="userId != null">#{userId},</if>
+            <if test="tenantId != null">#{tenantId},</if>
+            <if test="deptId != null">#{deptId},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="status != null">#{status},</if>
+            <if test="flowKey != null">#{flowKey},</if>
+            <if test="flowInsId != null">#{flowInsId},</if>
+            <if test="applyTitle != null">#{applyTitle},</if>
+            <if test="submitTime != null">#{submitTime},</if>
+            <if test="billCode != null">#{billCode},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="sealType != null">#{sealType},</if>
+            <if test="useTime != null">#{useTime},</if>
+            <if test="backTime != null">#{backTime},</if>
+            <if test="useInfo != null">#{useInfo},</if>
+            <if test="billType != null">#{billType},</if>
+
+            <if test="sealId != null">#{sealId},</if>
+         </trim>
+    </insert>
+
+    <update id="updateOaSealApply" parameterType="OaSealApply">
+        update oa_seal_apply
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="userId != null">user_id = #{userId},</if>
+            <if test="tenantId != null">tenant_id = #{tenantId},</if>
+            <if test="deptId != null">dept_id = #{deptId},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="flowKey != null">flow_key = #{flowKey},</if>
+            <if test="flowInsId != null">flow_ins_id = #{flowInsId},</if>
+            <if test="applyTitle != null">apply_title = #{applyTitle},</if>
+            <if test="submitTime != null">submit_time = #{submitTime},</if>
+            <if test="billCode != null">bill_code = #{billCode},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="sealType != null">seal_type = #{sealType},</if>
+            <if test="useTime != null">use_time = #{useTime},</if>
+            <if test="backTime != null">back_time = #{backTime},</if>
+            <if test="useInfo != null">use_info = #{useInfo},</if>
+            <if test="billType != null">bill_type = #{billType},</if>
+
+            <if test="sealId != null">seal_id = #{sealId},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteOaSealApplyById" parameterType="Long">
+        delete from oa_seal_apply where id = #{id}
+    </delete>
+
+    <delete id="deleteOaSealApplyByIds" parameterType="String">
+        delete from oa_seal_apply where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

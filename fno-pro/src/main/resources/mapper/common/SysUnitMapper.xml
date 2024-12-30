@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fno.back.common.mapper.SysUnitMapper">
+    
+    <resultMap type="SysUnit" id="UnitResult">
+        <result property="id"    column="id"    />
+        <result property="name"    column="name"    />
+        <result property="basicUnit"    column="basic_unit"    />
+        <result property="otherUnitOne"    column="other_unit_one"    />
+        <result property="otherUnitTwo"    column="other_unit_two"    />
+        <result property="otherUnitThree"    column="other_unit_three"    />
+        <result property="otherUnitFour"    column="other_unit_four"    />
+        <result property="otherUnitFive"    column="other_unit_five"    />
+        <result property="otherUnitSix"    column="other_unit_six"    />
+        <result property="ratioOne"    column="ratio_one"    />
+        <result property="ratioTwo"    column="ratio_two"    />
+        <result property="ratioThree"    column="ratio_three"    />
+        <result property="ratioFour"    column="ratio_four"    />
+        <result property="ratioFive"    column="ratio_five"    />
+        <result property="ratioSix"    column="ratio_six"    />
+        <result property="status"    column="status"    />
+        <result property="tenantId"    column="tenant_id"    />
+        <result property="deleteFlag"    column="delete_flag"    />
+    </resultMap>
+
+    <sql id="selectUnitVo">
+        select id, name, basic_unit, other_unit_one, other_unit_two, other_unit_three, other_unit_four, other_unit_five, other_unit_six, ratio_one, ratio_two, ratio_three, ratio_four, ratio_five, ratio_six, status,
+               tenant_id, delete_flag from sys_unit
+    </sql>
+
+    <select id="selectUnitList" parameterType="SysUnit" resultMap="UnitResult">
+        <include refid="selectUnitVo"/>
+        <where>  
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="basicUnit != null  and basicUnit != ''"> and basic_unit = #{basicUnit}</if>
+            <if test="otherUnitOne != null  and otherUnitOne != ''"> and other_unit_one = #{otherUnitOne}</if>
+            <if test="otherUnitTwo != null  and otherUnitTwo != ''"> and other_unit_two = #{otherUnitTwo}</if>
+            <if test="otherUnitThree != null  and otherUnitThree != ''"> and other_unit_three = #{otherUnitThree}</if>
+            <if test="otherUnitFour != null  and otherUnitFour != ''"> and other_unit_four = #{otherUnitFour}</if>
+            <if test="otherUnitFive != null  and otherUnitFive != ''"> and other_unit_five = #{otherUnitFive}</if>
+            <if test="otherUnitSix != null  and otherUnitSix != ''"> and other_unit_six = #{otherUnitSix}</if>
+            <if test="ratioOne != null "> and ratio_one = #{ratioOne}</if>
+            <if test="ratioTwo != null "> and ratio_two = #{ratioTwo}</if>
+            <if test="ratioThree != null "> and ratio_three = #{ratioThree}</if>
+            <if test="ratioFour != null "> and ratio_four = #{ratioFour}</if>
+            <if test="ratioFive != null "> and ratio_five = #{ratioFive}</if>
+            <if test="ratioSix != null "> and ratio_six = #{ratioSix}</if>
+            <if test="status != null "> and status = #{status}</if>
+            <if test="tenantId != null "> and tenant_id = #{tenantId}</if>
+            <if test="deleteFlag != null  and deleteFlag != ''"> and delete_flag = #{deleteFlag}</if>
+        </where>
+    </select>
+    
+    <select id="selectUnitById" parameterType="Long" resultMap="UnitResult">
+        <include refid="selectUnitVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertUnit" parameterType="SysUnit" useGeneratedKeys="true" keyProperty="id">
+        insert into pl_unit
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="name != null and name != ''">name,</if>
+            <if test="basicUnit != null and basicUnit != ''">basic_unit,</if>
+            <if test="otherUnitOne != null">other_unit_one,</if>
+            <if test="otherUnitTwo != null">other_unit_two,</if>
+            <if test="otherUnitThree != null">other_unit_three,</if>
+            <if test="otherUnitFour != null">other_unit_four,</if>
+            <if test="otherUnitFive != null">other_unit_five,</if>
+            <if test="otherUnitSix != null">other_unit_six,</if>
+            <if test="ratioOne != null">ratio_one,</if>
+            <if test="ratioTwo != null">ratio_two,</if>
+            <if test="ratioThree != null">ratio_three,</if>
+            <if test="ratioFour != null">ratio_four,</if>
+            <if test="ratioFive != null">ratio_five,</if>
+            <if test="ratioSix != null">ratio_six,</if>
+            <if test="status != null">status,</if>
+            <if test="tenantId != null">tenant_id,</if>
+            <if test="deleteFlag != null">delete_flag,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="name != null and name != ''">#{name},</if>
+            <if test="basicUnit != null and basicUnit != ''">#{basicUnit},</if>
+            <if test="otherUnitOne != null">#{otherUnitOne},</if>
+            <if test="otherUnitTwo != null">#{otherUnitTwo},</if>
+            <if test="otherUnitThree != null">#{otherUnitThree},</if>
+            <if test="otherUnitFour != null">#{otherUnitFour},</if>
+            <if test="otherUnitFive != null">#{otherUnitFive},</if>
+            <if test="otherUnitSix != null">#{otherUnitSix},</if>
+            <if test="ratioOne != null">#{ratioOne},</if>
+            <if test="ratioTwo != null">#{ratioTwo},</if>
+            <if test="ratioThree != null">#{ratioThree},</if>
+            <if test="ratioFour != null">#{ratioFour},</if>
+            <if test="ratioFive != null">#{ratioFive},</if>
+            <if test="ratioSix != null">#{ratioSix},</if>
+            <if test="status != null">#{status},</if>
+            <if test="tenantId != null">#{tenantId},</if>
+            <if test="deleteFlag != null">#{deleteFlag},</if>
+         </trim>
+    </insert>
+
+    <update id="updateUnit" parameterType="SysUnit">
+        update pl_unit
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name != null and name != ''">name = #{name},</if>
+            <if test="basicUnit != null and basicUnit != ''">basic_unit = #{basicUnit},</if>
+            <if test="otherUnitOne != null">other_unit_one = #{otherUnitOne},</if>
+            <if test="otherUnitTwo != null">other_unit_two = #{otherUnitTwo},</if>
+            <if test="otherUnitThree != null">other_unit_three = #{otherUnitThree},</if>
+            <if test="otherUnitFour != null">other_unit_four = #{otherUnitFour},</if>
+            <if test="otherUnitFive != null">other_unit_five = #{otherUnitFive},</if>
+            <if test="otherUnitSix != null">other_unit_six = #{otherUnitSix},</if>
+            <if test="ratioOne != null">ratio_one = #{ratioOne},</if>
+            <if test="ratioTwo != null">ratio_two = #{ratioTwo},</if>
+            <if test="ratioThree != null">ratio_three = #{ratioThree},</if>
+            <if test="ratioFour != null">ratio_four = #{ratioFour},</if>
+            <if test="ratioFive != null">ratio_five = #{ratioFive},</if>
+            <if test="ratioSix != null">ratio_six = #{ratioSix},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="tenantId != null">tenant_id = #{tenantId},</if>
+            <if test="deleteFlag != null">delete_flag = #{deleteFlag},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteUnitById" parameterType="Long">
+        delete from pl_unit where id = #{id}
+    </delete>
+
+    <delete id="deleteUnitByIds" parameterType="String">
+        delete from pl_unit where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

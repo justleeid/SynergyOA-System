@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fno.back.t.mapper.TProjectMapper">
+    
+    <resultMap type="TProject" id="TProjectResult">
+        <result property="id"    column="id"    />
+        <result property="name"    column="name"    />
+        <result property="year"    column="year"    />
+        <result property="buildOrg"    column="build_org"    />
+        <result property="nature"    column="nature"    />
+        <result property="content"    column="content"    />
+        <result property="invest"    column="invest"    />
+        <result property="finishInvest"    column="finish_invest"    />
+        <result property="schedule"    column="schedule"    />
+        <result property="ifInSys"    column="if_in_sys"    />
+        <result property="projectSchedule"    column="project_schedule"    />
+        <result property="images"    column="images"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+        <result property="tenantId"    column="tenant_id"    />
+    </resultMap>
+
+    <sql id="selectTProjectVo">
+        select id, name, build_org, nature, content, invest, finish_invest, schedule, if_in_sys, project_schedule, year, images, create_by, create_time, update_by, update_time, remark, tenant_id from t_project
+    </sql>
+
+    <select id="selectTProjectList" parameterType="TProject" resultMap="TProjectResult">
+        <include refid="selectTProjectVo"/>
+        <where>  
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="year != null  and year != ''"> and name like concat('%', #{year}, '%')</if>
+            <if test="buildOrg != null  and buildOrg != ''"> and build_org = #{buildOrg}</if>
+            <if test="nature != null  and nature != ''"> and nature = #{nature}</if>
+            <if test="content != null  and content != ''"> and content = #{content}</if>
+            <if test="invest != null "> and invest = #{invest}</if>
+            <if test="finishInvest != null "> and finish_invest = #{finishInvest}</if>
+            <if test="schedule != null  and schedule != ''"> and schedule = #{schedule}</if>
+            <if test="ifInSys != null  and ifInSys != ''"> and if_in_sys = #{ifInSys}</if>
+            <if test="projectSchedule != null  and projectSchedule != ''"> and project_schedule = #{projectSchedule}</if>
+            <if test="images != null  and images != ''"> and images = #{images}</if>
+            <if test="tenantId != null "> and tenant_id = #{tenantId}</if>
+        </where>
+    </select>
+    
+    <select id="selectTProjectById" parameterType="Long" resultMap="TProjectResult">
+        <include refid="selectTProjectVo"/>
+        where id = #{id}
+    </select>
+    <select id="getYear" resultType="java.lang.String">
+        select year from t_project
+        group by year
+        order by year
+    </select>
+    <select id="getProjectCount" resultType="java.util.Map">
+        select
+            count(year) as c
+        from t_project
+        group by year
+        order by year
+    </select>
+
+    <insert id="insertTProject" parameterType="TProject">
+        insert into t_project
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="name != null">name,</if>
+            <if test="year != null">year,</if>
+            <if test="buildOrg != null">build_org,</if>
+            <if test="nature != null">nature,</if>
+            <if test="content != null">content,</if>
+            <if test="invest != null">invest,</if>
+            <if test="finishInvest != null">finish_invest,</if>
+            <if test="schedule != null">schedule,</if>
+            <if test="ifInSys != null">if_in_sys,</if>
+            <if test="projectSchedule != null">project_schedule,</if>
+            <if test="images != null">images,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+            <if test="tenantId != null">tenant_id,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="name != null">#{name},</if>
+            <if test="year != null">#{year},</if>
+            <if test="buildOrg != null">#{buildOrg},</if>
+            <if test="nature != null">#{nature},</if>
+            <if test="content != null">#{content},</if>
+            <if test="invest != null">#{invest},</if>
+            <if test="finishInvest != null">#{finishInvest},</if>
+            <if test="schedule != null">#{schedule},</if>
+            <if test="ifInSys != null">#{ifInSys},</if>
+            <if test="projectSchedule != null">#{projectSchedule},</if>
+            <if test="images != null">#{images},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="tenantId != null">#{tenantId},</if>
+         </trim>
+    </insert>
+
+    <update id="updateTProject" parameterType="TProject">
+        update t_project
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name != null">name = #{name},</if>
+            <if test="year != null">year = #{year},</if>
+            <if test="buildOrg != null">build_org = #{buildOrg},</if>
+            <if test="nature != null">nature = #{nature},</if>
+            <if test="content != null">content = #{content},</if>
+            <if test="invest != null">invest = #{invest},</if>
+            <if test="finishInvest != null">finish_invest = #{finishInvest},</if>
+            <if test="schedule != null">schedule = #{schedule},</if>
+            <if test="ifInSys != null">if_in_sys = #{ifInSys},</if>
+            <if test="projectSchedule != null">project_schedule = #{projectSchedule},</if>
+            <if test="images != null">images = #{images},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="tenantId != null">tenant_id = #{tenantId},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteTProjectById" parameterType="Long">
+        delete from t_project where id = #{id}
+    </delete>
+
+    <delete id="deleteTProjectByIds" parameterType="String">
+        delete from t_project where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

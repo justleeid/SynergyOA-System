@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fno.back.oa.mapper.OaInvoiceMapper">
+    
+    <resultMap type="OaInvoice" id="OaInvoiceResult">
+        <result property="id"    column="id"    />
+        <result property="tenantId" column="tenant_id" />
+        <result property="url"    column="url"    />
+        <result property="amt"    column="amt"    />
+        <result property="invoiceDate"    column="invoice_date"    />
+        <result property="invoiceCode"    column="invoice_code"    />
+        <result property="invoiceNum"    column="invoice_num"    />
+        <result property="taxRate"    column="tax_rate"    />
+        <result property="taxAmt"    column="tax_amt"    />
+        <result property="name"    column="name"    />
+        <result property="companyName"    column="company_name"    />
+        <result property="taxNum"    column="tax_num"    />
+        <result property="address"    column="address"    />
+        <result property="phone"    column="phone"    />
+        <result property="bank"    column="bank"    />
+        <result property="payee"    column="payee"    />
+        <result property="examinePerson"    column="examine_person"    />
+        <result property="drawer"    column="drawer"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+    </resultMap>
+
+    <sql id="selectOaInvoiceVo">
+        select id, tenant_id, url, amt, invoice_date, invoice_code, invoice_num, tax_rate, tax_amt, name, company_name, tax_num, address, phone, bank, payee, examine_person, drawer, create_by, create_time, update_by, update_time, remark from oa_invoice
+    </sql>
+
+    <select id="selectOaInvoiceList" parameterType="OaInvoice" resultMap="OaInvoiceResult">
+        <include refid="selectOaInvoiceVo"/>
+        <where>
+            <if test="tenantId != null and tenantId != 0"> tenant_id = #{tenantId}</if>
+            <if test="url != null  and url != ''"> and url = #{url}</if>
+            <if test="amt != null "> and amt = #{amt}</if>
+            <if test="invoiceDate != null "> and invoice_date = #{invoiceDate}</if>
+            <if test="invoiceCode != null  and invoiceCode != ''"> and invoice_code = #{invoiceCode}</if>
+            <if test="invoiceNum != null  and invoiceNum != ''"> and invoice_num = #{invoiceNum}</if>
+            <if test="taxRate != null "> and tax_rate = #{taxRate}</if>
+            <if test="taxAmt != null "> and tax_amt = #{taxAmt}</if>
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="companyName != null  and companyName != ''"> and company_name like concat('%', #{companyName}, '%')</if>
+            <if test="taxNum != null  and taxNum != ''"> and tax_num = #{taxNum}</if>
+            <if test="address != null  and address != ''"> and address = #{address}</if>
+            <if test="phone != null  and phone != ''"> and phone = #{phone}</if>
+            <if test="bank != null  and bank != ''"> and bank = #{bank}</if>
+            <if test="payee != null  and payee != ''"> and payee = #{payee}</if>
+            <if test="examinePerson != null  and examinePerson != ''"> and examine_person = #{examinePerson}</if>
+            <if test="drawer != null  and drawer != ''"> and drawer = #{drawer}</if>
+        </where>
+    </select>
+    
+    <select id="selectOaInvoiceById" parameterType="Long" resultMap="OaInvoiceResult">
+        <include refid="selectOaInvoiceVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertOaInvoice" parameterType="OaInvoice" useGeneratedKeys="true" keyProperty="id">
+        insert into oa_invoice
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="tenantId != null and tenantId != 0">tenant_id,</if>
+            <if test="url != null and url != ''">url,</if>
+            <if test="amt != null">amt,</if>
+            <if test="invoiceDate != null">invoice_date,</if>
+            <if test="invoiceCode != null">invoice_code,</if>
+            <if test="invoiceNum != null">invoice_num,</if>
+            <if test="taxRate != null">tax_rate,</if>
+            <if test="taxAmt != null">tax_amt,</if>
+            <if test="name != null">name,</if>
+            <if test="companyName != null">company_name,</if>
+            <if test="taxNum != null">tax_num,</if>
+            <if test="address != null">address,</if>
+            <if test="phone != null">phone,</if>
+            <if test="bank != null">bank,</if>
+            <if test="payee != null">payee,</if>
+            <if test="examinePerson != null">examine_person,</if>
+            <if test="drawer != null">drawer,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="tenantId != null and tenantId != 0">#{tenantId},</if>
+            <if test="url != null and url != ''">#{url},</if>
+            <if test="amt != null">#{amt},</if>
+            <if test="invoiceDate != null">#{invoiceDate},</if>
+            <if test="invoiceCode != null">#{invoiceCode},</if>
+            <if test="invoiceNum != null">#{invoiceNum},</if>
+            <if test="taxRate != null">#{taxRate},</if>
+            <if test="taxAmt != null">#{taxAmt},</if>
+            <if test="name != null">#{name},</if>
+            <if test="companyName != null">#{companyName},</if>
+            <if test="taxNum != null">#{taxNum},</if>
+            <if test="address != null">#{address},</if>
+            <if test="phone != null">#{phone},</if>
+            <if test="bank != null">#{bank},</if>
+            <if test="payee != null">#{payee},</if>
+            <if test="examinePerson != null">#{examinePerson},</if>
+            <if test="drawer != null">#{drawer},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+         </trim>
+    </insert>
+
+    <update id="updateOaInvoice" parameterType="OaInvoice">
+        update oa_invoice
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="url != null and url != ''">url = #{url},</if>
+            <if test="amt != null">amt = #{amt},</if>
+            <if test="invoiceDate != null">invoice_date = #{invoiceDate},</if>
+            <if test="invoiceCode != null">invoice_code = #{invoiceCode},</if>
+            <if test="invoiceNum != null">invoice_num = #{invoiceNum},</if>
+            <if test="taxRate != null">tax_rate = #{taxRate},</if>
+            <if test="taxAmt != null">tax_amt = #{taxAmt},</if>
+            <if test="name != null">name = #{name},</if>
+            <if test="companyName != null">company_name = #{companyName},</if>
+            <if test="taxNum != null">tax_num = #{taxNum},</if>
+            <if test="address != null">address = #{address},</if>
+            <if test="phone != null">phone = #{phone},</if>
+            <if test="bank != null">bank = #{bank},</if>
+            <if test="payee != null">payee = #{payee},</if>
+            <if test="examinePerson != null">examine_person = #{examinePerson},</if>
+            <if test="drawer != null">drawer = #{drawer},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteOaInvoiceById" parameterType="Long">
+        delete from oa_invoice where id = #{id}
+    </delete>
+
+    <delete id="deleteOaInvoiceByIds" parameterType="String">
+        delete from oa_invoice where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

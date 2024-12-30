@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fno.back.cms.mapper.CmsContentMapper">
+    
+    <resultMap type="CmsContent" id="CmsContentResult">
+        <result property="id"    column="id"    />
+        <result property="title"    column="title"    />
+        <result property="content"    column="content"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="visible"    column="visible"    />
+        <result property="cover"    column="cover"    />
+        <result property="catalogId"    column="catalog_id"    />
+        <result property="tenantId"    column="tenant_id"    />
+        <result property="siteId"    column="site_id"    />
+    </resultMap>
+
+    <sql id="selectCmsContentVo">
+        select id, title, content, create_time, update_time, visible, cover, catalog_id, tenant_id, site_id
+        from cms_content
+    </sql>
+
+    <select id="selectCmsContentList" parameterType="CmsContent" resultMap="CmsContentResult">
+        <include refid="selectCmsContentVo"/>
+        <where>  
+            <if test="title != null  and title != ''"> and title like concat('%', #{title}, '%')</if>
+            <if test="content != null  and content != ''"> and content = #{content}</if>
+            <if test="visible != null  and visible != ''"> and visible = #{visible}</if>
+            <if test="cover != null  and cover != ''"> and cover = #{cover}</if>
+            <if test="catalogId != null  and catalogId != ''"> and catalog_id = #{catalogId}</if>
+            <if test="tenantId != null "> and tenant_id = #{tenantId}</if>
+            <if test="siteId != null "> and site_id = #{siteId}</if>
+        </where>
+    </select>
+    
+    <select id="selectCmsContentById" parameterType="Long" resultMap="CmsContentResult">
+        <include refid="selectCmsContentVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertCmsContent" parameterType="CmsContent">
+        insert into cms_content
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="title != null">title,</if>
+            <if test="content != null">content,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="visible != null">visible,</if>
+            <if test="cover != null">cover,</if>
+            <if test="catalogId != null">catalog_id,</if>
+            <if test="tenantId != null">tenant_id,</if>
+            <if test="siteId != null">site_id,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="title != null">#{title},</if>
+            <if test="content != null">#{content},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="visible != null">#{visible},</if>
+            <if test="cover != null">#{cover},</if>
+            <if test="catalogId != null">#{catalogId},</if>
+            <if test="tenantId != null">#{tenantId},</if>
+            <if test="siteId != null">#{siteId}</if>
+         </trim>
+    </insert>
+
+    <update id="updateCmsContent" parameterType="CmsContent">
+        update cms_content
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="title != null">title = #{title},</if>
+            <if test="content != null">content = #{content},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="visible != null">visible = #{visible},</if>
+            <if test="cover != null">cover = #{cover},</if>
+            <if test="catalogId != null">catalog_id = #{catalogId},</if>
+            <if test="tenantId != null">tenant_id = #{tenantId},</if>
+            <if test="siteId != null">site_id = #{siteId},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteCmsContentById" parameterType="Long">
+        delete from cms_content where id = #{id}
+    </delete>
+
+    <delete id="deleteCmsContentByIds" parameterType="String">
+        delete from cms_content where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

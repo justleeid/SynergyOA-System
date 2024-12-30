@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fno.back.common.mapper.CompanyTenantMapper">
+    
+    <resultMap type="CompanyTenant" id="CompanyTenantResult">
+        <result property="id"    column="id"    />
+        <result property="name"    column="name"    />
+        <result property="address"    column="address"    />
+        <result property="legalPerson"    column="legal_person"    />
+        <result property="businessLicense"    column="business_license"    />
+        <result property="businessScope"    column="business_scope"    />
+        <result property="expirationTime"    column="expiration_time"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="phone"    column="phone"    />
+        <result property="status"    column="status"    />
+        <result property="ifInit" column="if_init" />
+        <result property="idNum" column="id_num" />
+        <result property="adminName" column="admin_name" />
+    </resultMap>
+
+    <sql id="selectCompanyTenantVo">
+        select id, name, address, legal_person, business_license, business_scope,phone, expiration_time,status,if_init, create_time,id_num,admin_name
+        from sys_company_tenant
+    </sql>
+
+    <select id="selectCompanyTenantList" parameterType="CompanyTenant" resultMap="CompanyTenantResult">
+        <include refid="selectCompanyTenantVo"/>
+        <where>  
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="phone != null  and phone != ''"> and phone like concat('%', #{phone}, '%')</if>
+            <if test="status != null  and status != ''"> and status =  #{status} </if>
+            <if test="address != null  and address != ''"> and address = #{address}</if>
+            <if test="legalPerson != null  and legalPerson != ''"> and legal_person = #{legalPerson}</if>
+            <if test="businessLicense != null  and businessLicense != ''"> and business_license = #{businessLicense}</if>
+            <if test="businessScope != null  and businessScope != ''"> and business_scope = #{businessScope}</if>
+            <if test="expirationTime != null "> and expiration_time = #{expirationTime}</if>
+            <if test="idNum != null "> and id_num  like concat('%', #{idNum}, '%')</if>
+            <if test="adminName != 'admin' "> and admin_name != 'admin' </if>
+        </where>
+    </select>
+    
+    <select id="selectCompanyTenantById" parameterType="Long" resultMap="CompanyTenantResult">
+        <include refid="selectCompanyTenantVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertCompanyTenant" parameterType="CompanyTenant" useGeneratedKeys="true" keyProperty="id">
+        insert into sys_company_tenant
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="name != null">name,</if>
+            <if test="address != null">address,</if>
+            <if test="legalPerson != null">legal_person,</if>
+            <if test="phone != null">phone,</if>
+            <if test="businessLicense != null">business_license,</if>
+            <if test="businessScope != null">business_scope,</if>
+            <if test="expirationTime != null">expiration_time,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="status != null">status,</if>
+            <if test="ifInit != null">if_init,</if>
+            <if test="idNum != null">id_num,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="name != null">#{name},</if>
+            <if test="address != null">#{address},</if>
+            <if test="legalPerson != null">#{legalPerson},</if>
+            <if test="phone != null">#{phone},</if>
+            <if test="businessLicense != null">#{businessLicense},</if>
+            <if test="businessScope != null">#{businessScope},</if>
+            <if test="expirationTime != null">#{expirationTime},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="status != null">#{status},</if>
+            <if test="ifInit != null">#{ifInit},</if>
+            <if test="idNum != null">#{idNum},</if>
+         </trim>
+    </insert>
+
+    <update id="updateCompanyTenant" parameterType="CompanyTenant">
+        update sys_company_tenant
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name != null">name = #{name},</if>
+            <if test="address != null">address = #{address},</if>
+            <if test="legalPerson != null">legal_person = #{legalPerson},</if>
+            <if test="phone != null">phone = #{phone},</if>
+            <if test="businessLicense != null">business_license = #{businessLicense},</if>
+            <if test="businessScope != null">business_scope = #{businessScope},</if>
+            <if test="expirationTime != null">expiration_time = #{expirationTime},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="ifInit != null">if_init = #{ifInit},</if>
+            <if test="idNum != null">id_num = #{idNum},</if>
+            <if test="adminName != null and adminName != ''">admin_name = #{adminName},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteCompanyTenantById" parameterType="Long">
+        delete from sys_company_tenant where id = #{id}
+    </delete>
+
+    <delete id="deleteCompanyTenantByIds" parameterType="String">
+        delete from sys_company_tenant where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

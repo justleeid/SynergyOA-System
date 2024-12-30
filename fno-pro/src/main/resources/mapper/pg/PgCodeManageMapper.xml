@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fno.back.pg.mapper.PgCodeManageMapper">
+    
+    <resultMap type="PgCodeManage" id="PgCodeManageResult">
+        <result property="id"    column="id"    />
+        <result property="projectId"    column="project_id"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+        <result property="gitUrl"    column="git_url"    />
+        <result property="storeName"    column="store_name"    />
+    </resultMap>
+
+    <sql id="selectPgCodeManageVo">
+        select id, project_id, create_by, create_time, update_by, update_time, remark, git_url, store_name from pg_code_manage
+    </sql>
+
+    <select id="selectPgCodeManageList" parameterType="PgCodeManage" resultMap="PgCodeManageResult">
+        <include refid="selectPgCodeManageVo"/>
+        <where>  
+            <if test="projectId != null "> and project_id = #{projectId}</if>
+            <if test="gitUrl != null  and gitUrl != ''"> and git_url = #{gitUrl}</if>
+            <if test="storeName != null  and storeName != ''"> and store_name like concat('%', #{storeName}, '%')</if>
+        </where>
+    </select>
+    
+    <select id="selectPgCodeManageById" parameterType="Long" resultMap="PgCodeManageResult">
+        <include refid="selectPgCodeManageVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertPgCodeManage" parameterType="PgCodeManage" useGeneratedKeys="true" keyProperty="id">
+        insert into pg_code_manage
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="projectId != null">project_id,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+            <if test="gitUrl != null">git_url,</if>
+            <if test="storeName != null">store_name,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="projectId != null">#{projectId},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="gitUrl != null">#{gitUrl},</if>
+            <if test="storeName != null">#{storeName},</if>
+         </trim>
+    </insert>
+
+    <update id="updatePgCodeManage" parameterType="PgCodeManage">
+        update pg_code_manage
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="projectId != null">project_id = #{projectId},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="gitUrl != null">git_url = #{gitUrl},</if>
+            <if test="storeName != null">store_name = #{storeName},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deletePgCodeManageById" parameterType="Long">
+        delete from pg_code_manage where id = #{id}
+    </delete>
+
+    <delete id="deletePgCodeManageByIds" parameterType="String">
+        delete from pg_code_manage where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

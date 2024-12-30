@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fno.back.oa.mapper.OaSendTaskTrackMapper">
+
+    <resultMap type="OaSendTaskTrack" id="OaSendTaskTrackResult">
+        <result property="id"    column="id"    />
+        <result property="taskId"    column="task_id"    />
+        <result property="track"    column="track"    />
+        <result property="userId"    column="user_id"    />
+        <result property="createTime"    column="create_time"    />
+
+        <result property="trackNickName"    column="nick_name"    />
+        <result property="avatar"    column="avatar"    />
+    </resultMap>
+
+    <sql id="selectOaSendTaskTrackVo">
+        select t.id, t.task_id, t.track, t.user_id, t.create_time, u.nick_name,u.avatar
+        from oa_send_task_track t left join sys_user u on t.user_id = u.user_id
+    </sql>
+
+    <select id="selectOaSendTaskTrackList" parameterType="OaSendTaskTrack" resultMap="OaSendTaskTrackResult">
+        <include refid="selectOaSendTaskTrackVo"/>
+        <where>
+            <if test="taskId != null "> and t.task_id = #{taskId}</if>
+            <if test="track != null  and track != ''"> and t.track = #{track}</if>
+            <if test="userId != null "> and t.user_id = #{userId}</if>
+        </where>
+    </select>
+
+    <select id="selectOaSendTaskTrackById" parameterType="Long" resultMap="OaSendTaskTrackResult">
+        <include refid="selectOaSendTaskTrackVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertOaSendTaskTrack" parameterType="OaSendTaskTrack" useGeneratedKeys="true" keyProperty="id">
+        insert into oa_send_task_track
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="taskId != null">task_id,</if>
+            <if test="track != null">track,</if>
+            <if test="userId != null">user_id,</if>
+            <if test="createTime != null">create_time,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="taskId != null">#{taskId},</if>
+            <if test="track != null">#{track},</if>
+            <if test="userId != null">#{userId},</if>
+            <if test="createTime != null">#{createTime},</if>
+        </trim>
+    </insert>
+
+    <update id="updateOaSendTaskTrack" parameterType="OaSendTaskTrack">
+        update oa_send_task_track
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="taskId != null">task_id = #{taskId},</if>
+            <if test="track != null">track = #{track},</if>
+            <if test="userId != null">user_id = #{userId},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteOaSendTaskTrackById" parameterType="Long">
+        delete from oa_send_task_track where id = #{id}
+    </delete>
+
+    <delete id="deleteOaSendTaskTrackByIds" parameterType="String">
+        delete from oa_send_task_track where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

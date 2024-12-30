@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fno.back.note.mapper.NoteFolderMapper">
+    
+    <resultMap type="NoteFolder" id="NoteFolderResult">
+        <result property="id"    column="id"    />
+        <result property="name"    column="name"    />
+        <result property="parentId"    column="parent_id"    />
+        <result property="userId"    column="user_id"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="ifDel"    column="if_del"    />
+    </resultMap>
+
+    <sql id="selectNoteFolderVo">
+        select id, name, parent_id, user_id, create_time, if_del from note_folder
+    </sql>
+
+    <select id="selectNoteFolderList" parameterType="NoteFolder" resultMap="NoteFolderResult">
+        <include refid="selectNoteFolderVo"/>
+        <where>  
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="userId != null "> and user_id = #{userId}</if>
+            <if test="ifDel != null  and ifDel != ''"> and if_del = #{ifDel}</if>
+            <if test="parentId != null"> and parent_id = #{parentId}</if>
+        </where>
+    </select>
+    
+    <select id="selectNoteFolderById" parameterType="Long" resultMap="NoteFolderResult">
+        <include refid="selectNoteFolderVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertNoteFolder" parameterType="NoteFolder" useGeneratedKeys="true" keyProperty="id">
+        insert into note_folder
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="name != null">name,</if>
+            <if test="parentId != null">parent_id,</if>
+            <if test="userId != null">user_id,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="ifDel != null">if_del,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="name != null">#{name},</if>
+            <if test="parentId != null">#{parentId},</if>
+            <if test="userId != null">#{userId},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="ifDel != null">#{ifDel},</if>
+         </trim>
+    </insert>
+
+    <update id="updateNoteFolder" parameterType="NoteFolder">
+        update note_folder
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name != null">name = #{name},</if>
+            <if test="parentId != null">parent_id = #{parentId},</if>
+            <if test="userId != null">user_id = #{userId},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="ifDel != null">if_del = #{ifDel},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteNoteFolderById" parameterType="Long">
+        delete from note_folder where id = #{id}
+    </delete>
+
+    <delete id="deleteNoteFolderByIds" parameterType="String">
+        delete from note_folder where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

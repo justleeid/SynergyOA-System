@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fno.back.cms.mapper.CmsCatalogMapper">
+    
+    <resultMap type="CmsCatalog" id="CmsCatalogResult">
+        <result property="id"    column="id"    />
+        <result property="name"    column="name"    />
+        <result property="url"    column="url"    />
+        <result property="openType"    column="open_type"    />
+        <result property="type"    column="type"    />
+        <result property="parentId"    column="parent_id"    />
+        <result property="cover"    column="cover"    />
+        <result property="visible"    column="visible"    />
+        <result property="tenantId"    column="tenant_id"    />
+        <result property="siteId"    column="site_id"    />
+    </resultMap>
+
+    <sql id="selectCmsCatalogVo">
+        select id, name, url, open_type, type, parent_id, cover, visible, tenant_id, site_id
+        from cms_catalog
+    </sql>
+
+    <select id="selectCmsCatalogList" parameterType="CmsCatalog" resultMap="CmsCatalogResult">
+        <include refid="selectCmsCatalogVo"/>
+        <where>  
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="url != null  and url != ''"> and url = #{url}</if>
+            <if test="openType != null  and openType != ''"> and open_type = #{openType}</if>
+            <if test="type != null  and type != ''"> and type = #{type}</if>
+            <if test="parentId != null "> and parent_id = #{parentId}</if>
+            <if test="cover != null  and cover != ''"> and cover = #{cover}</if>
+            <if test="visible != null  and visible != ''"> and visible = #{visible}</if>
+            <if test="tenantId != null "> and tenant_id = #{tenantId}</if>
+            <if test="siteId != null "> and site_id = #{siteId}</if>
+        </where>
+    </select>
+    
+    <select id="selectCmsCatalogById" parameterType="Long" resultMap="CmsCatalogResult">
+        <include refid="selectCmsCatalogVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertCmsCatalog" parameterType="CmsCatalog">
+        insert into cms_catalog
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="name != null">name,</if>
+            <if test="url != null">url,</if>
+            <if test="openType != null">open_type,</if>
+            <if test="type != null">type,</if>
+            <if test="parentId != null">parent_id,</if>
+            <if test="cover != null">cover,</if>
+            <if test="visible != null">visible,</if>
+            <if test="tenantId != null">tenant_id,</if>
+            <if test="siteId != null">site_id,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="name != null">#{name},</if>
+            <if test="url != null">#{url},</if>
+            <if test="openType != null">#{openType},</if>
+            <if test="type != null">#{type},</if>
+            <if test="parentId != null">#{parentId},</if>
+            <if test="cover != null">#{cover},</if>
+            <if test="visible != null">#{visible},</if>
+            <if test="tenantId != null">#{tenantId},</if>
+            <if test="siteId != null">#{siteId}</if>
+         </trim>
+    </insert>
+
+    <update id="updateCmsCatalog" parameterType="CmsCatalog">
+        update cms_catalog
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name != null">name = #{name},</if>
+            <if test="url != null">url = #{url},</if>
+            <if test="openType != null">open_type = #{openType},</if>
+            <if test="type != null">type = #{type},</if>
+            <if test="parentId != null">parent_id = #{parentId},</if>
+            <if test="cover != null">cover = #{cover},</if>
+            <if test="visible != null">visible = #{visible},</if>
+            <if test="tenantId != null">tenant_id = #{tenantId},</if>
+            <if test="siteId != null">site_id = #{siteId},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteCmsCatalogById" parameterType="Long">
+        delete from cms_catalog where id = #{id}
+    </delete>
+
+    <delete id="deleteCmsCatalogByIds" parameterType="String">
+        delete from cms_catalog where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

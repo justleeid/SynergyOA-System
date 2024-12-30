@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fno.back.note.mapper.NoteDocTagMapper">
+    
+    <resultMap type="NoteDocTag" id="NoteDocTagResult">
+        <result property="id"    column="id"    />
+        <result property="userId"    column="user_id"    />
+        <result property="tagId"    column="tag_id"    />
+        <result property="docId"    column="doc_id"    />
+    </resultMap>
+
+    <sql id="selectNoteDocTagVo">
+        select id, user_id, tag_id, doc_id from note_doc_tag
+    </sql>
+
+    <select id="selectNoteDocTagList" parameterType="NoteDocTag" resultMap="NoteDocTagResult">
+        <include refid="selectNoteDocTagVo"/>
+        <where>  
+            <if test="userId != null "> and user_id = #{userId}</if>
+            <if test="tagId != null "> and tag_id = #{tagId}</if>
+            <if test="docId != null "> and doc_id = #{docId}</if>
+        </where>
+    </select>
+    
+    <select id="selectNoteDocTagById" parameterType="Long" resultMap="NoteDocTagResult">
+        <include refid="selectNoteDocTagVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertNoteDocTag" parameterType="NoteDocTag" useGeneratedKeys="true" keyProperty="id">
+        insert into note_doc_tag
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="userId != null">user_id,</if>
+            <if test="tagId != null">tag_id,</if>
+            <if test="docId != null">doc_id,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="userId != null">#{userId},</if>
+            <if test="tagId != null">#{tagId},</if>
+            <if test="docId != null">#{docId},</if>
+         </trim>
+    </insert>
+
+    <update id="updateNoteDocTag" parameterType="NoteDocTag">
+        update note_doc_tag
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="userId != null">user_id = #{userId},</if>
+            <if test="tagId != null">tag_id = #{tagId},</if>
+            <if test="docId != null">doc_id = #{docId},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteNoteDocTagById" parameterType="Long">
+        delete from note_doc_tag where id = #{id}
+    </delete>
+
+    <delete id="deleteNoteDocTagByIds" parameterType="String">
+        delete from note_doc_tag where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

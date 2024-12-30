@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fno.back.t.mapper.TEnterpriseMapper">
+    
+    <resultMap type="TEnterprise" id="TEnterpriseResult">
+        <result property="id"    column="id"    />
+        <result property="name"    column="name"    />
+        <result property="address"    column="address"    />
+        <result property="tel"    column="tel"    />
+        <result property="productAmt"    column="product_amt"    />
+        <result property="tax"    column="tax"    />
+        <result property="ifNew"    column="if_new"    />
+        <result property="year"    column="year"    />
+        <result property="ifFoign"    column="if_foign"    />
+        <result property="inAmt"    column="in_amt"    />
+        <result property="outAmt"    column="out_amt"    />
+        <result property="fromPlace"    column="from_place"    />
+        <result property="personCount"    column="person_count"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+        <result property="tenantId"    column="tenant_id"    />
+    </resultMap>
+
+    <sql id="selectTEnterpriseVo">
+        select id, name, address, tel, product_amt, tax, if_new, year, if_foign, in_amt, out_amt, from_place, person_count, create_by, create_time, update_by, update_time, remark, tenant_id from t_enterprise
+    </sql>
+
+    <select id="selectTEnterpriseList" parameterType="TEnterprise" resultMap="TEnterpriseResult">
+        <include refid="selectTEnterpriseVo"/>
+        <where>  
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="address != null  and address != ''"> and address like concat('%', #{address}, '%')</if>
+            <if test="tel != null  and tel != ''"> and tel like concat('%', #{tel}, '%')</if>
+            <if test="productAmt != null  and productAmt != ''"> and product_amt = #{productAmt}</if>
+            <if test="tax != null  and tax != ''"> and tax = #{tax}</if>
+            <if test="ifNew != null  and ifNew != ''"> and if_new = #{ifNew}</if>
+            <if test="year != null  and year != ''"> and year = #{year}</if>
+            <if test="ifFoign != null  and ifFoign != ''"> and if_foign = #{ifFoign}</if>
+            <if test="inAmt != null  and inAmt != ''"> and in_amt = #{inAmt}</if>
+            <if test="outAmt != null  and outAmt != ''"> and out_amt = #{outAmt}</if>
+            <if test="fromPlace != null  and fromPlace != ''"> and from_place = #{fromPlace}</if>
+            <if test="personCount != null  and personCount != ''"> and person_count = #{personCount}</if>
+            <if test="tenantId != null "> and tenant_id = #{tenantId}</if>
+        </where>
+    </select>
+    
+    <select id="selectTEnterpriseById" parameterType="Long" resultMap="TEnterpriseResult">
+        <include refid="selectTEnterpriseVo"/>
+        where id = #{id}
+    </select>
+
+    <select id="getYear" resultType="java.lang.String">
+        select year from t_enterprise
+        group by year
+        order by year
+    </select>
+    <select id="getData" resultType="java.util.Map">
+        select sum(in_amt) inAmt ,sum(out_amt) outAmt from t_enterprise
+        group by year
+        order by year
+    </select>
+
+    <select id="getPlaceData" resultType="java.util.Map">
+        select from_place fromPlace, count(from_place) c from t_enterprise
+        group by from_place
+        order by from_place
+    </select>
+    <select id="getPTData" resultType="java.util.Map">
+        select sum(product_amt) pAmt ,sum(tax) tAmt from t_enterprise
+        group by year
+        order by year
+    </select>
+
+    <insert id="insertTEnterprise" parameterType="TEnterprise">
+        insert into t_enterprise
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="name != null">name,</if>
+            <if test="address != null">address,</if>
+            <if test="tel != null">tel,</if>
+            <if test="productAmt != null">product_amt,</if>
+            <if test="tax != null">tax,</if>
+            <if test="ifNew != null">if_new,</if>
+            <if test="year != null">year,</if>
+            <if test="ifFoign != null">if_foign,</if>
+            <if test="inAmt != null">in_amt,</if>
+            <if test="outAmt != null">out_amt,</if>
+            <if test="fromPlace != null">from_place,</if>
+            <if test="personCount != null">person_count,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+            <if test="tenantId != null">tenant_id,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="name != null">#{name},</if>
+            <if test="address != null">#{address},</if>
+            <if test="tel != null">#{tel},</if>
+            <if test="productAmt != null">#{productAmt},</if>
+            <if test="tax != null">#{tax},</if>
+            <if test="ifNew != null">#{ifNew},</if>
+            <if test="year != null">#{year},</if>
+            <if test="ifFoign != null">#{ifFoign},</if>
+            <if test="inAmt != null">#{inAmt},</if>
+            <if test="outAmt != null">#{outAmt},</if>
+            <if test="fromPlace != null">#{fromPlace},</if>
+            <if test="personCount != null">#{personCount},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="tenantId != null">#{tenantId},</if>
+         </trim>
+    </insert>
+
+    <update id="updateTEnterprise" parameterType="TEnterprise">
+        update t_enterprise
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name != null">name = #{name},</if>
+            <if test="address != null">address = #{address},</if>
+            <if test="tel != null">tel = #{tel},</if>
+            <if test="productAmt != null">product_amt = #{productAmt},</if>
+            <if test="tax != null">tax = #{tax},</if>
+            <if test="ifNew != null">if_new = #{ifNew},</if>
+            <if test="year != null">year = #{year},</if>
+            <if test="ifFoign != null">if_foign = #{ifFoign},</if>
+            <if test="inAmt != null">in_amt = #{inAmt},</if>
+            <if test="outAmt != null">out_amt = #{outAmt},</if>
+            <if test="fromPlace != null">from_place = #{fromPlace},</if>
+            <if test="personCount != null">person_count = #{personCount},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="tenantId != null">tenant_id = #{tenantId},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteTEnterpriseById" parameterType="Long">
+        delete from t_enterprise where id = #{id}
+    </delete>
+
+    <delete id="deleteTEnterpriseByIds" parameterType="String">
+        delete from t_enterprise where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

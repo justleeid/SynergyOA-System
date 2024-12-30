@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fno.back.t.mapper.TAuditProjectMapper">
+    
+    <resultMap type="TAuditProject" id="TAuditProjectResult">
+        <result property="id"    column="id"    />
+        <result property="code"    column="code"    />
+        <result property="name"    column="name"    />
+        <result property="legal"    column="legal"    />
+        <result property="contenet"    column="contenet"    />
+        <result property="amount"    column="amount"    />
+        <result property="year"    column="year"    />
+        <result property="deployDate"    column="deploy_date"    />
+        <result property="auditFile"    column="audit_file"    />
+        <result property="reportFile"    column="report_file"    />
+        <result property="initFile"    column="init_file"    />
+        <result property="ifCanBuild"    column="if_can_build"    />
+        <result property="ifStartBuild"    column="if_start_build"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+        <result property="tenantId"    column="tenant_id"    />
+    </resultMap>
+
+    <sql id="selectTAuditProjectVo">
+        select id, code, name, legal, contenet, amount, year, deploy_date, audit_file, report_file, init_file, if_can_build, if_start_build, create_by, create_time, update_by, update_time, remark, tenant_id from t_audit_project
+    </sql>
+
+    <select id="selectTAuditProjectList" parameterType="TAuditProject" resultMap="TAuditProjectResult">
+        <include refid="selectTAuditProjectVo"/>
+        <where>  
+            <if test="code != null  and code != ''"> and code like concat('%', #{code}, '%')</if>
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="legal != null  and legal != ''"> and legal like concat('%', #{legal}, '%')</if>
+            <if test="contenet != null  and contenet != ''"> and contenet = #{contenet}</if>
+            <if test="amount != null "> and amount = #{amount}</if>
+            <if test="year != null  and year != ''"> and year = #{year}</if>
+            <if test="deployDate != null "> and deploy_date = #{deployDate}</if>
+            <if test="auditFile != null  and auditFile != ''"> and audit_file = #{auditFile}</if>
+            <if test="reportFile != null  and reportFile != ''"> and report_file = #{reportFile}</if>
+            <if test="initFile != null  and initFile != ''"> and init_file = #{initFile}</if>
+            <if test="ifCanBuild != null  and ifCanBuild != ''"> and if_can_build = #{ifCanBuild}</if>
+            <if test="ifStartBuild != null  and ifStartBuild != ''"> and if_start_build = #{ifStartBuild}</if>
+            <if test="tenantId != null "> and tenant_id = #{tenantId}</if>
+        </where>
+    </select>
+    
+    <select id="selectTAuditProjectById" parameterType="Long" resultMap="TAuditProjectResult">
+        <include refid="selectTAuditProjectVo"/>
+        where id = #{id}
+    </select>
+    <select id="getYear" resultType="java.lang.String">
+        select year from t_audit_project
+        group by year
+        order by year
+    </select>
+    <select id="getProjectCount" resultType="java.util.Map">
+        select
+            count(year) as c
+        from t_audit_project
+        group by year
+        order by year
+    </select>
+
+    <insert id="insertTAuditProject" parameterType="TAuditProject" useGeneratedKeys="true" keyProperty="id">
+        insert into t_audit_project
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="code != null">code,</if>
+            <if test="name != null">name,</if>
+            <if test="legal != null">legal,</if>
+            <if test="contenet != null">contenet,</if>
+            <if test="amount != null">amount,</if>
+            <if test="year != null">year,</if>
+            <if test="deployDate != null">deploy_date,</if>
+            <if test="auditFile != null">audit_file,</if>
+            <if test="reportFile != null">report_file,</if>
+            <if test="initFile != null">init_file,</if>
+            <if test="ifCanBuild != null">if_can_build,</if>
+            <if test="ifStartBuild != null">if_start_build,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+            <if test="tenantId != null">tenant_id,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="code != null">#{code},</if>
+            <if test="name != null">#{name},</if>
+            <if test="legal != null">#{legal},</if>
+            <if test="contenet != null">#{contenet},</if>
+            <if test="amount != null">#{amount},</if>
+            <if test="year != null">#{year},</if>
+            <if test="deployDate != null">#{deployDate},</if>
+            <if test="auditFile != null">#{auditFile},</if>
+            <if test="reportFile != null">#{reportFile},</if>
+            <if test="initFile != null">#{initFile},</if>
+            <if test="ifCanBuild != null">#{ifCanBuild},</if>
+            <if test="ifStartBuild != null">#{ifStartBuild},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="tenantId != null">#{tenantId},</if>
+         </trim>
+    </insert>
+
+    <update id="updateTAuditProject" parameterType="TAuditProject">
+        update t_audit_project
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="code != null">code = #{code},</if>
+            <if test="name != null">name = #{name},</if>
+            <if test="legal != null">legal = #{legal},</if>
+            <if test="contenet != null">contenet = #{contenet},</if>
+            <if test="amount != null">amount = #{amount},</if>
+            <if test="year != null">year = #{year},</if>
+            <if test="deployDate != null">deploy_date = #{deployDate},</if>
+            <if test="auditFile != null">audit_file = #{auditFile},</if>
+            <if test="reportFile != null">report_file = #{reportFile},</if>
+            <if test="initFile != null">init_file = #{initFile},</if>
+            <if test="ifCanBuild != null">if_can_build = #{ifCanBuild},</if>
+            <if test="ifStartBuild != null">if_start_build = #{ifStartBuild},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="tenantId != null">tenant_id = #{tenantId},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteTAuditProjectById" parameterType="Long">
+        delete from t_audit_project where id = #{id}
+    </delete>
+
+    <delete id="deleteTAuditProjectByIds" parameterType="String">
+        delete from t_audit_project where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fno.back.workflow.mapper.FlowCcedMapper">
+    
+    <resultMap type="FlowCced" id="OaFlowCcedResult">
+        <result property="id"    column="id"    />
+        <result property="flowInsId"    column="flow_ins_id"    />
+        <result property="billType"    column="bill_type"    />
+        <result property="flowKey"    column="flow_key"    />
+        <result property="businessId"    column="business_id"    />
+        <result property="businessKey"    column="business_key"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="fromUserId"    column="from_user_id"    />
+        <result property="toUserId"    column="to_user_id"    />
+        <result property="title"    column="title"    />
+        <result property="tableName" column="table_name"/>
+
+        <result property="fromNickName"    column="from_nick_name"    />
+        <result property="toNickName"    column="to_nick_name"    />
+        <result property="isCustomForm"    column="is_custom_form"    />
+        <result property="toDeptName" column="to_dept_name" />
+    </resultMap>
+
+    <sql id="selectOaFlowCcedVo">
+        select c.id, c.flow_ins_id, c.bill_type, c.flow_key, c.business_id, c.business_key, c.create_time, c.from_user_id, c.to_user_id, c.title, c.table_name,c.is_custom_form,
+               f.nick_name from_nick_name , t.nick_name to_nick_name, p.dept_name to_dept_name
+        from flow_cced c
+                 left join sys_user f on c.from_user_id = f.user_id
+                 left join sys_user t on c.to_user_id = t.user_id
+                 left join sys_dept p on t.dept_id = p.dept_id
+    </sql>
+
+    <select id="selectOaFlowCcedList" parameterType="FlowCced" resultMap="OaFlowCcedResult">
+        <include refid="selectOaFlowCcedVo"/>
+        <where>  
+            <if test="flowInsId != null "> and c.flow_ins_id = #{flowInsId}</if>
+            <if test="billType != null  and billType != ''"> and c.bill_type = #{billType}</if>
+            <if test="flowKey != null  and flowKey != ''"> and c.flow_key = #{flowKey}</if>
+            <if test="businessId != null "> and c.business_id = #{businessId}</if>
+            <if test="businessKey != null  and businessKey != ''"> and c.business_key = #{businessKey}</if>
+            <if test="fromUserId != null "> and c.from_user_id = #{fromUserId}</if>
+            <if test="toUserId != null "> and c.to_user_id = #{toUserId}</if>
+            <if test="title != null  and title != ''"> and c.title = #{title}</if>
+        </where>
+    </select>
+    
+    <select id="selectOaFlowCcedById" parameterType="Long" resultMap="OaFlowCcedResult">
+        <include refid="selectOaFlowCcedVo"/>
+        where id = #{id}
+    </select>
+    <select id="countCced" resultType="int">
+        select count(1) from flow_cced where bill_type = #{billType} and business_id = #{businessId}
+    </select>
+
+    <insert id="insertOaFlowCced" parameterType="FlowCced" useGeneratedKeys="true" keyProperty="id">
+        insert into flow_cced
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="flowInsId != null">flow_ins_id,</if>
+            <if test="billType != null">bill_type,</if>
+            <if test="flowKey != null">flow_key,</if>
+            <if test="businessId != null">business_id,</if>
+            <if test="businessKey != null">business_key,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="fromUserId != null">from_user_id,</if>
+            <if test="toUserId != null">to_user_id,</if>
+            <if test="title != null">title,</if>
+            <if test="tableName != null">table_name,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="flowInsId != null">#{flowInsId},</if>
+            <if test="billType != null">#{billType},</if>
+            <if test="flowKey != null">#{flowKey},</if>
+            <if test="businessId != null">#{businessId},</if>
+            <if test="businessKey != null">#{businessKey},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="fromUserId != null">#{fromUserId},</if>
+            <if test="toUserId != null">#{toUserId},</if>
+            <if test="title != null">#{title},</if>
+            <if test="tableName != null">#{tableName},</if>
+         </trim>
+    </insert>
+
+    <insert id="insertBatch">
+            insert into flow_cced(flow_ins_id, bill_type, flow_key, business_id, business_key, create_time, from_user_id, to_user_id, title, table_name)
+            values
+            <foreach item="item" index="index" collection="list" separator=",">
+                (#{item.flowInsId}, #{item.billType}, #{item.flowKey}, #{item.businessId},
+                 #{item.businessKey}, #{item.createTime}, #{item.fromUserId}, #{item.toUserId},
+                 #{item.title}, #{item.tableName})
+            </foreach>
+    </insert>
+
+
+    <update id="updateOaFlowCced" parameterType="FlowCced">
+        update flow_cced
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="flowInsId != null">flow_ins_id = #{flowInsId},</if>
+            <if test="billType != null">bill_type = #{billType},</if>
+            <if test="flowKey != null">flow_key = #{flowKey},</if>
+            <if test="businessId != null">business_id = #{businessId},</if>
+            <if test="businessKey != null">business_key = #{businessKey},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="fromUserId != null">from_user_id = #{fromUserId},</if>
+            <if test="toUserId != null">to_user_id = #{toUserId},</if>
+            <if test="title != null">title = #{title},</if>
+            <if test="tableName != null">table_name = #{tableName},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteOaFlowCcedById" parameterType="Long">
+        delete from flow_cced where id = #{id}
+    </delete>
+
+    <delete id="deleteOaFlowCcedByIds" parameterType="String">
+        delete from flow_cced where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    <delete id="deleteCcedByBillTypeAndBusinessId">
+        delete from flow_cced where bill_type = #{billType} and business_id = #{businessId}
+    </delete>
+</mapper>

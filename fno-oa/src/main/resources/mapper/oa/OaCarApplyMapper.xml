@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fno.back.oa.mapper.OaCarApplyMapper">
+
+    <resultMap type="OaCarApply" id="OaCarApplyResult">
+        <result property="id"    column="id"    />
+        <result property="tenantId"    column="tenant_id"    />
+        <result property="carId"    column="car_id"    />
+        <result property="carNo"    column="car_no"    />
+        <result property="carModel"    column="car_model"    />
+        <result property="reason"    column="reason"    />
+        <result property="destination"    column="destination"    />
+        <result property="userId"    column="user_id"    />
+        <result property="deptId"    column="dept_id"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+        <result property="billType"    column="bill_type"    />
+        <result property="billCode"    column="bill_code"    />
+        <result property="flowKey"    column="flow_key"    />
+        <result property="flowInsId"    column="flow_ins_id"    />
+        <result property="submitTime"    column="submit_time"    />
+        <result property="status"    column="status"    />
+
+        <result property="color"    column="color"    />
+        <result property="seatCount"    column="seat_count"    />
+
+        <result property="repairAddress"    column="repair_address"    />
+        <result property="repairContent"    column="repair_content"    />
+        <result property="costAmt"    column="cost_amt"    />
+        <result property="maintenanceAddress"    column="maintenance_address"    />
+        <result property="maintenanceContent"    column="maintenance_content"    />
+        <result property="contactsPhone"    column="contacts_phone"    />
+        <result property="scrapType"    column="scrap_type"    />
+        <result property="incomeAmt"    column="income_amt"    />
+
+    </resultMap>
+
+    <sql id="selectOaCarApplyVo">
+        select a.id id,a.tenant_id, a.car_id car_id,  a.reason reason , a.destination destination, a.user_id user_id,
+               a.dept_id dept_id, a.create_by create_by, a.create_time create_time,
+               a.update_by update_by, a.update_time update_time, a.remark remark, a.bill_type bill_type, a.bill_code bill_code,
+               a.flow_key flow_key , a.flow_ins_id flow_ins_id, a.submit_time submit_time, a.status status,
+                a.repair_address,a.repair_content,a.cost_amt,a.maintenance_address,a.maintenance_content,a.contacts_phone,a.scrap_type,a.income_amt,
+
+               c.car_no car_no, c.car_model car_model, c.color color,c.seat_count seat_count
+        from oa_car_apply a left join oa_bd_car c on a.car_id = c.id
+    </sql>
+
+    <select id="selectOaCarApplyList" parameterType="OaCarApply" resultMap="OaCarApplyResult">
+        <include refid="selectOaCarApplyVo"/>
+        <where>
+            <if test="carId != null "> and a.car_id = #{carId}</if>
+            <if test="tenantId != null "> and a.tenant_id = #{tenantId}</if>
+            <if test="reason != null  and reason != ''"> and a.reason = #{reason}</if>
+            <if test="destination != null  and destination != ''"> and a.destination = #{destination}</if>
+            <if test="userId != null "> and a.user_id = #{userId}</if>
+            <if test="deptId != null "> and a.dept_id = #{deptId}</if>
+            <if test="billType != null  and billType != ''"> and a.bill_type = #{billType}</if>
+            <if test="billCode != null  and billCode != ''"> and a.bill_code = #{billCode}</if>
+            <if test="flowKey != null  and flowKey != ''"> and a.flow_key = #{flowKey}</if>
+            <if test="flowInsId != null  and flowInsId != ''"> and a.flow_ins_id = #{flowInsId}</if>
+            <if test="submitTime != null "> and a.submit_time = #{submitTime}</if>
+            <if test="status != null  and status != ''"> and a.status = #{status}</if>
+            <if test="createBy != null and createBy != ''"> and a.create_by = #{createBy}</if>
+        </where>
+    </select>
+
+    <select id="selectOaCarApplyById" parameterType="Long" resultMap="OaCarApplyResult">
+        <include refid="selectOaCarApplyVo"/>
+        where a.id = #{id}
+    </select>
+
+    <insert id="insertOaCarApply" parameterType="OaCarApply" useGeneratedKeys="true" keyProperty="id">
+        insert into oa_car_apply
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="carId != null">car_id,</if>
+            <if test="tenantId != null">tenant_id,</if>
+            <if test="reason != null">reason,</if>
+            <if test="destination != null">destination,</if>
+            <if test="userId != null">user_id,</if>
+            <if test="deptId != null">dept_id,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+            <if test="billType != null">bill_type,</if>
+            <if test="billCode != null">bill_code,</if>
+            <if test="flowKey != null">flow_key,</if>
+            <if test="flowInsId != null">flow_ins_id,</if>
+            <if test="submitTime != null">submit_time,</if>
+            <if test="status != null">status,</if>
+
+            <if test="repairAddress != null">repair_address,</if>
+            <if test="repairContent != null">repair_content,</if>
+            <if test="costAmt != null">cost_amt,</if>
+            <if test="maintenanceAddress != null">maintenance_address,</if>
+            <if test="maintenanceContent != null">maintenance_content,</if>
+            <if test="contactsPhone != null">contacts_phone,</if>
+            <if test="scrapType != null">scrap_type,</if>
+            <if test="incomeAmt != null">income_amt,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="carId != null">#{carId},</if>
+            <if test="tenantId != null">#{tenantId},</if>
+            <if test="reason != null">#{reason},</if>
+            <if test="destination != null">#{destination},</if>
+            <if test="userId != null">#{userId},</if>
+            <if test="deptId != null">#{deptId},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="billType != null">#{billType},</if>
+            <if test="billCode != null">#{billCode},</if>
+            <if test="flowKey != null">#{flowKey},</if>
+            <if test="flowInsId != null">#{flowInsId},</if>
+            <if test="submitTime != null">#{submitTime},</if>
+            <if test="status != null">#{status},</if>
+
+            <if test="repairAddress != null">#{repairAddress},</if>
+            <if test="repairContent != null">#{repairContent},</if>
+            <if test="costAmt != null">#{costAmt},</if>
+            <if test="maintenanceAddress != null">#{maintenanceAddress},</if>
+            <if test="maintenanceContent != null">#{maintenanceContent},</if>
+            <if test="contactsPhone != null">#{contactsPhone},</if>
+            <if test="scrapType != null">#{scrapType},</if>
+            <if test="incomeAmt != null">#{incomeAmt},</if>
+        </trim>
+    </insert>
+
+
+    <update id="updateOaCarApply" parameterType="OaCarApply">
+        update oa_car_apply
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="carId != null">car_id = #{carId},</if>
+            <if test="tenantId != null">tenant_id = #{tenantId},</if>
+            <if test="reason != null">reason = #{reason},</if>
+            <if test="destination != null">destination = #{destination},</if>
+            <if test="userId != null">user_id = #{userId},</if>
+            <if test="deptId != null">dept_id = #{deptId},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="billType != null">bill_type = #{billType},</if>
+            <if test="billCode != null">bill_code = #{billCode},</if>
+            <if test="flowKey != null">flow_key = #{flowKey},</if>
+            <if test="flowInsId != null">flow_ins_id = #{flowInsId},</if>
+            <if test="submitTime != null">submit_time = #{submitTime},</if>
+            <if test="status != null">status = #{status},</if>
+
+            <if test="repairAddress != null">        repair_address = #{repairAddress},</if>
+            <if test="repairContent != null">        repair_content = #{repairContent},</if>
+            <if test="costAmt != null">              cost_amt = #{costAmt},</if>
+            <if test="maintenanceAddress != null">   maintenance_address = #{maintenanceAddress},</if>
+            <if test="maintenanceContent != null">   maintenance_content = #{maintenanceContent},</if>
+            <if test="contactsPhone != null">        contacts_phone = #{contactsPhone},</if>
+            <if test="scrapType != null">            scrap_type = #{scrapType},</if>
+            <if test="incomeAmt != null">            income_amt = #{incomeAmt},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteOaCarApplyById" parameterType="Long">
+        delete from oa_car_apply where id = #{id}
+    </delete>
+
+    <delete id="deleteOaCarApplyByIds" parameterType="String">
+        delete from oa_car_apply where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

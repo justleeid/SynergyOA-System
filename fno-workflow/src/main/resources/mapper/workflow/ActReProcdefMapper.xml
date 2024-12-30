@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fno.back.workflow.mapper.ActReProcdefMapper">
+
+    <resultMap type="ActReProcdef" id="ActReProcdefResult">
+        <result property="id"                       column="id_"    />
+        <result property="rev"                      column="rev_"    />
+        <result property="category"                 column="category_"    />
+        <result property="name"                     column="name_"    />
+        <result property="key"                      column="key_"    />
+        <result property="version"                  column="version_"    />
+        <result property="deploymentId"             column="deployment_id_"    />
+        <result property="resourceName"             column="resource_name_"    />
+        <result property="dgrmResourceName"         column="dgrm_resource_name_"    />
+        <result property="description"              column="description_"    />
+        <result property="hasStartFormKey"          column="has_start_form_key_"    />
+        <result property="hasGraphicalNotation"     column="has_graphical_notation_"    />
+        <result property="suspensionState"          column="suspension_state_"    />
+        <result property="tenantId"                 column="tenant_id_"    />
+        <result property="engineVersion"            column="engine_version_"    />
+        <result property="derivedFrom"              column="derived_from_"    />
+        <result property="derivedFromRoot"          column="derived_from_root_"    />
+        <result property="derivedVersion"           column="derived_version_"    />
+    </resultMap>
+
+    <select id="selectAllFlowList" resultMap="ActReProcdefResult">
+        select key_,max(name_) name_ from act_re_procdef where suspension_state_ = '1' group by key_
+    </select>
+
+    <select id="selectAllProcDefList" resultMap="ActReProcdefResult">
+        select p.* from act_re_procdef p left join act_re_deployment d on d.id_ = p.deployment_id_
+        <where>
+            p.tenant_id_ = #{tenantId}
+            <if test="key != null  and key != ''"> and p.key_ like concat('%', #{key}, '%')</if>
+            <if test="name != null  and name != ''"> and p.name_ like concat('%', #{name}, '%')</if>
+            <if test="category != null  and category != ''"> and p.category_ like concat('%', #{category}, '%')</if>
+        </where>
+        order by d.deploy_time_ desc
+    </select>
+
+</mapper>

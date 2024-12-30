@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fno.back.oa.mapper.OaHotelApplyMapper">
+    
+    <resultMap type="OaHotelApply" id="OaHotelApplyResult">
+        <result property="id"    column="id"    />
+        <result property="tenantId"    column="tenant_id"    />
+        <result property="userId"    column="user_id"    />
+        <result property="deptId"    column="dept_id"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="status"    column="status"    />
+        <result property="flowKey"    column="flow_key"    />
+        <result property="flowInsId"    column="flow_ins_id"    />
+        <result property="applyTitle"    column="apply_title"    />
+        <result property="submitTime"    column="submit_time"    />
+        <result property="billCode"    column="bill_code"    />
+        <result property="remark"    column="remark"    />
+        <result property="applyCity"    column="apply_city"    />
+        <result property="street"    column="street"    />
+        <result property="hotelName"    column="hotel_name"    />
+        <result property="totalAmt"    column="total_amt"    />
+        <result property="roomType"    column="room_type"    />
+        <result property="roomCount"    column="room_count"    />
+        <result property="roomLevel"    column="room_level"    />
+        <result property="userCount"    column="user_count"    />
+        <result property="useTime"    column="use_time"    />
+        <result property="reasonDes"    column="reason_des"    />
+        <result property="billType"    column="bill_type"    />
+    </resultMap>
+
+    <sql id="selectOaHotelApplyVo">
+        select id,tenant_id, user_id, dept_id, create_by, create_time, update_by, update_time, status, flow_key, flow_ins_id, apply_title,
+               submit_time, bill_code, remark, apply_city, street, hotel_name, total_amt, room_type, room_count, room_level,
+               user_count, use_time, reason_des , bill_type
+        from oa_hotel_apply
+    </sql>
+
+    <select id="selectOaHotelApplyList" parameterType="OaHotelApply" resultMap="OaHotelApplyResult">
+        <include refid="selectOaHotelApplyVo"/>
+        <where>  
+            <if test="userId != null "> and user_id = #{userId}</if>
+            <if test="tenantId != null "> and tenant_id = #{tenantId}</if>
+            <if test="deptId != null "> and dept_id = #{deptId}</if>
+            <if test="status != null  and status != ''"> and status = #{status}</if>
+            <if test="flowKey != null  and flowKey != ''"> and flow_key = #{flowKey}</if>
+            <if test="flowInsId != null  and flowInsId != ''"> and flow_ins_id = #{flowInsId}</if>
+            <if test="applyTitle != null  and applyTitle != ''"> and apply_title = #{applyTitle}</if>
+            <if test="submitTime != null "> and submit_time = #{submitTime}</if>
+            <if test="billCode != null  and billCode != ''"> and bill_code like concat('%', #{billCode}, '%')</if>
+            <if test="remark != null  and remark != ''"> and remark like concat('%', #{remark}, '%')</if>
+            <if test="applyCity != null  and applyCity != ''"> and apply_city like concat('%', #{applyCity}, '%')</if>
+            <if test="street != null  and street != ''"> and street like concat('%', #{street}, '%')</if>
+            <if test="hotelName != null  and hotelName != ''"> and hotel_name like concat('%', #{hotelName}, '%')</if>
+            <if test="totalAmt != null "> and total_amt = #{totalAmt}</if>
+            <if test="roomType != null  and roomType != ''"> and room_type = #{roomType}</if>
+            <if test="roomCount != null "> and room_count = #{roomCount}</if>
+            <if test="roomLevel != null  and roomLevel != ''"> and room_level = #{roomLevel}</if>
+            <if test="userCount != null "> and user_count = #{userCount}</if>
+            <if test="useTime != null "> and use_time = #{useTime}</if>
+            <if test="reasonDes != null  and reasonDes != ''"> and reason_des = #{reasonDes}</if>
+            <if test="billType != null  and billType != ''"> and bill_type = #{billType}</if>
+            <if test="createBy != null and createBy != ''"> and create_by = #{createBy}</if>
+        </where>
+    </select>
+    
+    <select id="selectOaHotelApplyById" parameterType="Long" resultMap="OaHotelApplyResult">
+        <include refid="selectOaHotelApplyVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertOaHotelApply" parameterType="OaHotelApply" useGeneratedKeys="true" keyProperty="id">
+        insert into oa_hotel_apply
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="userId != null">user_id,</if>
+            <if test="tenantId != null">tenant_id,</if>
+            <if test="deptId != null">dept_id,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="status != null">status,</if>
+            <if test="flowKey != null">flow_key,</if>
+            <if test="flowInsId != null">flow_ins_id,</if>
+            <if test="applyTitle != null">apply_title,</if>
+            <if test="submitTime != null">submit_time,</if>
+            <if test="billCode != null">bill_code,</if>
+            <if test="remark != null">remark,</if>
+            <if test="applyCity != null and applyCity != ''">apply_city,</if>
+            <if test="street != null and street != ''">street,</if>
+            <if test="hotelName != null and hotelName != ''">hotel_name,</if>
+            <if test="totalAmt != null">total_amt,</if>
+            <if test="roomType != null and roomType != ''">room_type,</if>
+            <if test="roomCount != null">room_count,</if>
+            <if test="roomLevel != null and roomLevel != ''">room_level,</if>
+            <if test="userCount != null">user_count,</if>
+            <if test="useTime != null">use_time,</if>
+            <if test="reasonDes != null">reason_des,</if>
+            <if test="billType != null">bill_type,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="userId != null">#{userId},</if>
+            <if test="tenantId != null">#{tenantId},</if>
+            <if test="deptId != null">#{deptId},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="status != null">#{status},</if>
+            <if test="flowKey != null">#{flowKey},</if>
+            <if test="flowInsId != null">#{flowInsId},</if>
+            <if test="applyTitle != null">#{applyTitle},</if>
+            <if test="submitTime != null">#{submitTime},</if>
+            <if test="billCode != null">#{billCode},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="applyCity != null and applyCity != ''">#{applyCity},</if>
+            <if test="street != null and street != ''">#{street},</if>
+            <if test="hotelName != null and hotelName != ''">#{hotelName},</if>
+            <if test="totalAmt != null">#{totalAmt},</if>
+            <if test="roomType != null and roomType != ''">#{roomType},</if>
+            <if test="roomCount != null">#{roomCount},</if>
+            <if test="roomLevel != null and roomLevel != ''">#{roomLevel},</if>
+            <if test="userCount != null">#{userCount},</if>
+            <if test="useTime != null">#{useTime},</if>
+            <if test="reasonDes != null">#{reasonDes},</if>
+            <if test="billType != null">#{billType},</if>
+         </trim>
+    </insert>
+
+    <update id="updateOaHotelApply" parameterType="OaHotelApply">
+        update oa_hotel_apply
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="userId != null">user_id = #{userId},</if>
+            <if test="tenantId != null">tenant_id = #{tenantId},</if>
+            <if test="deptId != null">dept_id = #{deptId},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="flowKey != null">flow_key = #{flowKey},</if>
+            <if test="flowInsId != null">flow_ins_id = #{flowInsId},</if>
+            <if test="applyTitle != null">apply_title = #{applyTitle},</if>
+            <if test="submitTime != null">submit_time = #{submitTime},</if>
+            <if test="billCode != null">bill_code = #{billCode},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="applyCity != null and applyCity != ''">apply_city = #{applyCity},</if>
+            <if test="street != null and street != ''">street = #{street},</if>
+            <if test="hotelName != null and hotelName != ''">hotel_name = #{hotelName},</if>
+            <if test="totalAmt != null">total_amt = #{totalAmt},</if>
+            <if test="roomType != null and roomType != ''">room_type = #{roomType},</if>
+            <if test="roomCount != null">room_count = #{roomCount},</if>
+            <if test="roomLevel != null and roomLevel != ''">room_level = #{roomLevel},</if>
+            <if test="userCount != null">user_count = #{userCount},</if>
+            <if test="useTime != null">use_time = #{useTime},</if>
+            <if test="reasonDes != null">reason_des = #{reasonDes},</if>
+            <if test="billType != null">bill_type = #{billType},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteOaHotelApplyById" parameterType="Long">
+        delete from oa_hotel_apply where id = #{id}
+    </delete>
+
+    <delete id="deleteOaHotelApplyByIds" parameterType="String">
+        delete from oa_hotel_apply where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fno.back.common.mapper.SysMessageMapper">
+    
+    <resultMap type="SysMessage" id="SysMessageResult">
+        <result property="id"    column="id"    />
+        <result property="sendUserId"    column="send_user_id"    />
+        <result property="receiveUserId"    column="receive_user_id"    />
+        <result property="title"    column="title"    />
+        <result property="content"    column="content"    />
+        <result property="sendTime"    column="send_time"    />
+        <result property="ifRead"    column="if_read"    />
+        <result property="tenantId" column="tenant_id" />
+    </resultMap>
+
+    <sql id="selectSysMessageVo">
+        select id, send_user_id, receive_user_id, title, content, send_time, if_read,tenant_id
+        from sys_message
+    </sql>
+
+    <select id="selectSysMessageList" parameterType="SysMessage" resultMap="SysMessageResult">
+        <include refid="selectSysMessageVo"/>
+        <where>  
+            <if test="sendUserId != null "> and send_user_id = #{sendUserId}</if>
+            <if test="receiveUserId != null "> and receive_user_id = #{receiveUserId}</if>
+            <if test="title != null  and title != ''"> and title = #{title}</if>
+            <if test="content != null  and content != ''"> and content = #{content}</if>
+            <if test="sendTime != null "> and send_time = #{sendTime}</if>
+            <if test="ifRead != null  and ifRead != ''"> and if_read = #{ifRead}</if>
+            <if test="tenantId != null"> and tenant_id = #{tenantId}</if>
+        </where>
+    </select>
+    
+    <select id="selectSysMessageById" parameterType="Long" resultMap="SysMessageResult">
+        <include refid="selectSysMessageVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertSysMessage" parameterType="SysMessage">
+        insert into sys_message
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="sendUserId != null">send_user_id,</if>
+            <if test="receiveUserId != null">receive_user_id,</if>
+            <if test="title != null">title,</if>
+            <if test="content != null">content,</if>
+            <if test="sendTime != null">send_time,</if>
+            <if test="ifRead != null">if_read,</if>
+            <if test="tenantId != null">tenant_id,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="sendUserId != null">#{sendUserId},</if>
+            <if test="receiveUserId != null">#{receiveUserId},</if>
+            <if test="title != null">#{title},</if>
+            <if test="content != null">#{content},</if>
+            <if test="sendTime != null">#{sendTime},</if>
+            <if test="ifRead != null">#{ifRead},</if>
+            <if test="tenantId != null">#{tenantId},</if>
+         </trim>
+    </insert>
+
+    <update id="updateSysMessage" parameterType="SysMessage">
+        update sys_message
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="sendUserId != null">send_user_id = #{sendUserId},</if>
+            <if test="receiveUserId != null">receive_user_id = #{receiveUserId},</if>
+            <if test="title != null">title = #{title},</if>
+            <if test="content != null">content = #{content},</if>
+            <if test="sendTime != null">send_time = #{sendTime},</if>
+            <if test="ifRead != null">if_read = #{ifRead},</if>
+            <if test="tenantId != null">tenant_id = #{tenantId},</if>
+        </trim>
+        where id = #{id}
+    </update>
+    <update id="allMessageRead">
+        update sys_message
+        set if_read = 'Y'
+        where receive_user_id = #{userId}
+    </update>
+
+    <delete id="deleteSysMessageById" parameterType="Long">
+        delete from sys_message where id = #{id}
+    </delete>
+
+    <delete id="deleteSysMessageByIds" parameterType="String">
+        delete from sys_message where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fno.back.workflow.mapper.FlowProcessMapper">
+
+
+    <update id="updateBusinessBillStatus" parameterType="ProcessTableUpdateDomain">
+        update ${tableName} set status = #{status}
+        <if test="submitTime != null">,submit_time = #{submitTime}</if>
+        <if test="insId != null">,flow_ins_id = #{insId}</if>
+        <if test="flowKey != null">,flow_key = #{flowKey}</if>
+        <if test="updateTime != null">,update_time = #{updateTime}</if>
+        where id = #{id}
+    </update>
+
+
+    <update id="resetBusinessFlowApply" parameterType="ProcessTableUpdateDomain">
+        update ${tableName}
+        set status = '0',submit_time = null,flow_ins_id = '',flow_key = ''
+    </update>
+
+
+    <select id="selectObjectById" resultType="java.util.Map">
+        select * from ${tableName} where id = #{id}
+    </select>
+
+
+</mapper>

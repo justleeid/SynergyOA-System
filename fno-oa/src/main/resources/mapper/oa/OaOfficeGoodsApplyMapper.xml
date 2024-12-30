@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fno.back.oa.mapper.OaOfficeGoodsApplyMapper">
+    
+    <resultMap type="OaOfficeGoodsApply" id="OaOfficeGoodsApplyResult">
+        <result property="id"    column="id"    />
+        <result property="tenantId"    column="tenant_id"    />
+        <result property="reason"    column="reason"    />
+        <result property="userId"    column="user_id"    />
+        <result property="deptId"    column="dept_id"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+        <result property="billType"    column="bill_type"    />
+        <result property="billCode"    column="bill_code"    />
+        <result property="flowKey"    column="flow_key"    />
+        <result property="flowInsId"    column="flow_ins_id"    />
+        <result property="submitTime"    column="submit_time"    />
+        <result property="status"    column="status"    />
+    </resultMap>
+
+    <resultMap id="OaOfficeGoodsApplyOaOfficeGoodsApplyItemResult" type="OaOfficeGoodsApply" extends="OaOfficeGoodsApplyResult">
+        <collection property="oaOfficeGoodsApplyItemList" notNullColumn="sub_id" javaType="java.util.List" resultMap="OaOfficeGoodsApplyItemResult" />
+    </resultMap>
+
+    <resultMap type="OaOfficeGoodsApplyItem" id="OaOfficeGoodsApplyItemResult">
+        <result property="id"    column="sub_id"    />
+        <result property="applyId"    column="sub_apply_id"    />
+        <result property="goodsId"    column="sub_goods_id"    />
+        <result property="goodsCount"    column="sub_goods_count"    />
+        <result property="name"    column="sub_name"    />
+        <result property="unit"    column="sub_unit"    />
+        <result property="brand"    column="sub_brand"    />
+        <result property="price"    column="sub_price"    />
+    </resultMap>
+
+    <sql id="selectOaOfficeGoodsApplyVo">
+        select id,tenant_id, reason, user_id, dept_id, create_by, create_time, update_by, update_time, remark, bill_type, bill_code, flow_key, flow_ins_id, submit_time, status from oa_office_goods_apply
+    </sql>
+
+    <select id="selectOaOfficeGoodsApplyList" parameterType="OaOfficeGoodsApply" resultMap="OaOfficeGoodsApplyResult">
+        <include refid="selectOaOfficeGoodsApplyVo"/>
+        <where>  
+            <if test="reason != null  and reason != ''"> and reason = #{reason}</if>
+            <if test="userId != null "> and user_id = #{userId}</if>
+            <if test="tenantId != null "> and tenant_id = #{tenantId}</if>
+            <if test="deptId != null "> and dept_id = #{deptId}</if>
+            <if test="billType != null  and billType != ''"> and bill_type = #{billType}</if>
+            <if test="billCode != null  and billCode != ''"> and bill_code = #{billCode}</if>
+            <if test="flowKey != null  and flowKey != ''"> and flow_key = #{flowKey}</if>
+            <if test="flowInsId != null  and flowInsId != ''"> and flow_ins_id = #{flowInsId}</if>
+            <if test="submitTime != null "> and submit_time = #{submitTime}</if>
+            <if test="status != null  and status != ''"> and status = #{status}</if>
+            <if test="createBy != null and createBy != ''"> and create_by = #{createBy}</if>
+        </where>
+    </select>
+    
+    <select id="selectOaOfficeGoodsApplyById" parameterType="Long" resultMap="OaOfficeGoodsApplyOaOfficeGoodsApplyItemResult">
+        select a.id,a.tenant_id, a.reason, a.user_id, a.dept_id, a.create_by, a.create_time, a.update_by, a.update_time, a.remark, a.bill_type, a.bill_code, a.flow_key, a.flow_ins_id, a.submit_time, a.status,
+ b.id as sub_id, b.apply_id as sub_apply_id, b.goods_id as sub_goods_id, b.goods_count as sub_goods_count, b.name as sub_name, b.unit as sub_unit, b.brand as sub_brand, b.price as sub_price
+        from oa_office_goods_apply a
+        left join oa_office_goods_apply_item b on b.apply_id = a.id
+        where a.id = #{id}
+    </select>
+        
+    <insert id="insertOaOfficeGoodsApply" parameterType="OaOfficeGoodsApply" useGeneratedKeys="true" keyProperty="id">
+        insert into oa_office_goods_apply
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="tenantId != null">tenant_id,</if>
+            <if test="reason != null">reason,</if>
+            <if test="userId != null">user_id,</if>
+            <if test="deptId != null">dept_id,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+            <if test="billType != null">bill_type,</if>
+            <if test="billCode != null">bill_code,</if>
+            <if test="flowKey != null">flow_key,</if>
+            <if test="flowInsId != null">flow_ins_id,</if>
+            <if test="submitTime != null">submit_time,</if>
+            <if test="status != null">status,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="tenantId != null">#{tenantId},</if>
+            <if test="reason != null">#{reason},</if>
+            <if test="userId != null">#{userId},</if>
+            <if test="deptId != null">#{deptId},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="billType != null">#{billType},</if>
+            <if test="billCode != null">#{billCode},</if>
+            <if test="flowKey != null">#{flowKey},</if>
+            <if test="flowInsId != null">#{flowInsId},</if>
+            <if test="submitTime != null">#{submitTime},</if>
+            <if test="status != null">#{status},</if>
+         </trim>
+    </insert>
+
+    <update id="updateOaOfficeGoodsApply" parameterType="OaOfficeGoodsApply">
+        update oa_office_goods_apply
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="reason != null">reason = #{reason},</if>
+            <if test="tenantId != null">tenant_id = #{tenantId},</if>
+            <if test="userId != null">user_id = #{userId},</if>
+            <if test="deptId != null">dept_id = #{deptId},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="billType != null">bill_type = #{billType},</if>
+            <if test="billCode != null">bill_code = #{billCode},</if>
+            <if test="flowKey != null">flow_key = #{flowKey},</if>
+            <if test="flowInsId != null">flow_ins_id = #{flowInsId},</if>
+            <if test="submitTime != null">submit_time = #{submitTime},</if>
+            <if test="status != null">status = #{status},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteOaOfficeGoodsApplyById" parameterType="Long">
+        delete from oa_office_goods_apply where id = #{id}
+    </delete>
+
+    <delete id="deleteOaOfficeGoodsApplyByIds" parameterType="String">
+        delete from oa_office_goods_apply where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+    <delete id="deleteOaOfficeGoodsApplyItemByApplyIds" parameterType="String">
+        delete from oa_office_goods_apply_item where apply_id in 
+        <foreach item="applyId" collection="array" open="(" separator="," close=")">
+            #{applyId}
+        </foreach>
+    </delete>
+
+    <delete id="deleteOaOfficeGoodsApplyItemByApplyId" parameterType="Long">
+        delete from oa_office_goods_apply_item where apply_id = #{applyId}
+    </delete>
+
+    <insert id="batchOaOfficeGoodsApplyItem">
+        insert into oa_office_goods_apply_item( id, apply_id, goods_id, goods_count, name, unit, brand, price) values
+		<foreach item="item" index="index" collection="list" separator=",">
+            ( #{item.id}, #{item.applyId}, #{item.goodsId}, #{item.goodsCount}, #{item.name}, #{item.unit}, #{item.brand}, #{item.price})
+        </foreach>
+    </insert>
+</mapper>

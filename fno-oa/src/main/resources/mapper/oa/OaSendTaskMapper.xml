@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fno.back.oa.mapper.OaSendTaskMapper">
+    
+    <resultMap type="OaSendTask" id="OaSendTaskResult">
+        <result property="id"    column="id"    />
+        <result property="sendUserId"    column="send_user_id"    />
+        <result property="sendNickName"    column="send_nick_name"    />
+        <result property="receiveUserId"    column="receive_user_id"    />
+        <result property="receiveNickName"    column="receive_nick_name"    />
+        <result property="title"    column="title"    />
+        <result property="content"    column="content"    />
+        <result property="extUserId"    column="ext_user_id"    />
+        <result property="extNickName"    column="ext_nick_name"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+        <result property="billType"    column="bill_type"    />
+        <result property="billCode"    column="bill_code"    />
+        <result property="flowKey"    column="flow_key"    />
+        <result property="flowInsId"    column="flow_ins_id"    />
+        <result property="submitTime"    column="submit_time"    />
+        <result property="status"    column="status"    />
+        <result property="tenantId"    column="tenant_id"    />
+        <result property="schedule"    column="schedule"    />
+        <result property="scheduleStatus"    column="schedule_status"    />
+
+        <result property="finishTime" column="finish_time"/>
+    </resultMap>
+
+    <sql id="selectOaSendTaskVo">
+        select id, send_user_id, send_nick_name,finish_time, receive_user_id, receive_nick_name, title, content, ext_user_id, ext_nick_name, create_by, create_time, update_by, update_time, remark, bill_type, bill_code, flow_key, flow_ins_id, submit_time, status, tenant_id, schedule, schedule_status from oa_send_task
+    </sql>
+
+    <select id="selectOaSendTaskList" parameterType="OaSendTask" resultMap="OaSendTaskResult">
+        <include refid="selectOaSendTaskVo"/>
+        <where>  
+            <if test="sendUserId != null "> and send_user_id = #{sendUserId}</if>
+            <if test="sendNickName != null  and sendNickName != ''"> and send_nick_name like concat('%', #{sendNickName}, '%')</if>
+            <if test="receiveUserId != null "> and receive_user_id = #{receiveUserId}</if>
+            <if test="receiveNickName != null  and receiveNickName != ''"> and receive_nick_name like concat('%', #{receiveNickName}, '%')</if>
+            <if test="title != null  and title != ''"> and title like concat('%', #{title}, '%')</if>
+            <if test="content != null  and content != ''"> and content = #{content}</if>
+            <if test="extUserId != null  and extUserId != ''"> and ext_user_id = #{extUserId}</if>
+            <if test="extNickName != null  and extNickName != ''"> and ext_nick_name like concat('%', #{extNickName}, '%')</if>
+            <if test="billType != null  and billType != ''"> and bill_type = #{billType}</if>
+            <if test="billCode != null  and billCode != ''"> and bill_code like concat('%', #{billCode}, '%')</if>
+            <if test="flowKey != null  and flowKey != ''"> and flow_key = #{flowKey}</if>
+            <if test="flowInsId != null  and flowInsId != ''"> and flow_ins_id = #{flowInsId}</if>
+            <if test="submitTime != null "> and submit_time = #{submitTime}</if>
+            <if test="status != null  and status != ''"> and status = #{status}</if>
+            <if test="tenantId != null "> and tenant_id = #{tenantId}</if>
+            <if test="schedule != null "> and schedule = #{schedule}</if>
+            <if test="scheduleStatus != null  and scheduleStatus != ''"> and schedule_status = #{scheduleStatus}</if>
+
+            <if test="forTrack == 'Y'.toString() ">
+                and
+                (
+                receive_user_id = #{forTrackId}
+                or send_user_id = #{forTrackId}
+                or concat(',',ext_user_id,',') like concat('%,', #{forTrackId} ,',%')
+                )
+            </if>
+
+        </where>
+    </select>
+    
+    <select id="selectOaSendTaskById" parameterType="Long" resultMap="OaSendTaskResult">
+        <include refid="selectOaSendTaskVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertOaSendTask" parameterType="OaSendTask" useGeneratedKeys="true" keyProperty="id">
+        insert into oa_send_task
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="sendUserId != null">send_user_id,</if>
+            <if test="sendNickName != null">send_nick_name,</if>
+            <if test="receiveUserId != null">receive_user_id,</if>
+            <if test="receiveNickName != null">receive_nick_name,</if>
+            <if test="title != null">title,</if>
+            <if test="content != null">content,</if>
+            <if test="extUserId != null">ext_user_id,</if>
+            <if test="extNickName != null">ext_nick_name,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+            <if test="billType != null">bill_type,</if>
+            <if test="billCode != null">bill_code,</if>
+            <if test="flowKey != null">flow_key,</if>
+            <if test="flowInsId != null">flow_ins_id,</if>
+            <if test="submitTime != null">submit_time,</if>
+            <if test="status != null">status,</if>
+            <if test="tenantId != null">tenant_id,</if>
+            <if test="schedule != null">schedule,</if>
+            <if test="scheduleStatus != null">schedule_status,</if>
+            <if test="finishTime != null">finish_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="sendUserId != null">#{sendUserId},</if>
+            <if test="sendNickName != null">#{sendNickName},</if>
+            <if test="receiveUserId != null">#{receiveUserId},</if>
+            <if test="receiveNickName != null">#{receiveNickName},</if>
+            <if test="title != null">#{title},</if>
+            <if test="content != null">#{content},</if>
+            <if test="extUserId != null">#{extUserId},</if>
+            <if test="extNickName != null">#{extNickName},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="billType != null">#{billType},</if>
+            <if test="billCode != null">#{billCode},</if>
+            <if test="flowKey != null">#{flowKey},</if>
+            <if test="flowInsId != null">#{flowInsId},</if>
+            <if test="submitTime != null">#{submitTime},</if>
+            <if test="status != null">#{status},</if>
+            <if test="tenantId != null">#{tenantId},</if>
+            <if test="schedule != null">#{schedule},</if>
+            <if test="scheduleStatus != null">#{scheduleStatus},</if>
+            <if test="finishTime != null">#{finishTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateOaSendTask" parameterType="OaSendTask">
+        update oa_send_task
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="sendUserId != null">send_user_id = #{sendUserId},</if>
+            <if test="sendNickName != null">send_nick_name = #{sendNickName},</if>
+            <if test="receiveUserId != null">receive_user_id = #{receiveUserId},</if>
+            <if test="receiveNickName != null">receive_nick_name = #{receiveNickName},</if>
+            <if test="title != null">title = #{title},</if>
+            <if test="content != null">content = #{content},</if>
+            <if test="extUserId != null">ext_user_id = #{extUserId},</if>
+            <if test="extNickName != null">ext_nick_name = #{extNickName},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="billType != null">bill_type = #{billType},</if>
+            <if test="billCode != null">bill_code = #{billCode},</if>
+            <if test="flowKey != null">flow_key = #{flowKey},</if>
+            <if test="flowInsId != null">flow_ins_id = #{flowInsId},</if>
+            <if test="submitTime != null">submit_time = #{submitTime},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="tenantId != null">tenant_id = #{tenantId},</if>
+            <if test="schedule != null">schedule = #{schedule},</if>
+            <if test="scheduleStatus != null">schedule_status = #{scheduleStatus},</if>
+            <if test="finishTime != null">finish_time = #{finishTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteOaSendTaskById" parameterType="Long">
+        delete from oa_send_task where id = #{id}
+    </delete>
+
+    <delete id="deleteOaSendTaskByIds" parameterType="String">
+        delete from oa_send_task where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

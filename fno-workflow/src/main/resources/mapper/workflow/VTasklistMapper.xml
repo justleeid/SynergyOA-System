@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fno.back.workflow.mapper.VTasklistMapper">
+    <resultMap type="VTasklist" id="VTasklistResult">
+        <result property="taskid"    column="TASKID"    />
+        <result property="insid"    column="INSID"    />
+        <result property="taskdefkey"    column="TASKDEFKEY"    />
+        <result property="defkey"    column="DEFKEY"    />
+        <result property="defname"    column="DEFNAME"    />
+        <result property="taskname"    column="TASKNAME"    />
+        <result property="assignee"    column="ASSIGNEE"    />
+        <result property="candidate"    column="CANDIDATE"    />
+        <result property="defid"    column="DEFID"    />
+        <result property="delegationid"    column="DELEGATIONID"    />
+        <result property="description"    column="DESCRIPTION"    />
+        <result property="createtime"    column="CREATETIME"    />
+        <result property="duedate"    column="DUEDATE"    />
+
+        <result property="assigneeName"    column="ASSIGNEENAME"    />
+        <result property="candidateName"    column="CANDIDATENAME"    />
+        <result property="orderinfo"    column="ORDERINFO"    />
+        <result property="businessId"    column="BUSINESSID"    />
+        <result property="billType" column="BILLTYPE" />
+    </resultMap>
+
+    <sql id="selectVTasklistVo">
+        select TASKID, INSID, TASKDEFKEY, DEFKEY, DEFNAME, TASKNAME, ASSIGNEE, CANDIDATE, DEFID, DELEGATIONID,
+               DESCRIPTION, CREATETIME, DUEDATE,ORDERINFO,BUSINESSID,BILLTYPE from v_tasklist
+    </sql>
+
+    <select id="selectVTasklistList" parameterType="VTasklist" resultMap="VTasklistResult">
+        <include refid="selectVTasklistVo"/>
+        <where>  
+            <if test="taskid != null  and taskid != ''"> and TASKID = #{taskid}</if>
+            <if test="insid != null  and insid != ''"> and INSID = #{insid}</if>
+            <if test="taskdefkey != null  and taskdefkey != ''"> and TASKDEFKEY = #{taskdefkey}</if>
+            <if test="defkey != null  and defkey != ''"> and DEFKEY = #{defkey}</if>
+            <if test="defname != null  and defname != ''"> and DEFNAME like concat('%', #{defname}, '%')</if>
+            <if test="taskname != null  and taskname != ''"> and TASKNAME like concat('%', #{taskname}, '%')</if>
+            <if test="assignee != null  and assignee != ''"> and ASSIGNEE = #{assignee}</if>
+            <if test="candidate != null  and candidate != ''"> and CANDIDATE = #{candidate}</if>
+            <if test="defid != null  and defid != ''"> and DEFID = #{defid}</if>
+            <if test="delegationid != null  and delegationid != ''"> and DELEGATIONID = #{delegationid}</if>
+            <if test="description != null  and description != ''"> and DESCRIPTION = #{description}</if>
+            <if test="createtime != null  and createtime != ''"> and CREATETIME = #{createtime}</if>
+            <if test="duedate != null  and duedate != ''"> and DUEDATE = #{duedate}</if>
+            <if test="billType != null  and billType != ''"> and BILLTYPE = #{billType}</if>
+        </where>
+    </select>
+    
+    <select id="selectVTasklistByTaskid" parameterType="String" resultMap="VTasklistResult">
+        <include refid="selectVTasklistVo"/>
+        where TASKID = #{taskid} limit 1
+    </select>
+
+
+    <select id="selectHisByInsId" parameterType="String" resultMap="VTasklistResult">
+        select
+            t.NAME_ taskName,
+            t.ASSIGNEE_ assignee,
+            t.EXECUTION_ID_ exeId,
+            t.ID_ taskId,
+            t.END_TIME_ dueTime,
+            c.MESSAGE_ comment,
+            su.nick_name nickName,
+            su.user_name userName
+        from
+            act_hi_taskinst t
+        left join act_hi_comment c on c.TASK_ID_ = t.ID_
+        left join sys_user su on su.user_id = t.ASSIGNEE_
+        where
+            t.proc_inst_id_ = #{insId}
+        and (c.TYPE_ = 'comment' or c.TYPE_ is null)
+        order by
+            t.end_time_ is null,
+            t.end_time_ asc
+    </select>
+
+    <select id="getIfCanClaim"  resultMap="VTasklistResult">
+        select * from v_tasklist where TASKID = #{taskId} and CANDIDATE = #{userId}
+    </select>
+
+    <select id="getAllCandidate"   parameterType="String" resultType="Map">
+        select u.user_name userName,u.nick_name nickName
+        from act_hi_taskinst t
+                 left join act_ru_identitylink i on i.task_id_ = t.id_
+                 left join act_id_membership m on i.group_id_ = m.group_id_
+                 left join sys_user u on m.user_id_ = u.user_id
+        where t.id_ = #{taskId}
+          and t.assignee_ is null
+          and i.type_ = 'candidate'
+          and i.user_id_ is null
+
+        union all
+
+        select u.user_name,u.nick_name
+        from act_hi_taskinst t
+                 left join act_ru_identitylink i on i.task_id_ = t.id_
+                 left join sys_user u on i.user_id_ = u.user_id
+        where t.id_ = #{taskId}
+          and t.assignee_ is null
+          and i.type_ = 'candidate'
+          and i.group_id_ is null
+    </select>
+
+
+    <select id="selectTodoTaskList" resultMap="VTasklistResult">
+
+        select
+            t.*,
+            u.nick_name ASSIGNEENAME,
+            uu.nick_name CANDIDATENAME
+        from
+            v_tasklist t
+                left join sys_user u ON u.user_id = t.ASSIGNEE
+                left join sys_user uu ON uu.user_id = t.CANDIDATE
+        where ( t.ASSIGNEE = #{userId} or t.CANDIDATE = #{userId} )
+
+        <if test="key != null  and key != ''"> and t.defkey like concat('%', #{key}, '%')</if>
+        <if test="name != null  and name != ''"> and t.defname like concat('%', #{name}, '%')</if>
+
+        order by t.createtime desc
+
+    </select>
+
+    <select id="selectHaveDoneTaskList" resultType="Map">
+        select
+            a.proc_inst_id_ proInsId ,  v.text_ orderInfo, p.name_ processName, i.business_key_ businessKey,a.end_time_ endTime,a.name_ taskName, p.key_ defKey
+        from (select proc_inst_id_, max(proc_def_id_) proc_def_id_,max(end_time_) end_time_,group_concat(name_) name_ from  act_hi_taskinst where assignee_ = #{userId} and end_time_ is not null group by proc_inst_id_) a
+                 left join act_hi_varinst v on a.proc_inst_id_ = v.proc_inst_id_
+                 left join act_re_procdef p on p.id_ = a.proc_def_id_
+                 left join act_hi_procinst i on a.proc_inst_id_ = i.id_
+        where v.name_ = 'orderinfo'
+
+        <if test="key != null  and key != ''"> and p.key_ like concat('%', #{key}, '%')</if>
+        <if test="name != null  and name != ''"> and p.name_ like concat('%', #{name}, '%')</if>
+
+        order by a.end_time_ desc
+    </select>
+
+</mapper>

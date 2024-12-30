@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fno.back.oa.mapper.OaCustomFormApplyMapper">
+    
+    <resultMap type="OaCustomFormApply" id="OaCustomFormApplyResult">
+        <result property="id"    column="id"    />
+        <result property="name"    column="name"    />
+        <result property="category"    column="category"    />
+        <result property="rules"    column="rules"    />
+        <result property="options"    column="options"    />
+        <result property="formData"    column="form_data"    />
+        <result property="formId"    column="form_id"    />
+        <result property="formKey"    column="form_key"    />
+        <result property="flowKey"    column="flow_key"    />
+        <result property="flowName"    column="flow_name"    />
+        <result property="flowInsId"    column="flow_ins_id"    />
+        <result property="applyTitle"    column="apply_title"    />
+        <result property="submitTime"    column="submit_time"    />
+        <result property="status"    column="status"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+
+        <result property="billType"    column="bill_type"  />
+        <result property="tenantId"    column="tenant_id"  />
+
+    </resultMap>
+
+    <sql id="selectOaCustomFormApplyVo">
+        select id, name, category, rules, options, form_data, form_key, flow_key, flow_name, flow_ins_id, apply_title,
+               submit_time, create_by, create_time, update_by, update_time, remark, status,bill_type,tenant_id,form_id
+        from oa_custom_form_apply
+    </sql>
+
+    <select id="selectOaCustomFormApplyList" parameterType="OaCustomFormApply" resultMap="OaCustomFormApplyResult">
+        <include refid="selectOaCustomFormApplyVo"/>
+        <where>  
+            <if test="id != null "> and id = #{id}</if>
+            <if test="tenantId != null "> and tenant_id = #{tenantId}</if>
+            <if test="formId != null "> and form_id = #{formId}</if>
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="category != null  and category != ''"> and category = #{category}</if>
+            <if test="rules != null  and rules != ''"> and rules = #{rules}</if>
+            <if test="options != null  and options != ''"> and options = #{options}</if>
+            <if test="formData != null  and formData != ''"> and form_data = #{formData}</if>
+            <if test="formKey != null  and formKey != ''"> and form_key = #{formKey}</if>
+            <if test="flowKey != null  and flowKey != ''"> and flow_key = #{flowKey}</if>
+            <if test="flowName != null  and flowName != ''"> and flow_name like concat('%', #{flowName}, '%')</if>
+            <if test="flowInsId != null  and flowInsId != ''"> and flow_ins_id = #{flowInsId}</if>
+            <if test="applyTitle != null  and applyTitle != ''"> and apply_title = #{applyTitle}</if>
+            <if test="submitTime != null "> and submit_time = #{submitTime}</if>
+            <if test="createBy != null  and createBy != ''"> and create_by = #{createBy}</if>
+            <if test="createTime != null "> and create_time = #{createTime}</if>
+            <if test="updateBy != null  and updateBy != ''"> and update_by = #{updateBy}</if>
+            <if test="updateTime != null "> and update_time = #{updateTime}</if>
+            <if test="remark != null  and remark != ''"> and remark = #{remark}</if>
+            <if test="status != null  and status != ''"> and status = #{status}</if>
+            <if test="billType != null  and billType != ''"> and bill_type = #{billType}</if>
+            <if test="createBy != null and createBy != ''"> and create_by = #{createBy}</if>
+        </where>
+        order by create_time desc
+    </select>
+    
+    <select id="selectOaCustomFormApplyById" parameterType="Long" resultMap="OaCustomFormApplyResult">
+        <include refid="selectOaCustomFormApplyVo"/>
+        where id = #{id}
+    </select>
+    <select id="selectOaCustomFormApplyByInsId" resultMap="OaCustomFormApplyResult">
+        <include refid="selectOaCustomFormApplyVo"/>
+        where flow_ins_id = #{insId}
+    </select>
+
+    <insert id="insertOaCustomFormApply" parameterType="OaCustomFormApply" useGeneratedKeys="true" keyProperty="id">
+        insert into oa_custom_form_apply
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="name != null">name,</if>
+            <if test="tenantId != null">tenant_id,</if>
+            <if test="category != null">category,</if>
+            <if test="rules != null">rules,</if>
+            <if test="options != null">options,</if>
+            <if test="formData != null">form_data,</if>
+            <if test="formKey != null">form_key,</if>
+            <if test="flowKey != null">flow_key,</if>
+            <if test="flowName != null">flow_name,</if>
+            <if test="flowInsId != null">flow_ins_id,</if>
+            <if test="applyTitle != null">apply_title,</if>
+            <if test="submitTime != null">submit_time,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+            <if test="status != null">status,</if>
+            <if test="billType != null">bill_type,</if>
+            <if test="formId != null">form_id,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="name != null">#{name},</if>
+            <if test="tenantId != null">#{tenantId},</if>
+            <if test="category != null">#{category},</if>
+            <if test="rules != null">#{rules},</if>
+            <if test="options != null">#{options},</if>
+            <if test="formData != null">#{formData},</if>
+            <if test="formKey != null">#{formKey},</if>
+            <if test="flowKey != null">#{flowKey},</if>
+            <if test="flowName != null">#{flowName},</if>
+            <if test="flowInsId != null">#{flowInsId},</if>
+            <if test="applyTitle != null">#{applyTitle},</if>
+            <if test="submitTime != null">#{submitTime},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="status != null">#{status},</if>
+            <if test="billType != null">#{billType},</if>
+            <if test="formId != null">#{formId},</if>
+         </trim>
+    </insert>
+
+    <update id="updateOaCustomFormApply" parameterType="OaCustomFormApply">
+        update oa_custom_form_apply
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name != null">name = #{name},</if>
+            <if test="tenantId != null">tenant_id = #{tenantId},</if>
+            <if test="category != null">category = #{category},</if>
+            <if test="rules != null">rules = #{rules},</if>
+            <if test="options != null">options = #{options},</if>
+            <if test="formData != null">form_data = #{formData},</if>
+            <if test="formKey != null">form_key = #{formKey},</if>
+            <if test="flowKey != null">flow_key = #{flowKey},</if>
+            <if test="flowName != null">flow_name = #{flowName},</if>
+            <if test="flowInsId != null">flow_ins_id = #{flowInsId},</if>
+            <if test="applyTitle != null">apply_title = #{applyTitle},</if>
+            <if test="submitTime != null">submit_time = #{submitTime},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="billType != null">bill_type = #{billType},</if>
+            <if test="formId != null">form_id = #{formId},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteOaCustomFormApplyById" parameterType="Long">
+        delete from oa_custom_form_apply where id = #{id}
+    </delete>
+
+    <delete id="deleteOaCustomFormApplyByIds" parameterType="String">
+        delete from oa_custom_form_apply where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fno.back.common.mapper.SysUserCommunicateBookMapper">
+    
+    <resultMap type="SysUserCommunicateBook" id="SysUserCommunicateBookResult">
+        <result property="id"    column="id"    />
+        <result property="tenantId"    column="tenant_id"    />
+        <result property="userId"    column="user_id"    />
+        <result property="avatar"    column="avatar"    />
+        <result property="name"    column="name"    />
+        <result property="birthDate"    column="birth_date"    />
+        <result property="idNum"    column="id_num"    />
+        <result property="phone"    column="phone"    />
+        <result property="email"    column="email"    />
+        <result property="remark"    column="remark"    />
+        <result property="companyName"    column="company_name"    />
+        <result property="companyAddress"    column="company_address"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="address"    column="address"    />
+    </resultMap>
+
+    <sql id="selectOaUserCommunicateBookVo">
+        select id,tenant_id, user_id, avatar, name, birth_date, id_num, phone, email, remark, company_name,
+               company_address, update_time, create_time, address from sys_user_communicate_book
+    </sql>
+
+    <select id="selectOaUserCommunicateBookList" parameterType="SysUserCommunicateBook" resultMap="SysUserCommunicateBookResult">
+        <include refid="selectOaUserCommunicateBookVo"/>
+        <where>  
+            <if test="userId != null "> and user_id = #{userId}</if>
+            <if test="tenantId != null "> and tenant_id = #{tenantId}</if>
+            <if test="avatar != null  and avatar != ''"> and avatar = #{avatar}</if>
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="birthDate != null "> and birth_date = #{birthDate}</if>
+            <if test="idNum != null  and idNum != ''"> and id_num like concat('%', #{idNum}, '%')</if>
+            <if test="phone != null  and phone != ''"> and phone  like concat('%', #{phone}, '%')</if>
+            <if test="email != null  and email != ''"> and email  like concat('%', #{email}, '%')</if>
+            <if test="companyName != null  and companyName != ''"> and company_name like concat('%', #{companyName}, '%')</if>
+            <if test="companyAddress != null  and companyAddress != ''"> and company_address  like concat('%', #{companyAddress}, '%')</if>
+            <if test="address != null  and address != ''"> and address  like concat('%', #{address}, '%')</if>
+        </where>
+        order by name
+    </select>
+    
+    <select id="selectOaUserCommunicateBookById" parameterType="Long" resultMap="SysUserCommunicateBookResult">
+        <include refid="selectOaUserCommunicateBookVo"/>
+        where id = #{id}
+    </select>
+
+    <select id="querySysCommunicateBook" resultType="java.util.Map">
+        select
+            max(u.user_id) userId,
+            max(u.email) email,
+            max(u.nick_name) nickName,
+            max(u.phonenumber) phone,
+            max(u.sex) sex,
+            max(u.avatar) avatar,
+            max(d.dept_name) deptName,
+            group_concat(p.post_name) post,
+            (select count(1) from im_chat_message chatmsg where chatmsg.receive_user_id = #{userId} and chatmsg.if_read = 'N' and u.user_id = chatmsg.send_user_id) notReadCount
+        from sys_user u
+                 left join sys_dept d on d.dept_id = u.dept_id
+                 left join sys_user_post up on up.user_id = u.user_id
+                 left join sys_post p on p.post_id = up.post_id
+        where u.`status` = '0'
+            and u.tenant_id = #{tenantId}
+        <if test="nickName != null  and nickName != ''"> and u.nick_name like concat('%', #{nickName}, '%') </if>
+        group by u.user_id
+        order by u.nick_name
+    </select>
+        
+    <insert id="insertOaUserCommunicateBook" parameterType="SysUserCommunicateBook" useGeneratedKeys="true" keyProperty="id">
+        insert into sys_user_communicate_book
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="userId != null">user_id,</if>
+            <if test="tenantId != null">tenant_id,</if>
+            <if test="avatar != null">avatar,</if>
+            <if test="name != null">name,</if>
+            <if test="birthDate != null">birth_date,</if>
+            <if test="idNum != null">id_num,</if>
+            <if test="phone != null">phone,</if>
+            <if test="email != null">email,</if>
+            <if test="remark != null">remark,</if>
+            <if test="companyName != null">company_name,</if>
+            <if test="companyAddress != null">company_address,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="address != null">address,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="userId != null">#{userId},</if>
+            <if test="tenantId != null">#{tenantId},</if>
+            <if test="avatar != null">#{avatar},</if>
+            <if test="name != null">#{name},</if>
+            <if test="birthDate != null">#{birthDate},</if>
+            <if test="idNum != null">#{idNum},</if>
+            <if test="phone != null">#{phone},</if>
+            <if test="email != null">#{email},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="companyName != null">#{companyName},</if>
+            <if test="companyAddress != null">#{companyAddress},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="address != null">#{address},</if>
+         </trim>
+    </insert>
+
+    <update id="updateOaUserCommunicateBook" parameterType="SysUserCommunicateBook">
+        update sys_user_communicate_book
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="userId != null">user_id = #{userId},</if>
+            <if test="tenantId != null">user_id = #{tenantId},</if>
+            <if test="avatar != null">avatar = #{avatar},</if>
+            <if test="name != null">name = #{name},</if>
+            <if test="birthDate != null">birth_date = #{birthDate},</if>
+            <if test="idNum != null">id_num = #{idNum},</if>
+            <if test="phone != null">phone = #{phone},</if>
+            <if test="email != null">email = #{email},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="companyName != null">company_name = #{companyName},</if>
+            <if test="companyAddress != null">company_address = #{companyAddress},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="address != null">address = #{address},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteOaUserCommunicateBookById" parameterType="Long">
+        delete from sys_user_communicate_book where id = #{id}
+    </delete>
+
+    <delete id="deleteOaUserCommunicateBookByIds" parameterType="String">
+        delete from sys_user_communicate_book where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fno.back.common.mapper.SysAttachmentMapper">
+    
+    <resultMap type="SysAttachment" id="SysAttachmentResult">
+        <result property="id"    column="id"    />
+        <result property="businessId"    column="business_id"    />
+        <result property="billType"    column="bill_type"    />
+        <result property="url"    column="url"    />
+        <result property="size"    column="size"    />
+        <result property="ext"    column="ext"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="userId"    column="user_id"    />
+        <result property="deptId"    column="dept_id"    />
+    </resultMap>
+
+    <sql id="selectSysAttachmentVo">
+        select id, business_id, bill_type, url, size, ext, create_time, create_by, user_id, dept_id from sys_attachment
+    </sql>
+
+    <select id="selectSysAttachmentList" parameterType="SysAttachment" resultMap="SysAttachmentResult">
+        <include refid="selectSysAttachmentVo"/>
+        <where>  
+            <if test="businessId != null "> and business_id = #{businessId}</if>
+            <if test="billType != null  and billType != ''"> and bill_type = #{billType}</if>
+            <if test="url != null  and url != ''"> and url = #{url}</if>
+            <if test="size != null "> and size = #{size}</if>
+            <if test="ext != null  and ext != ''"> and ext = #{ext}</if>
+            <if test="userId != null "> and user_id = #{userId}</if>
+            <if test="deptId != null "> and dept_id = #{deptId}</if>
+        </where>
+    </select>
+    
+    <select id="selectSysAttachmentById" parameterType="Long" resultMap="SysAttachmentResult">
+        <include refid="selectSysAttachmentVo"/>
+        where id = #{id}
+    </select>
+
+    <select id="countSysAttachement" resultType="int">
+        select count(1) from sys_attachment where bill_type = #{billType} and business_id = #{businessId}
+    </select>
+
+    <insert id="insertSysAttachment" parameterType="SysAttachment">
+        insert into sys_attachment
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="businessId != null">business_id,</if>
+            <if test="billType != null">bill_type,</if>
+            <if test="url != null">url,</if>
+            <if test="size != null">size,</if>
+            <if test="ext != null">ext,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="userId != null">user_id,</if>
+            <if test="deptId != null">dept_id,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="businessId != null">#{businessId},</if>
+            <if test="billType != null">#{billType},</if>
+            <if test="url != null">#{url},</if>
+            <if test="size != null">#{size},</if>
+            <if test="ext != null">#{ext},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="userId != null">#{userId},</if>
+            <if test="deptId != null">#{deptId},</if>
+         </trim>
+    </insert>
+
+    <update id="updateSysAttachment" parameterType="SysAttachment">
+        update sys_attachment
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="businessId != null">business_id = #{businessId},</if>
+            <if test="billType != null">bill_type = #{billType},</if>
+            <if test="url != null">url = #{url},</if>
+            <if test="size != null">size = #{size},</if>
+            <if test="ext != null">ext = #{ext},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="userId != null">user_id = #{userId},</if>
+            <if test="deptId != null">dept_id = #{deptId},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteSysAttachmentById" parameterType="Long">
+        delete from sys_attachment where id = #{id}
+    </delete>
+
+    <delete id="deleteSysAttachmentByIds" parameterType="String">
+        delete from sys_attachment where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

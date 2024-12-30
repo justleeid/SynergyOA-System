@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fno.back.oa.mapper.OaBdCarMapper">
+    
+    <resultMap type="OaBdCar" id="OaBdCarResult">
+        <result property="id"    column="id"    />
+        <result property="tenantId"    column="tenant_id"    />
+        <result property="carNo"    column="car_no"    />
+        <result property="carModel"    column="car_model"    />
+        <result property="color"    column="color"    />
+        <result property="status"    column="status"    />
+        <result property="useStatus"    column="use_status"    />
+        <result property="seatCount"    column="seat_count"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+    </resultMap>
+
+    <sql id="selectOaBdCarVo">
+        select id,tenant_id, car_no, car_model, color, status,use_status, seat_count, create_by, create_time, update_by, update_time, remark from oa_bd_car
+    </sql>
+
+    <select id="selectOaBdCarList" parameterType="OaBdCar" resultMap="OaBdCarResult">
+        <include refid="selectOaBdCarVo"/>
+        <where>  
+            <if test="carNo != null  and carNo != ''"> and car_no like concat('%', #{carNo}, '%')</if>
+            <if test="carModel != null  and carModel != ''"> and car_model like concat('%', #{carModel}, '%')</if>
+            <if test="color != null  and color != ''"> and color like concat('%', #{color}, '%')</if>
+            <if test="status != null  and status != ''"> and status = #{status}</if>
+            <if test="useStatus != null  and useStatus != ''"> and use_status = #{useStatus}</if>
+            <if test="seatCount != null "> and seat_count &gt;= #{seatCount}</if>
+            <if test="tenantId != null"> and tenant_id = #{tenantId}</if>
+        </where>
+    </select>
+    
+    <select id="selectOaBdCarById" parameterType="Long" resultMap="OaBdCarResult">
+        <include refid="selectOaBdCarVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertOaBdCar" parameterType="OaBdCar">
+        insert into oa_bd_car
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="tenantId != null">tenant_id,</if>
+            <if test="carNo != null">car_no,</if>
+            <if test="carModel != null">car_model,</if>
+            <if test="color != null">color,</if>
+            <if test="status != null">status,</if>
+            <if test="useStatus != null">use_status,</if>
+            <if test="seatCount != null">seat_count,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="tenantId != null">#{tenantId},</if>
+            <if test="carNo != null">#{carNo},</if>
+            <if test="carModel != null">#{carModel},</if>
+            <if test="color != null">#{color},</if>
+            <if test="status != null">#{status},</if>
+            <if test="useStatus != null">#{useStatus},</if>
+            <if test="seatCount != null">#{seatCount},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+         </trim>
+    </insert>
+
+    <update id="updateOaBdCar" parameterType="OaBdCar">
+        update oa_bd_car
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="carNo != null">car_no = #{carNo},</if>
+            <if test="tenantId != null">tenant_id = #{tenantId},</if>
+            <if test="carModel != null">car_model = #{carModel},</if>
+            <if test="color != null">color = #{color},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="useStatus != null">use_status = #{useStatus},</if>
+            <if test="seatCount != null">seat_count = #{seatCount},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteOaBdCarById" parameterType="Long">
+        delete from oa_bd_car where id = #{id}
+    </delete>
+
+    <delete id="deleteOaBdCarByIds" parameterType="String">
+        delete from oa_bd_car where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

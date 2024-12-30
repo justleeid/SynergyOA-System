@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fno.back.pg.mapper.PgProjectMapper">
+    
+    <resultMap type="PgProject" id="PgProjectResult">
+        <result property="id"    column="id"    />
+        <result property="name"    column="name"    />
+        <result property="liablePerson"    column="liable_person"    />
+        <result property="startTime"    column="start_time"    />
+        <result property="endTime"    column="end_time"    />
+        <result property="workDays"    column="work_days"    />
+        <result property="des"    column="des"    />
+        <result property="projectStatus"    column="project_status"    />
+    </resultMap>
+
+    <sql id="selectPgProjectVo">
+        select id, name, liable_person, start_time, end_time, work_days, des, project_status from pg_project
+    </sql>
+
+    <select id="selectPgProjectList" parameterType="PgProject" resultMap="PgProjectResult">
+        <include refid="selectPgProjectVo"/>
+        <where>  
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="liablePerson != null  and liablePerson != ''"> and liable_person = #{liablePerson}</if>
+            <if test="startTime != null "> and start_time = #{startTime}</if>
+            <if test="endTime != null "> and end_time = #{endTime}</if>
+            <if test="workDays != null "> and work_days = #{workDays}</if>
+            <if test="des != null  and des != ''"> and des = #{des}</if>
+            <if test="projectStatus != null  and projectStatus != ''"> and project_status = #{projectStatus}</if>
+        </where>
+    </select>
+    
+    <select id="selectPgProjectById" parameterType="Long" resultMap="PgProjectResult">
+        <include refid="selectPgProjectVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertPgProject" parameterType="PgProject" useGeneratedKeys="true" keyProperty="id">
+        insert into pg_project
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="name != null">name,</if>
+            <if test="liablePerson != null">liable_person,</if>
+            <if test="startTime != null">start_time,</if>
+            <if test="endTime != null">end_time,</if>
+            <if test="workDays != null">work_days,</if>
+            <if test="des != null">des,</if>
+            <if test="projectStatus != null">project_status,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="name != null">#{name},</if>
+            <if test="liablePerson != null">#{liablePerson},</if>
+            <if test="startTime != null">#{startTime},</if>
+            <if test="endTime != null">#{endTime},</if>
+            <if test="workDays != null">#{workDays},</if>
+            <if test="des != null">#{des},</if>
+            <if test="projectStatus != null">#{projectStatus},</if>
+         </trim>
+    </insert>
+
+    <update id="updatePgProject" parameterType="PgProject">
+        update pg_project
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name != null">name = #{name},</if>
+            <if test="liablePerson != null">liable_person = #{liablePerson},</if>
+            <if test="startTime != null">start_time = #{startTime},</if>
+            <if test="endTime != null">end_time = #{endTime},</if>
+            <if test="workDays != null">work_days = #{workDays},</if>
+            <if test="des != null">des = #{des},</if>
+            <if test="projectStatus != null">project_status = #{projectStatus},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deletePgProjectById" parameterType="Long">
+        delete from pg_project where id = #{id}
+    </delete>
+
+    <delete id="deletePgProjectByIds" parameterType="String">
+        delete from pg_project where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

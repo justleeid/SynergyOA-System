@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fno.back.oa.mapper.OaScheduleMapper">
+    
+    <resultMap type="OaSchedule" id="OaScheduleResult">
+        <result property="id"    column="id"    />
+        <result property="userId"    column="user_id"    />
+        <result property="title"    column="title"    />
+        <result property="start"    column="start"    />
+        <result property="end"    column="end"    />
+        <result property="url"    column="url"    />
+        <result property="editable"    column="editable"    />
+        <result property="ifAlert"    column="if_alert"    />
+        <result property="alertType"    column="alert_type"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="updateBy"    column="update_by"    />
+
+        <result property="className"    column="class_name"    />
+    </resultMap>
+
+    <sql id="selectOaScheduleVo">
+        select id, user_id, title, start, end, url, editable, if_alert, alert_type, create_time, update_time, create_by, update_by,class_name
+        from oa_schedule
+    </sql>
+
+    <select id="selectOaScheduleList" parameterType="OaSchedule" resultMap="OaScheduleResult">
+        <include refid="selectOaScheduleVo"/>
+        <where>  
+            <if test="userId != null "> and user_id = #{userId}</if>
+            <if test="title != null  and title != ''"> and title = #{title}</if>
+            <if test="start != null "> and start <![CDATA[ >= ]]> #{start}</if>
+            <if test="end != null "> and end <![CDATA[ < ]]> #{end}</if>
+            <if test="url != null  and url != ''"> and url = #{url}</if>
+            <if test="editable != null  and editable != ''"> and editable = #{editable}</if>
+            <if test="ifAlert != null  and ifAlert != ''"> and if_alert = #{ifAlert}</if>
+            <if test="alertType != null  and alertType != ''"> and alert_type = #{alertType}</if>
+            <if test="className != null  and className != ''"> and class_name = #{className}</if>
+        </where>
+    </select>
+    
+    <select id="selectOaScheduleById" parameterType="Long" resultMap="OaScheduleResult">
+        <include refid="selectOaScheduleVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertOaSchedule" parameterType="OaSchedule" useGeneratedKeys="true" keyProperty="id">
+        insert into oa_schedule
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="userId != null">user_id,</if>
+            <if test="title != null">title,</if>
+            <if test="start != null">start,</if>
+            <if test="end != null">end,</if>
+            <if test="url != null">url,</if>
+            <if test="editable != null">editable,</if>
+            <if test="ifAlert != null">if_alert,</if>
+            <if test="alertType != null">alert_type,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="className != null">class_name,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="userId != null">#{userId},</if>
+            <if test="title != null">#{title},</if>
+            <if test="start != null">#{start},</if>
+            <if test="end != null">#{end},</if>
+            <if test="url != null">#{url},</if>
+            <if test="editable != null">#{editable},</if>
+            <if test="ifAlert != null">#{ifAlert},</if>
+            <if test="alertType != null">#{alertType},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="className != null">#{className},</if>
+         </trim>
+    </insert>
+
+    <update id="updateOaSchedule" parameterType="OaSchedule">
+        update oa_schedule
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="userId != null">user_id = #{userId},</if>
+            <if test="title != null">title = #{title},</if>
+            <if test="start != null">start = #{start},</if>
+            <if test="end != null">end = #{end},</if>
+            <if test="url != null">url = #{url},</if>
+            <if test="editable != null">editable = #{editable},</if>
+            <if test="ifAlert != null">if_alert = #{ifAlert},</if>
+            <if test="alertType != null">alert_type = #{alertType},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="className != null">class_name = #{className},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteOaScheduleById" parameterType="Long">
+        delete from oa_schedule where id = #{id}
+    </delete>
+
+    <delete id="deleteOaScheduleByIds" parameterType="String">
+        delete from oa_schedule where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

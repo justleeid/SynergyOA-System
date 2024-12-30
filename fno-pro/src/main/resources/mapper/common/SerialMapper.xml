@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fno.back.common.mapper.SerialMapper">
+
+    <resultMap type="Serial" id="SerialResult">
+        <result property="id"    column="id"    />
+        <result property="billType"    column="bill_type"    />
+        <result property="serialNum"    column="serial_num"    />
+        <result property="tenantId"    column="tenant_id"    />
+        <result property="prefix"    column="prefix"    />
+        <result property="ifHaveDate"    column="if_have_date"    />
+        <result property="codeLength"    column="code_length"    />
+        <result property="codeDate"    column="code_date"    />
+        <result property="type"    column="type"    />
+        <result property="name"    column="name"    />
+    </resultMap>
+
+    <sql id="selectSerialVo">
+        select id, type, name, bill_type, serial_num, tenant_id, prefix, if_have_date, code_length,code_date from sys_serial
+    </sql>
+
+    <select id="selectSerialList" parameterType="Serial" resultMap="SerialResult">
+        <include refid="selectSerialVo"/>
+        <where>
+            <if test="billType != null  and billType != ''"> and bill_type = #{billType}</if>
+            <if test="serialNum != null "> and serial_num = #{serialNum}</if>
+            <if test="tenantId != null "> and tenant_id = #{tenantId}</if>
+            <if test="prefix != null  and prefix != ''"> and prefix = #{prefix}</if>
+            <if test="ifHaveDate != null  and ifHaveDate != ''"> and if_have_date = #{ifHaveDate}</if>
+            <if test="codeLength != null "> and code_length = #{codeLength}</if>
+        </where>
+    </select>
+
+    <select id="selectSerialById" parameterType="Long" resultMap="SerialResult">
+        <include refid="selectSerialVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertSerial" parameterType="Serial">
+        insert into sys_serial
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="billType != null and billType != ''">bill_type,</if>
+            <if test="serialNum != null">serial_num,</if>
+            <if test="tenantId != null">tenant_id,</if>
+            <if test="prefix != null and prefix != ''">prefix,</if>
+            <if test="ifHaveDate != null and ifHaveDate != ''">if_have_date,</if>
+            <if test="codeLength != null">code_length,</if>
+            <if test="codeDate != null">code_date,</if>
+            <if test="type != null">type,</if>
+            <if test="name != null">name,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="billType != null and billType != ''">#{billType},</if>
+            <if test="serialNum != null">#{serialNum},</if>
+            <if test="tenantId != null">#{tenantId},</if>
+            <if test="prefix != null and prefix != ''">#{prefix},</if>
+            <if test="ifHaveDate != null and ifHaveDate != ''">#{ifHaveDate},</if>
+            <if test="codeLength != null">#{codeLength},</if>
+            <if test="codeDate != null">#{codeDate},</if>
+            <if test="type != null">#{type},</if>
+            <if test="name != null">#{name},</if>
+        </trim>
+    </insert>
+
+    <update id="updateSerial" parameterType="Serial">
+        update sys_serial
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="billType != null and billType != ''">bill_type = #{billType},</if>
+            <if test="serialNum != null">serial_num = #{serialNum},</if>
+            <if test="tenantId != null">tenant_id = #{tenantId},</if>
+            <if test="prefix != null and prefix != ''">prefix = #{prefix},</if>
+            <if test="ifHaveDate != null and ifHaveDate != ''">if_have_date = #{ifHaveDate},</if>
+            <if test="codeLength != null">code_length = #{codeLength},</if>
+            <if test="codeDate != null">code_date = #{codeDate},</if>
+            <if test="type != null and type != ''">type = #{type},</if>
+            <if test="name != null and name != ''">name = #{name},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteSerialById" parameterType="Long">
+        delete from sys_serial where id = #{id}
+    </delete>
+
+    <delete id="deleteSerialByIds" parameterType="String">
+        delete from sys_serial where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+
+
+
+
+
+
+    <select id="getSerialByKey" parameterType="String" resultMap="SerialResult">
+        <include refid="selectSerialVo"/>
+        where bill_type = #{key} limit 1
+    </select>
+</mapper>

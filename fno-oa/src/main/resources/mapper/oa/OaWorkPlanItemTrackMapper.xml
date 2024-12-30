@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fno.back.oa.mapper.OaWorkPlanItemTrackMapper">
+    
+    <resultMap type="OaWorkPlanItemTrack" id="OaWorkPlanItemTrackResult">
+        <result property="id"    column="id"    />
+        <result property="itemId"    column="item_id"    />
+        <result property="track"    column="track"    />
+        <result property="trackUserId"    column="track_user_id"    />
+        <result property="createTime"    column="create_time"    />
+
+        <result property="trackNickName"    column="nick_name"    />
+        <result property="avatar"    column="avatar"    />
+    </resultMap>
+
+    <sql id="selectOaWorkPlanItemTrackVo">
+        select t.id, t.item_id, t.track, t.track_user_id, t.create_time, u.nick_name,u.avatar
+        from oa_work_plan_item_track t left join sys_user u on t.track_user_id = u.user_id
+    </sql>
+
+    <select id="selectOaWorkPlanItemTrackList" parameterType="OaWorkPlanItemTrack" resultMap="OaWorkPlanItemTrackResult">
+        <include refid="selectOaWorkPlanItemTrackVo"/>
+        <where>  
+            <if test="itemId != null "> and t.item_id = #{itemId}</if>
+            <if test="track != null  and track != ''"> and t.track = #{track}</if>
+            <if test="trackUserId != null "> and t.track_user_id = #{trackUserId}</if>
+        </where>
+    </select>
+    
+    <select id="selectOaWorkPlanItemTrackById" parameterType="Long" resultMap="OaWorkPlanItemTrackResult">
+        <include refid="selectOaWorkPlanItemTrackVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertOaWorkPlanItemTrack" parameterType="OaWorkPlanItemTrack" useGeneratedKeys="true" keyProperty="id">
+        insert into oa_work_plan_item_track
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="itemId != null">item_id,</if>
+            <if test="track != null">track,</if>
+            <if test="trackUserId != null">track_user_id,</if>
+            <if test="createTime != null">create_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="itemId != null">#{itemId},</if>
+            <if test="track != null">#{track},</if>
+            <if test="trackUserId != null">#{trackUserId},</if>
+            <if test="createTime != null">#{createTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateOaWorkPlanItemTrack" parameterType="OaWorkPlanItemTrack">
+        update oa_work_plan_item_track
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="itemId != null">item_id = #{itemId},</if>
+            <if test="track != null">track = #{track},</if>
+            <if test="trackUserId != null">track_user_id = #{trackUserId},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteOaWorkPlanItemTrackById" parameterType="Long">
+        delete from oa_work_plan_item_track where id = #{id}
+    </delete>
+
+    <delete id="deleteOaWorkPlanItemTrackByIds" parameterType="String">
+        delete from oa_work_plan_item_track where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

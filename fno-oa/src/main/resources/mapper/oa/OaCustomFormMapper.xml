@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fno.back.oa.mapper.OaCustomFormMapper">
+    
+    <resultMap type="OaCustomForm" id="OaCustomFormResult">
+        <result property="id"    column="id"    />
+        <result property="name"    column="name"    />
+        <result property="category"    column="category"    />
+        <result property="rules"    column="rules"    />
+        <result property="options"    column="options"    />
+        <result property="formKey"    column="form_key"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+        <result property="tenantId"    column="tenant_id"    />
+        <result property="flowKey"    column="flow_key"    />
+    </resultMap>
+
+    <sql id="selectOaCustomFormVo">
+        select id, name, category, rules, options, form_key, create_by, create_time, update_by, update_time, remark, tenant_id,flow_key
+        from oa_custom_form
+    </sql>
+
+    <select id="selectOaCustomFormList" parameterType="OaCustomForm" resultMap="OaCustomFormResult">
+        <include refid="selectOaCustomFormVo"/>
+        <where>  
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="category != null  and category != ''"> and category = #{category}</if>
+            <if test="rules != null  and rules != ''"> and rules = #{rules}</if>
+            <if test="options != null  and options != ''"> and options = #{options}</if>
+            <if test="formKey != null  and formKey != ''"> and form_key = #{formKey}</if>
+            <if test="tenantId != null"> and tenant_id = #{tenantId}</if>
+        </where>
+        order by create_time desc
+    </select>
+    
+    <select id="selectOaCustomFormById" parameterType="Long" resultMap="OaCustomFormResult">
+        <include refid="selectOaCustomFormVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertOaCustomForm" parameterType="OaCustomForm" useGeneratedKeys="true" keyProperty="id">
+        insert into oa_custom_form
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="name != null">name,</if>
+            <if test="tenantId != null">tenant_id,</if>
+            <if test="category != null">category,</if>
+            <if test="rules != null">rules,</if>
+            <if test="options != null">options,</if>
+            <if test="formKey != null">form_key,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+            <if test="flowKey != null">flow_key,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="name != null">#{name},</if>
+            <if test="tenantId != null">#{tenantId},</if>
+            <if test="category != null">#{category},</if>
+            <if test="rules != null">#{rules},</if>
+            <if test="options != null">#{options},</if>
+            <if test="formKey != null">#{formKey},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="flowKey != null">#{flowKey},</if>
+         </trim>
+    </insert>
+
+    <update id="updateOaCustomForm" parameterType="OaCustomForm">
+        update oa_custom_form
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name != null">name = #{name},</if>
+            <if test="tenantId != null">tenant_id = #{tenantId},</if>
+            <if test="category != null">category = #{category},</if>
+            <if test="rules != null">rules = #{rules},</if>
+            <if test="options != null">options = #{options},</if>
+            <if test="formKey != null">form_key = #{formKey},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="flowKey != null">flow_key = #{flowKey},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteOaCustomFormById" parameterType="Long">
+        delete from oa_custom_form where id = #{id}
+    </delete>
+
+    <delete id="deleteOaCustomFormByIds" parameterType="String">
+        delete from oa_custom_form where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

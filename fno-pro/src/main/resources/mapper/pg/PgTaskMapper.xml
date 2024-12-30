@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fno.back.pg.mapper.PgTaskMapper">
+    
+    <resultMap type="PgTask" id="PgTaskResult">
+        <result property="id"    column="id"    />
+        <result property="modelName"    column="model_name"    />
+        <result property="taskName"    column="task_name"    />
+        <result property="priority"    column="priority"    />
+        <result property="summary"    column="summary"    />
+        <result property="des"    column="des"    />
+        <result property="dutyPerson"    column="duty_person"    />
+        <result property="dutyPersonName"    column="duty_person_name"    />
+        <result property="assistants"    column="assistants"    />
+        <result property="startTime"    column="start_time"    />
+        <result property="endTime"    column="end_time"    />
+        <result property="status"    column="status"    />
+        <result property="progress"    column="progress"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+        <result property="projectId"    column="project_id"    />
+        <result property="projectName"    column="project_name"    />
+    </resultMap>
+
+    <sql id="selectPgTaskVo">
+        select id, model_name, task_name, priority,project_id, summary, des, duty_person, assistants, start_time, end_time, status, progress, create_by, create_time, update_by, update_time, remark from pg_task
+    </sql>
+
+
+
+
+
+    <select id="selectPgTaskList" parameterType="PgTask" resultMap="PgTaskResult">
+        select t.id, t.model_name, t.task_name, t.priority, t.summary, t.des, t.duty_person, t.assistants, t.start_time, t.end_time,
+        t.status, t.progress, t.create_by, t.create_time, t.update_by, t.update_time, t.remark,t.project_id,
+        p.name project_name,u.nick_name duty_person_name
+                from pg_task t
+                left join pg_project p on t.project_id = p.id
+              left join sys_user u on u.user_id = t.duty_person
+        <where>  
+            <if test="modelName != null  and modelName != ''"> and t.model_name like concat('%', #{modelName}, '%')</if>
+            <if test="taskName != null  and taskName != ''"> and t.task_name like concat('%', #{taskName}, '%')</if>
+            <if test="priority != null  and priority != ''"> and t.priority = #{priority}</if>
+            <if test="summary != null  and summary != ''"> and t.summary = #{summary}</if>
+            <if test="dutyPerson != null  and dutyPerson != ''"> and t.duty_person = #{dutyPerson}</if>
+            <if test="assistants != null  and assistants != ''"> and t.assistants = #{assistants}</if>
+            <if test="startTime != null "> and t.start_time = #{startTime}</if>
+            <if test="endTime != null "> and t.end_time = #{endTime}</if>
+            <if test="status != null  and status != ''"> and t.status = #{status}</if>
+            <if test="progress != null "> and t.progress = #{progress}</if>
+            <if test="projectId != null "> and t.project_id = #{projectId}</if>
+        </where>
+    </select>
+    
+    <select id="selectPgTaskById" parameterType="Long" resultMap="PgTaskResult">
+        <include refid="selectPgTaskVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertPgTask" parameterType="PgTask" useGeneratedKeys="true" keyProperty="id">
+        insert into pg_task
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="modelName != null">model_name,</if>
+            <if test="taskName != null">task_name,</if>
+            <if test="projectId != null">project_id,</if>
+            <if test="priority != null">priority,</if>
+            <if test="summary != null">summary,</if>
+            <if test="des != null">des,</if>
+            <if test="dutyPerson != null">duty_person,</if>
+            <if test="assistants != null">assistants,</if>
+            <if test="startTime != null">start_time,</if>
+            <if test="endTime != null">end_time,</if>
+            <if test="status != null">status,</if>
+            <if test="progress != null">progress,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="modelName != null">#{modelName},</if>
+            <if test="taskName != null">#{taskName},</if>
+            <if test="projectId != null">#{projectId},</if>
+            <if test="priority != null">#{priority},</if>
+            <if test="summary != null">#{summary},</if>
+            <if test="des != null">#{des},</if>
+            <if test="dutyPerson != null">#{dutyPerson},</if>
+            <if test="assistants != null">#{assistants},</if>
+            <if test="startTime != null">#{startTime},</if>
+            <if test="endTime != null">#{endTime},</if>
+            <if test="status != null">#{status},</if>
+            <if test="progress != null">#{progress},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+         </trim>
+    </insert>
+
+    <update id="updatePgTask" parameterType="PgTask">
+        update pg_task
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="modelName != null">model_name = #{modelName},</if>
+            <if test="taskName != null">task_name = #{taskName},</if>
+            <if test="priority != null">priority = #{priority},</if>
+            <if test="summary != null">summary = #{summary},</if>
+            <if test="des != null">des = #{des},</if>
+            <if test="dutyPerson != null">duty_person = #{dutyPerson},</if>
+            <if test="assistants != null">assistants = #{assistants},</if>
+            <if test="startTime != null">start_time = #{startTime},</if>
+            <if test="endTime != null">end_time = #{endTime},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="progress != null">progress = #{progress},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="projectId != null">project_id = #{projectId},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deletePgTaskById" parameterType="Long">
+        delete from pg_task where id = #{id}
+    </delete>
+
+    <delete id="deletePgTaskByIds" parameterType="String">
+        delete from pg_task where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+
+    <select id="getRoleChart"  parameterType="Long" resultType="java.util.Map">
+        SELECT r.role_name role_name,count(r.role_name) c
+
+        from (
+                 select DISTINCT u.user_id  from pg_project p
+                                                     LEFT JOIN pg_task t on p.id = t.project_id
+                                                     left join sys_user u on u.user_id = t.duty_person
+                 where p.id = #{id}
+             ) user
+
+        left join sys_user_role ur on ur.user_id  = user.user_id
+            left join sys_role r on ur.role_id = r.role_id
+
+        GROUP BY r.role_name
+
+
+    </select>
+
+
+
+
+
+    <select id="getPostChart"  parameterType="Long" resultType="java.util.Map">
+
+        SELECT p.post_name name,count(p.post_name) value
+
+        from (
+                 select DISTINCT u.user_id  from pg_project p
+                                                     LEFT JOIN pg_task t on p.id = t.project_id
+                                                     left join sys_user u on u.user_id = t.duty_person
+                 where p.id = 1
+             ) user
+
+            left join sys_user_post up on up.user_id  = user.user_id
+            left join sys_post p on up.post_id = p.post_id
+
+        GROUP BY p.post_name
+
+
+    </select>
+
+
+
+</mapper>

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fno.back.workflow.mapper.TaskListenerMapper">
+    <update id="updateHiTaskAssignee">
+        update act_hi_taskinst set ASSIGNEE_ = #{assignee} where ID_ = #{taskId}
+    </update>
+
+
+    <select id="getUserIdByDeptRoleKey" resultType="java.lang.Long">
+        select u.user_id userName from sys_user u
+                                    left join sys_user_role r on u.user_id = r.user_id
+                                    left join sys_role o on o.role_id = r.role_id
+        where dept_id = #{deptId}
+          and o.role_key = #{roleKey} limit 1
+    </select>
+
+    <select id="getUserIdByDeptPostCode" resultType="java.lang.Long">
+        select u.user_id from sys_user u
+                                  left join sys_user_post p on u.user_id = p.user_id
+                                  left join sys_post pp on p.post_id = p.post_id
+        where u.dept_id =  #{deptId}
+          and   pp.post_code= #{postCode} limit 1
+    </select>
+
+
+    <select id="getReceiverId" resultType="java.lang.String">
+        select receive_user_id userId from ${tableName}
+        where id = #{id}
+    </select>
+
+
+    <select id="selectHisTask" resultType="java.util.Map">
+
+        select * from act_hi_taskinst where ID_ = #{taskId}
+
+    </select>
+
+
+</mapper>

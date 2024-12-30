@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fno.back.oa.mapper.OaTicketApplyMapper">
+    
+    <resultMap type="OaTicketApply" id="OaTicketApplyResult">
+        <result property="id"    column="id"    />
+        <result property="tenantId"    column="tenant_id"    />
+        <result property="userId"    column="user_id"    />
+        <result property="deptId"    column="dept_id"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="status"    column="status"    />
+        <result property="flowKey"    column="flow_key"    />
+        <result property="flowInsId"    column="flow_ins_id"    />
+        <result property="applyTitle"    column="apply_title"    />
+        <result property="submitTime"    column="submit_time"    />
+        <result property="billCode"    column="bill_code"    />
+        <result property="remark"    column="remark"    />
+        <result property="destination"    column="destination"    />
+        <result property="departure"    column="departure"    />
+        <result property="totalAmt"    column="total_amt"    />
+        <result property="goTime"    column="go_time"    />
+        <result property="carNum"    column="car_num"    />
+        <result property="applyRealname"    column="apply_realname"    />
+        <result property="idNum"    column="id_num"    />
+        <result property="billType"    column="bill_type"    />
+    </resultMap>
+
+    <sql id="selectOaTicketApplyVo">
+        select id,tenant_id , user_id, dept_id, create_by, create_time, update_by,
+               update_time, status, flow_key, flow_ins_id, apply_title, submit_time, bill_code, remark, destination, departure,
+               total_amt, go_time, car_num, apply_realname, id_num ,bill_type
+        from oa_ticket_apply
+    </sql>
+
+    <select id="selectOaTicketApplyList" parameterType="OaTicketApply" resultMap="OaTicketApplyResult">
+        <include refid="selectOaTicketApplyVo"/>
+        <where>  
+            <if test="userId != null "> and user_id = #{userId}</if>
+            <if test="tenantId != null "> and tenant_id = #{tenantId}</if>
+            <if test="deptId != null "> and dept_id = #{deptId}</if>
+            <if test="status != null  and status != ''"> and status = #{status}</if>
+            <if test="flowKey != null  and flowKey != ''"> and flow_key = #{flowKey}</if>
+            <if test="flowInsId != null  and flowInsId != ''"> and flow_ins_id = #{flowInsId}</if>
+            <if test="applyTitle != null  and applyTitle != ''"> and apply_title like concat('%', #{applyTitle}, '%')</if>
+            <if test="submitTime != null "> and submit_time = #{submitTime}</if>
+            <if test="billCode != null  and billCode != ''"> and bill_code like concat('%', #{billCode}, '%')</if>
+            <if test="remark != null  and remark != ''"> and remark like concat('%', #{remark}, '%')</if>
+            <if test="destination != null  and destination != ''"> and destination like concat('%', #{destination}, '%')</if>
+            <if test="departure != null  and departure != ''"> and departure like concat('%', #{departure}, '%')</if>
+            <if test="totalAmt != null "> and total_amt = #{totalAmt}</if>
+            <if test="goTime != null "> and go_time = #{goTime}</if>
+            <if test="carNum != null "> and car_num like concat('%', #{carNum}, '%')</if>
+            <if test="applyRealname != null  and applyRealname != ''"> and apply_realname like concat('%', #{applyRealname}, '%')</if>
+            <if test="idNum != null  and idNum != ''"> and id_num = #{idNum}</if>
+            <if test="createBy != null and createBy != ''"> and create_by = #{createBy}</if>
+            <if test="billType != null  and billType != ''"> and bill_type = #{billType}</if>
+        </where>
+    </select>
+    
+    <select id="selectOaTicketApplyById" parameterType="Long" resultMap="OaTicketApplyResult">
+        <include refid="selectOaTicketApplyVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertOaTicketApply" parameterType="OaTicketApply" useGeneratedKeys="true" keyProperty="id">
+        insert into oa_ticket_apply
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="userId != null">user_id,</if>
+            <if test="tenantId != null">tenant_id,</if>
+            <if test="deptId != null">dept_id,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="status != null">status,</if>
+            <if test="flowKey != null">flow_key,</if>
+            <if test="flowInsId != null">flow_ins_id,</if>
+            <if test="applyTitle != null and applyTitle != ''">apply_title,</if>
+            <if test="submitTime != null">submit_time,</if>
+            <if test="billCode != null">bill_code,</if>
+            <if test="remark != null">remark,</if>
+            <if test="destination != null and destination != ''">destination,</if>
+            <if test="departure != null and departure != ''">departure,</if>
+            <if test="totalAmt != null">total_amt,</if>
+            <if test="goTime != null">go_time,</if>
+            <if test="carNum != null">car_num,</if>
+            <if test="applyRealname != null and applyRealname != ''">apply_realname,</if>
+            <if test="idNum != null and idNum != ''">id_num,</if>
+            <if test="billType != null and billType != ''">bill_type,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="userId != null">#{userId},</if>
+            <if test="tenantId != null">#{tenantId},</if>
+            <if test="deptId != null">#{deptId},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="status != null">#{status},</if>
+            <if test="flowKey != null">#{flowKey},</if>
+            <if test="flowInsId != null">#{flowInsId},</if>
+            <if test="applyTitle != null and applyTitle != ''">#{applyTitle},</if>
+            <if test="submitTime != null">#{submitTime},</if>
+            <if test="billCode != null">#{billCode},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="destination != null and destination != ''">#{destination},</if>
+            <if test="departure != null and departure != ''">#{departure},</if>
+            <if test="totalAmt != null">#{totalAmt},</if>
+            <if test="goTime != null">#{goTime},</if>
+            <if test="carNum != null">#{carNum},</if>
+            <if test="applyRealname != null and applyRealname != ''">#{applyRealname},</if>
+            <if test="idNum != null and idNum != ''">#{idNum},</if>
+            <if test="billType != null and billType != ''">#{billType},</if>
+         </trim>
+    </insert>
+
+    <update id="updateOaTicketApply" parameterType="OaTicketApply">
+        update oa_ticket_apply
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="userId != null">user_id = #{userId},</if>
+            <if test="tenantId != null">tenant_id = #{tenantId},</if>
+            <if test="deptId != null">dept_id = #{deptId},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="flowKey != null">flow_key = #{flowKey},</if>
+            <if test="flowInsId != null">flow_ins_id = #{flowInsId},</if>
+            <if test="applyTitle != null and applyTitle != ''">apply_title = #{applyTitle},</if>
+            <if test="submitTime != null">submit_time = #{submitTime},</if>
+            <if test="billCode != null">bill_code = #{billCode},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="destination != null and destination != ''">destination = #{destination},</if>
+            <if test="departure != null and departure != ''">departure = #{departure},</if>
+            <if test="totalAmt != null">total_amt = #{totalAmt},</if>
+            <if test="goTime != null">go_time = #{goTime},</if>
+            <if test="carNum != null">car_num = #{carNum},</if>
+            <if test="applyRealname != null and applyRealname != ''">apply_realname = #{applyRealname},</if>
+            <if test="idNum != null and idNum != ''">id_num = #{idNum},</if>
+            <if test="billType != null">bill_type = #{billType},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteOaTicketApplyById" parameterType="Long">
+        delete from oa_ticket_apply where id = #{id}
+    </delete>
+
+    <delete id="deleteOaTicketApplyByIds" parameterType="String">
+        delete from oa_ticket_apply where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

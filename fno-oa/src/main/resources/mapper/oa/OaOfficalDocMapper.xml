@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fno.back.oa.mapper.OaOfficalDocMapper">
+    
+    <resultMap type="OaOfficalDoc" id="OaOfficalDocResult">
+        <result property="id"    column="id"    />
+        <result property="redHeadId"    column="red_head_id"    />
+        <result property="title"    column="title"    />
+        <result property="content"    column="content"    />
+        <result property="secretLevel"    column="secret_level"    />
+        <result property="docDeptName"    column="doc_dept_name"    />
+        <result property="year"    column="year"    />
+        <result property="num"    column="num"    />
+        <result property="qizi"    column="qizi"    />
+        <result property="draftStatus"    column="draft_status"    />
+        <result property="url"    column="url"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+        <result property="billType"    column="bill_type"    />
+        <result property="billCode"    column="bill_code"    />
+        <result property="flowKey"    column="flow_key"    />
+        <result property="flowInsId"    column="flow_ins_id"    />
+        <result property="submitTime"    column="submit_time"    />
+        <result property="status"    column="status"    />
+        <result property="tenantId"    column="tenant_id"    />
+        <result property="html"    column="html"    />
+        <result property="tplName"    column="tpl_name"    />
+        <result property="sendDate"    column="send_date"    />
+        <result property="img"    column="img"    />
+
+        <result property="receiveDeptId"    column="receive_dept_id"    />
+        <result property="sendStatus"    column="send_status"    />
+
+        <result property="secretPeriod" column="secret_period" />
+        <result property="emergentLevel" column="emergent_level" />
+        <result property="publicCategory" column="public_category" />
+        <result property="docCode" column="doc_code" />
+
+
+    </resultMap>
+
+    <sql id="selectOaOfficalDocVo">
+        select doc.id, doc.red_head_id, doc.title, doc.content, doc.secret_level, doc.doc_dept_name, doc.year, doc.num,
+               doc.qizi, doc.draft_status, doc.url, doc.create_by, doc.html,
+               doc.create_time, doc.update_by, doc.update_time, doc.remark, doc.bill_type, doc.bill_code,
+               doc.flow_key, doc.flow_ins_id, doc.submit_time, doc.status, doc.tenant_id, doc.send_date, doc.receive_dept_id, doc.send_status,
+                doc.secret_period,doc.emergent_level,doc.public_category,doc.doc_code,
+               tpl.name tpl_name,
+               seal.img
+        from oa_offical_doc doc
+                 left join oa_offical_doc_redheadtpl tpl on doc.red_head_id = tpl.id
+                 left join oa_bd_seal seal on seal.id = tpl.seal_id
+    </sql>
+
+    <select id="selectOaOfficalDocList" parameterType="OaOfficalDoc" resultMap="OaOfficalDocResult">
+        <include refid="selectOaOfficalDocVo"/>
+        <where>  
+            <if test="redHeadId != null "> and doc.red_head_id = #{redHeadId}</if>
+            <if test="title != null  and title != ''"> and doc.title = #{title}</if>
+            <if test="content != null  and content != ''"> and doc.content like concat('%', #{content}, '%')</if>
+            <if test="secretLevel != null  and secretLevel != ''"> and doc.secret_level = #{secretLevel}</if>
+            <if test="docDeptName != null  and docDeptName != ''"> and doc.doc_dept_name like concat('%', #{docDeptName}, '%')</if>
+            <if test="year != null "> and doc.year = #{year}</if>
+            <if test="num != null "> and doc.num = #{num}</if>
+            <if test="qizi != null  and qizi != ''"> and doc.qizi like concat('%',#{qizi},'%')  </if>
+            <if test="draftStatus != null  and draftStatus != ''"> and doc.draft_status = #{draftStatus}</if>
+            <if test="url != null  and url != ''"> and doc.url = #{url}</if>
+            <if test="billType != null  and billType != ''"> and doc.bill_type = #{billType}</if>
+            <if test="billCode != null  and billCode != ''"> and doc.bill_code = #{billCode}</if>
+            <if test="flowKey != null  and flowKey != ''"> and doc.flow_key = #{flowKey}</if>
+            <if test="flowInsId != null  and flowInsId != ''"> and doc.flow_ins_id = #{flowInsId}</if>
+            <if test="submitTime != null "> and doc.submit_time = #{submitTime}</if>
+            <if test="status != null  and status != ''"> and doc.status = #{status}</if>
+            <if test="tenantId != null "> and doc.tenant_id = #{tenantId}</if>
+            <if test="sendStatus != null "> and doc.send_status = #{sendStatus}</if>
+
+            <if test="secretPeriod != null  and secretPeriod != ''"> and doc.secret_period = #{secretPeriod}</if>
+            <if test="emergentLevel != null  and emergentLevel != ''"> and doc.emergent_level = #{emergentLevel}</if>
+            <if test="publicCategory != null  and publicCategory != ''"> and doc.public_category = #{publicCategory}</if>
+            <if test="docCode != null  and docCode != ''"> and doc.doc_code like concat('%', #{docCode}, '%')</if>
+        </where>
+    </select>
+    
+    <select id="selectOaOfficalDocById" parameterType="Long" resultMap="OaOfficalDocResult">
+        <include refid="selectOaOfficalDocVo"/>
+        where doc.id = #{id}
+    </select>
+
+    <select id="receiveList" resultMap="OaOfficalDocResult">
+        <include refid="selectOaOfficalDocVo"/>
+        where doc.send_status = '1' and doc.status = '2'
+        <if test="tenantId != null "> and doc.tenant_id = #{tenantId} </if>
+        <if test="userParentDeptIdList != null and userParentDeptIdList.size > 0 ">
+            and
+            <foreach item="id" collection="userParentDeptIdList" open="(" separator=" or " close=")">
+                concat(',',doc.receive_dept_id,',')	like concat('%,',#{id},',%')
+            </foreach>
+
+        </if>
+
+
+    </select>
+
+    <insert id="insertOaOfficalDoc" parameterType="OaOfficalDoc" useGeneratedKeys="true" keyProperty="id">
+        insert into oa_offical_doc
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="redHeadId != null">red_head_id,</if>
+            <if test="title != null and title != ''">title,</if>
+            <if test="content != null and content != ''">content,</if>
+            <if test="secretLevel != null">secret_level,</if>
+            <if test="docDeptName != null">doc_dept_name,</if>
+            <if test="year != null">year,</if>
+            <if test="num != null">num,</if>
+            <if test="qizi != null and qizi != ''">qizi,</if>
+            <if test="draftStatus != null">draft_status,</if>
+            <if test="url != null">url,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+            <if test="billType != null">bill_type,</if>
+            <if test="billCode != null">bill_code,</if>
+            <if test="flowKey != null">flow_key,</if>
+            <if test="flowInsId != null">flow_ins_id,</if>
+            <if test="submitTime != null">submit_time,</if>
+            <if test="status != null">status,</if>
+            <if test="tenantId != null">tenant_id,</if>
+            <if test="html != null">html,</if>
+            <if test="sendDate != null">send_date,</if>
+
+            <if test="receiveDeptId != null">receive_dept_id,</if>
+            <if test="sendStatus != null">send_status,</if>
+
+            <if test="secretPeriod != null">secret_period,</if>
+            <if test="emergentLevel != null">emergent_level,</if>
+            <if test="publicCategory != null">public_category,</if>
+            <if test="docCode != null">doc_code,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="redHeadId != null">#{redHeadId},</if>
+            <if test="title != null and title != ''">#{title},</if>
+            <if test="content != null and content != ''">#{content},</if>
+            <if test="secretLevel != null">#{secretLevel},</if>
+            <if test="docDeptName != null">#{docDeptName},</if>
+            <if test="year != null">#{year},</if>
+            <if test="num != null">#{num},</if>
+            <if test="qizi != null and qizi != ''">#{qizi},</if>
+            <if test="draftStatus != null">#{draftStatus},</if>
+            <if test="url != null">#{url},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="billType != null">#{billType},</if>
+            <if test="billCode != null">#{billCode},</if>
+            <if test="flowKey != null">#{flowKey},</if>
+            <if test="flowInsId != null">#{flowInsId},</if>
+            <if test="submitTime != null">#{submitTime},</if>
+            <if test="status != null">#{status},</if>
+            <if test="tenantId != null">#{tenantId},</if>
+            <if test="html != null">#{html},</if>
+            <if test="sendDate != null">#{sendDate},</if>
+
+            <if test="receiveDeptId != null">#{receiveDeptId},</if>
+            <if test="sendStatus != null">#{sendStatus},</if>
+
+            <if test="secretPeriod != null">#{secretPeriod},</if>
+            <if test="emergentLevel != null">#{emergentLevel},</if>
+            <if test="publicCategory != null">#{publicCategory},</if>
+            <if test="docCode != null">#{docCode},</if>
+         </trim>
+    </insert>
+
+    <update id="updateOaOfficalDoc" parameterType="OaOfficalDoc">
+        update oa_offical_doc
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="redHeadId != null">red_head_id = #{redHeadId},</if>
+            <if test="title != null and title != ''">title = #{title},</if>
+            <if test="content != null and content != ''">content = #{content},</if>
+            <if test="secretLevel != null">secret_level = #{secretLevel},</if>
+            <if test="docDeptName != null">doc_dept_name = #{docDeptName},</if>
+            <if test="year != null">year = #{year},</if>
+            <if test="num != null">num = #{num},</if>
+            <if test="qizi != null and qizi != ''">qizi = #{qizi},</if>
+            <if test="draftStatus != null">draft_status = #{draftStatus},</if>
+            <if test="url != null">url = #{url},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="billType != null">bill_type = #{billType},</if>
+            <if test="billCode != null">bill_code = #{billCode},</if>
+            <if test="flowKey != null">flow_key = #{flowKey},</if>
+            <if test="flowInsId != null">flow_ins_id = #{flowInsId},</if>
+            <if test="submitTime != null">submit_time = #{submitTime},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="tenantId != null">tenant_id = #{tenantId},</if>
+            <if test="html != null">html = #{html},</if>
+            <if test="sendDate != null">send_date = #{sendDate},</if>
+
+            <if test="receiveDeptId != null">receive_dept_id = #{receiveDeptId},</if>
+            <if test="sendStatus != null">send_status = #{sendStatus},</if>
+
+            <if test="secretPeriod != null">secret_period = #{secretPeriod},</if>
+            <if test="emergentLevel != null">emergent_level = #{emergentLevel},</if>
+            <if test="publicCategory != null">public_category = #{publicCategory},</if>
+            <if test="docCode != null">doc_code = #{docCode},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteOaOfficalDocById" parameterType="Long">
+        delete from oa_offical_doc where id = #{id}
+    </delete>
+
+    <delete id="deleteOaOfficalDocByIds" parameterType="String">
+        delete from oa_offical_doc where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

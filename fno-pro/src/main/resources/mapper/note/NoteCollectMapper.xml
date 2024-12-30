@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fno.back.note.mapper.NoteCollectMapper">
+    
+    <resultMap type="NoteCollect" id="NoteCollectResult">
+        <result property="id"    column="id"    />
+        <result property="userId"    column="user_id"    />
+        <result property="docId"    column="doc_id"    />
+        <result property="createTime"    column="create_time"    />
+    </resultMap>
+
+    <sql id="selectNoteCollectVo">
+        select id, user_id, doc_id, create_time from note_collect
+    </sql>
+
+    <select id="selectNoteCollectList" parameterType="NoteCollect" resultMap="NoteCollectResult">
+        <include refid="selectNoteCollectVo"/>
+        <where>  
+            <if test="userId != null "> and user_id = #{userId}</if>
+            <if test="docId != null "> and doc_id = #{docId}</if>
+        </where>
+    </select>
+    
+    <select id="selectNoteCollectById" parameterType="Long" resultMap="NoteCollectResult">
+        <include refid="selectNoteCollectVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertNoteCollect" parameterType="NoteCollect" useGeneratedKeys="true" keyProperty="id">
+        insert into note_collect
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="userId != null">user_id,</if>
+            <if test="docId != null">doc_id,</if>
+            <if test="createTime != null">create_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="userId != null">#{userId},</if>
+            <if test="docId != null">#{docId},</if>
+            <if test="createTime != null">#{createTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateNoteCollect" parameterType="NoteCollect">
+        update note_collect
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="userId != null">user_id = #{userId},</if>
+            <if test="docId != null">doc_id = #{docId},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteNoteCollectById" parameterType="Long">
+        delete from note_collect where id = #{id}
+    </delete>
+
+    <delete id="deleteNoteCollectByIds" parameterType="String">
+        delete from note_collect where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

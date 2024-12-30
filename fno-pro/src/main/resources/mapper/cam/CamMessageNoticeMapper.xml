@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fno.back.cam.mapper.CamMessageNoticeMapper">
+    
+    <resultMap type="CamMessageNotice" id="CamMessageNoticeResult">
+        <result property="id"    column="id"    />
+        <result property="title"    column="title"    />
+        <result property="type"    column="type"    />
+        <result property="message"    column="message"    />
+        <result property="voiceFile"    column="voice_file"    />
+    </resultMap>
+
+    <sql id="selectCamMessageNoticeVo">
+        select id, title, type, message, voice_file from cam_message_notice
+    </sql>
+
+    <select id="selectCamMessageNoticeList" parameterType="CamMessageNotice" resultMap="CamMessageNoticeResult">
+        <include refid="selectCamMessageNoticeVo"/>
+        <where>  
+            <if test="title != null  and title != ''"> and title = #{title}</if>
+            <if test="type != null  and type != ''"> and type = #{type}</if>
+            <if test="message != null  and message != ''"> and message = #{message}</if>
+            <if test="voiceFile != null  and voiceFile != ''"> and voice_file = #{voiceFile}</if>
+        </where>
+    </select>
+    
+    <select id="selectCamMessageNoticeById" parameterType="Long" resultMap="CamMessageNoticeResult">
+        <include refid="selectCamMessageNoticeVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertCamMessageNotice" parameterType="CamMessageNotice">
+        insert into cam_message_notice
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="title != null">title,</if>
+            <if test="type != null">type,</if>
+            <if test="message != null">message,</if>
+            <if test="voiceFile != null">voice_file,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="title != null">#{title},</if>
+            <if test="type != null">#{type},</if>
+            <if test="message != null">#{message},</if>
+            <if test="voiceFile != null">#{voiceFile},</if>
+         </trim>
+    </insert>
+
+    <update id="updateCamMessageNotice" parameterType="CamMessageNotice">
+        update cam_message_notice
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="title != null">title = #{title},</if>
+            <if test="type != null">type = #{type},</if>
+            <if test="message != null">message = #{message},</if>
+            <if test="voiceFile != null">voice_file = #{voiceFile},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteCamMessageNoticeById" parameterType="Long">
+        delete from cam_message_notice where id = #{id}
+    </delete>
+
+    <delete id="deleteCamMessageNoticeByIds" parameterType="String">
+        delete from cam_message_notice where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

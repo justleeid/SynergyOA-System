@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fno.back.oa.mapper.OaOfficalDocRedheadtplMapper">
+    
+    <resultMap type="OaOfficalDocRedheadtpl" id="OaOfficalDocRedheadtplResult">
+        <result property="id"    column="id"    />
+        <result property="name"    column="name"    />
+        <result property="tpl"    column="tpl"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="status"    column="status"    />
+        <result property="tenantId" column="tenant_id" />
+        <result property="sealId" column="seal_id" />
+        <result property="company" column="company" />
+        <result property="transparent" column="transparent" />
+        <result property="img" column="img" />
+        <result property="sealName" column="seal_name" />
+        <result property="redTitle" column="red_title" />
+    </resultMap>
+
+    <sql id="selectOaOfficalDocRedheadtplVo">
+        select tpl.id, tpl.name, tpl.tpl, tpl.create_time, tpl.status, tpl.tenant_id, tpl.seal_id, tpl.red_title,
+               seal.company, seal.transparent, seal.img, seal.name seal_name
+        from oa_offical_doc_redheadtpl tpl
+        left join oa_bd_seal seal on tpl.seal_id = seal.id
+    </sql>
+
+    <select id="selectOaOfficalDocRedheadtplList" parameterType="OaOfficalDocRedheadtpl" resultMap="OaOfficalDocRedheadtplResult">
+        <include refid="selectOaOfficalDocRedheadtplVo"/>
+        <where>  
+            <if test="name != null  and name != ''"> and tpl.name like concat('%', #{name}, '%')</if>
+            <if test="redTitle != null  and redTitle != ''"> and tpl.red_title like concat('%', #{redTitle}, '%')</if>
+            <if test="tpl != null  and tpl != ''"> and tpl.tpl = #{tpl}</if>
+            <if test="status != null  and status != ''"> and tpl.status = #{status}</if>
+            <if test="tenantId != null  and tenantId != ''"> and tpl.tenant_id = #{tenantId}</if>
+        </where>
+    </select>
+    
+    <select id="selectOaOfficalDocRedheadtplById" parameterType="Long" resultMap="OaOfficalDocRedheadtplResult">
+        <include refid="selectOaOfficalDocRedheadtplVo"/>
+        where tpl.id = #{id}
+    </select>
+        
+    <insert id="insertOaOfficalDocRedheadtpl" parameterType="OaOfficalDocRedheadtpl" useGeneratedKeys="true" keyProperty="id">
+        insert into oa_offical_doc_redheadtpl
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="name != null">name,</if>
+            <if test="tpl != null">tpl,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="status != null">status,</if>
+
+            <if test="tenantId != null">tenant_id,</if>
+            <if test="sealId != null">seal_id,</if>
+            <if test="redTitle != null">red_title,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="name != null">#{name},</if>
+            <if test="tpl != null">#{tpl},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="status != null">#{status},</if>
+
+            <if test="tenantId != null">#{tenantId},</if>
+            <if test="sealId != null">#{sealId},</if>
+            <if test="redTitle != null">#{redTitle},</if>
+         </trim>
+    </insert>
+
+    <update id="updateOaOfficalDocRedheadtpl" parameterType="OaOfficalDocRedheadtpl">
+        update oa_offical_doc_redheadtpl
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name != null">name = #{name},</if>
+            <if test="tpl != null">tpl = #{tpl},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="status != null">status = #{status},</if>
+
+            <if test="tenantId != null">tenant_id = #{tenantId},</if>
+            <if test="sealId != null">seal_id = #{sealId},</if>
+            <if test="redTitle != null">red_title = #{redTitle},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteOaOfficalDocRedheadtplById" parameterType="Long">
+        delete from oa_offical_doc_redheadtpl where id = #{id}
+    </delete>
+
+    <delete id="deleteOaOfficalDocRedheadtplByIds" parameterType="String">
+        delete from oa_offical_doc_redheadtpl where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

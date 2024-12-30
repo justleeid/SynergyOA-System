@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fno.back.common.mapper.SysAreaMapper">
+    
+    <resultMap type="SysArea" id="SysAreaResult">
+        <result property="id"    column="id"    />
+        <result property="parentId"    column="parent_id"    />
+        <result property="level"    column="level"    />
+        <result property="name"    column="name"    />
+        <result property="wholeName"    column="whole_name"    />
+        <result property="lon"    column="lon"    />
+        <result property="lat"    column="lat"    />
+        <result property="cityCode"    column="city_code"    />
+        <result property="zipCode"    column="zip_code"    />
+        <result property="areaCode"    column="area_code"    />
+        <result property="pinYin"    column="pin_yin"    />
+        <result property="simplePy"    column="simple_py"    />
+        <result property="perPinYin"    column="per_pin_yin"    />
+    </resultMap>
+
+    <sql id="selectSysAreaVo">
+        select id, parent_id, level, name, whole_name, lon, lat, city_code, zip_code, area_code, pin_yin, simple_py, per_pin_yin from sys_area
+    </sql>
+
+    <select id="selectSysAreaList" parameterType="SysArea" resultMap="SysAreaResult">
+        <include refid="selectSysAreaVo"/>
+        <where>  
+            <if test="parentId != null  and parentId != ''"> and parent_id = #{parentId}</if>
+            <if test="level != null "> and level = #{level}</if>
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="wholeName != null  and wholeName != ''"> and whole_name like concat('%', #{wholeName}, '%')</if>
+            <if test="lon != null  and lon != ''"> and lon = #{lon}</if>
+            <if test="lat != null  and lat != ''"> and lat = #{lat}</if>
+            <if test="cityCode != null  and cityCode != ''"> and city_code = #{cityCode}</if>
+            <if test="zipCode != null  and zipCode != ''"> and zip_code = #{zipCode}</if>
+            <if test="areaCode != null  and areaCode != ''"> and area_code = #{areaCode}</if>
+            <if test="pinYin != null  and pinYin != ''"> and pin_yin = #{pinYin}</if>
+            <if test="simplePy != null  and simplePy != ''"> and simple_py = #{simplePy}</if>
+            <if test="perPinYin != null  and perPinYin != ''"> and per_pin_yin = #{perPinYin}</if>
+        </where>
+    </select>
+    
+    <select id="selectSysAreaById" parameterType="String" resultMap="SysAreaResult">
+        <include refid="selectSysAreaVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertSysArea" parameterType="SysArea" useGeneratedKeys="true" keyProperty="id">
+        insert into sys_area
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="parentId != null and parentId != ''">parent_id,</if>
+            <if test="level != null">level,</if>
+            <if test="name != null and name != ''">name,</if>
+            <if test="wholeName != null">whole_name,</if>
+            <if test="lon != null">lon,</if>
+            <if test="lat != null">lat,</if>
+            <if test="cityCode != null">city_code,</if>
+            <if test="zipCode != null">zip_code,</if>
+            <if test="areaCode != null">area_code,</if>
+            <if test="pinYin != null">pin_yin,</if>
+            <if test="simplePy != null">simple_py,</if>
+            <if test="perPinYin != null">per_pin_yin,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="parentId != null and parentId != ''">#{parentId},</if>
+            <if test="level != null">#{level},</if>
+            <if test="name != null and name != ''">#{name},</if>
+            <if test="wholeName != null">#{wholeName},</if>
+            <if test="lon != null">#{lon},</if>
+            <if test="lat != null">#{lat},</if>
+            <if test="cityCode != null">#{cityCode},</if>
+            <if test="zipCode != null">#{zipCode},</if>
+            <if test="areaCode != null">#{areaCode},</if>
+            <if test="pinYin != null">#{pinYin},</if>
+            <if test="simplePy != null">#{simplePy},</if>
+            <if test="perPinYin != null">#{perPinYin},</if>
+         </trim>
+    </insert>
+
+    <update id="updateSysArea" parameterType="SysArea">
+        update sys_area
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="parentId != null and parentId != ''">parent_id = #{parentId},</if>
+            <if test="level != null">level = #{level},</if>
+            <if test="name != null and name != ''">name = #{name},</if>
+            <if test="wholeName != null">whole_name = #{wholeName},</if>
+            <if test="lon != null">lon = #{lon},</if>
+            <if test="lat != null">lat = #{lat},</if>
+            <if test="cityCode != null">city_code = #{cityCode},</if>
+            <if test="zipCode != null">zip_code = #{zipCode},</if>
+            <if test="areaCode != null">area_code = #{areaCode},</if>
+            <if test="pinYin != null">pin_yin = #{pinYin},</if>
+            <if test="simplePy != null">simple_py = #{simplePy},</if>
+            <if test="perPinYin != null">per_pin_yin = #{perPinYin},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteSysAreaById" parameterType="String">
+        delete from sys_area where id = #{id}
+    </delete>
+
+    <delete id="deleteSysAreaByIds" parameterType="String">
+        delete from sys_area where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

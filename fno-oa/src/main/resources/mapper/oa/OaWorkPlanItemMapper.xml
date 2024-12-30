@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fno.back.oa.mapper.OaWorkPlanItemMapper">
+    
+    <resultMap type="OaWorkPlanItem" id="OaWorkPlanItemResult">
+        <result property="id"    column="id"    />
+        <result property="planId"    column="plan_id"    />
+        <result property="groupName"    column="group_name"    />
+        <result property="detail"    column="detail"    />
+        <result property="remark"    column="remark"    />
+        <result property="dutyUserId"    column="duty_user_id"    />
+        <result property="dutyNickName"    column="duty_nick_name"    />
+        <result property="helpUserId"    column="help_user_id"    />
+        <result property="helpNickName"    column="help_nick_name"    />
+        <result property="startTime"    column="start_time"    />
+        <result property="endTime"    column="end_time"    />
+        <result property="schedule"    column="schedule"    />
+        <result property="makeObject"    column="make_object"    />
+        <result property="status"    column="status"    />
+    </resultMap>
+
+    <sql id="selectOaWorkPlanItemVo">
+        select id, plan_id, group_name, detail, remark, duty_user_id, duty_nick_name, help_user_id, help_nick_name, start_time, end_time, schedule, make_object, status from oa_work_plan_item
+    </sql>
+
+    <select id="selectOaWorkPlanItemList" parameterType="OaWorkPlanItem" resultMap="OaWorkPlanItemResult">
+        <include refid="selectOaWorkPlanItemVo"/>
+        <where>  
+            <if test="planId != null "> and plan_id = #{planId}</if>
+            <if test="groupName != null  and groupName != ''"> and group_name like concat('%', #{groupName}, '%')</if>
+            <if test="detail != null  and detail != ''"> and detail = #{detail}</if>
+            <if test="dutyUserId != null "> and duty_user_id = #{dutyUserId}</if>
+            <if test="dutyNickName != null  and dutyNickName != ''"> and duty_nick_name like concat('%', #{dutyNickName}, '%')</if>
+            <if test="helpUserId != null "> and help_user_id = #{helpUserId}</if>
+            <if test="helpNickName != null  and helpNickName != ''"> and help_nick_name like concat('%', #{helpNickName}, '%')</if>
+            <if test="startTime != null "> and start_time = #{startTime}</if>
+            <if test="endTime != null "> and end_time = #{endTime}</if>
+            <if test="schedule != null "> and schedule = #{schedule}</if>
+            <if test="makeObject != null  and makeObject != ''"> and make_object = #{makeObject}</if>
+            <if test="status != null  and status != ''"> and status = #{status}</if>
+        </where>
+    </select>
+    
+    <select id="selectOaWorkPlanItemById" parameterType="Long" resultMap="OaWorkPlanItemResult">
+        <include refid="selectOaWorkPlanItemVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertOaWorkPlanItem" parameterType="OaWorkPlanItem">
+        insert into oa_work_plan_item
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="planId != null">plan_id,</if>
+            <if test="groupName != null">group_name,</if>
+            <if test="detail != null and detail != ''">detail,</if>
+            <if test="remark != null">remark,</if>
+            <if test="dutyUserId != null">duty_user_id,</if>
+            <if test="dutyNickName != null and dutyNickName != ''">duty_nick_name,</if>
+            <if test="helpUserId != null">help_user_id,</if>
+            <if test="helpNickName != null">help_nick_name,</if>
+            <if test="startTime != null">start_time,</if>
+            <if test="endTime != null">end_time,</if>
+            <if test="schedule != null">schedule,</if>
+            <if test="makeObject != null">make_object,</if>
+            <if test="status != null and status != ''">status,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="planId != null">#{planId},</if>
+            <if test="groupName != null">#{groupName},</if>
+            <if test="detail != null and detail != ''">#{detail},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="dutyUserId != null">#{dutyUserId},</if>
+            <if test="dutyNickName != null and dutyNickName != ''">#{dutyNickName},</if>
+            <if test="helpUserId != null">#{helpUserId},</if>
+            <if test="helpNickName != null">#{helpNickName},</if>
+            <if test="startTime != null">#{startTime},</if>
+            <if test="endTime != null">#{endTime},</if>
+            <if test="schedule != null">#{schedule},</if>
+            <if test="makeObject != null">#{makeObject},</if>
+            <if test="status != null and status != ''">#{status},</if>
+         </trim>
+    </insert>
+
+    <update id="updateOaWorkPlanItem" parameterType="OaWorkPlanItem">
+        update oa_work_plan_item
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="planId != null">plan_id = #{planId},</if>
+            <if test="groupName != null">group_name = #{groupName},</if>
+            <if test="detail != null and detail != ''">detail = #{detail},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="dutyUserId != null">duty_user_id = #{dutyUserId},</if>
+            <if test="dutyNickName != null and dutyNickName != ''">duty_nick_name = #{dutyNickName},</if>
+            <if test="helpUserId != null">help_user_id = #{helpUserId},</if>
+            <if test="helpNickName != null">help_nick_name = #{helpNickName},</if>
+            <if test="startTime != null">start_time = #{startTime},</if>
+            <if test="endTime != null">end_time = #{endTime},</if>
+            <if test="schedule != null">schedule = #{schedule},</if>
+            <if test="makeObject != null">make_object = #{makeObject},</if>
+            <if test="status != null and status != ''">status = #{status},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteOaWorkPlanItemById" parameterType="Long">
+        delete from oa_work_plan_item where id = #{id}
+    </delete>
+
+    <delete id="deleteOaWorkPlanItemByIds" parameterType="String">
+        delete from oa_work_plan_item where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>
