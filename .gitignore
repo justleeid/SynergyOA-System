@@ -1,0 +1,10 @@
+# Project exclude paths
+/fno-admin/target/
+/fno-common/target/
+/fno-framework/target/
+/fno-generator/target/
+/fno-oa/target/
+/fno-pro/target/
+/fno-quartz/target/
+/fno-system/target/
+/fno-workflow/target/
