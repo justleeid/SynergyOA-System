@@ -23,8 +23,7 @@ import com.fno.system.domain.SysCache;
 
 /**
  * 缓存监控
- * 
- * @author ry
+ *
  */
 @RestController
 @RequestMapping("/monitor/cache")

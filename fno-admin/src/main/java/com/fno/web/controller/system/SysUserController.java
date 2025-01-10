@@ -251,7 +251,6 @@ public class SysUserController extends BaseController
 
     /**
      *
-     * @return
      */
     @PreAuthorize("@ss.hasPermi('system:user:edit')")
     @Log(title = "重置管理员密码", businessType = BusinessType.UPDATE)
