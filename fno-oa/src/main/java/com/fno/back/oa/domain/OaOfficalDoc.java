@@ -12,9 +12,7 @@ import com.fno.common.core.domain.BaseEntity;
 
 /**
  * 公文发文对象 oa_offical_doc
- * 
- * @author fno
- * @date 2023-11-05
+ *
  */
 @Data
 public class OaOfficalDoc extends BaseEntity

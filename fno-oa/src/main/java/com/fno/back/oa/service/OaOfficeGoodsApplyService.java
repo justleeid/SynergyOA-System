@@ -17,9 +17,7 @@ import com.fno.back.oa.domain.OaOfficeGoodsApply;
 
 /**
  * 办公用品领用Service业务层处理
- * 
- * @author fno
- * @date 2023-08-09
+ *
  */
 @Service
 public class OaOfficeGoodsApplyService

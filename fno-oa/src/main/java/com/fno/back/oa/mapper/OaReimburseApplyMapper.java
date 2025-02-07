@@ -6,9 +6,7 @@ import com.fno.back.oa.domain.OaReimburseFeeitem;
 
 /**
  * 报销申请Mapper接口
- * 
- * @author fno
- * @date 2023-05-29
+ *
  */
 public interface OaReimburseApplyMapper 
 {

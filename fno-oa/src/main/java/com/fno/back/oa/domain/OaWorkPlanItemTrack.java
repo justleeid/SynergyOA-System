@@ -8,9 +8,7 @@ import com.fno.common.core.domain.BaseEntity;
 
 /**
  * 进度跟踪对象 oa_work_plan_item_track
- * 
- * @author fno
- * @date 2023-08-18
+ *
  */
 @Data
 public class OaWorkPlanItemTrack extends BaseEntity

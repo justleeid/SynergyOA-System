@@ -5,9 +5,7 @@ import com.fno.back.oa.domain.OaWorkPlanItemTrack;
 
 /**
  * 进度跟踪Mapper接口
- * 
- * @author fno
- * @date 2023-08-18
+ *
  */
 public interface OaWorkPlanItemTrackMapper 
 {

@@ -11,9 +11,7 @@ import java.util.Date;
 
 /**
  * 历史任务对象 act_hi_taskinst
- * 
- * @author fno
- * @date 2023-05-14
+ *
  */
 @Data
 public class ActHiTaskinst extends BaseEntity

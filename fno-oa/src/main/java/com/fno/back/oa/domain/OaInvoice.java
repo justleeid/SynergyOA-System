@@ -11,9 +11,7 @@ import com.fno.common.core.domain.BaseEntity;
 
 /**
  * 发票管理对象 oa_invoice
- * 
- * @author fno
- * @date 2023-08-12
+ *
  */
 @Data
 public class OaInvoice extends BaseEntity

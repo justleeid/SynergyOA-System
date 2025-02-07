@@ -11,9 +11,7 @@ import com.fno.common.core.domain.BaseEntity;
 
 /**
  * 办公用品领用对象 oa_office_goods_apply
- * 
- * @author fno
- * @date 2023-08-09
+ *
  */
 @Data
 public class OaOfficeGoodsApply extends BaseEntity

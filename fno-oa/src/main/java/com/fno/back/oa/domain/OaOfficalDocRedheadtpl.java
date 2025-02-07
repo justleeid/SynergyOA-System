@@ -8,9 +8,7 @@ import com.fno.common.core.domain.BaseEntity;
 
 /**
  * 套红模版对象 oa_offical_doc_redheadtpl
- * 
- * @author fno
- * @date 2023-08-20
+ *
  */
 @Data
 public class OaOfficalDocRedheadtpl extends BaseEntity

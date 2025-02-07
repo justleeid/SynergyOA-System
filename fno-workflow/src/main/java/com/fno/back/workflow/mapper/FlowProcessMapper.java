@@ -7,9 +7,7 @@ import java.util.Map;
 
 /**
  * 流程实例
- * 
- * @author fno
- * @date 2023-05-31
+ *
  */
 public interface FlowProcessMapper
 {

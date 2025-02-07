@@ -7,9 +7,7 @@ import java.util.Map;
 
 /**
  * 历史任务Mapper接口
- * 
- * @author fno
- * @date 2023-05-14
+ *
  */
 public interface ActHiTaskinstMapper 
 {

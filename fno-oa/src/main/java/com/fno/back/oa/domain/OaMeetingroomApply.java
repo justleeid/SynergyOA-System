@@ -10,9 +10,7 @@ import com.fno.common.core.domain.BaseEntity;
 
 /**
  * 会议室申请对象 oa_meetingroom_apply
- * 
- * @author fno
- * @date 2023-05-29
+ *
  */
 @Data
 public class OaMeetingroomApply extends BaseEntity

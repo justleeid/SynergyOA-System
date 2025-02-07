@@ -25,9 +25,7 @@ import com.fno.common.core.page.TableDataInfo;
 
 /**
  * 车辆管理Controller
- * 
- * @author fno
- * @date 2023-05-29
+ *
  */
 @RestController
 @RequestMapping("/oa/car")

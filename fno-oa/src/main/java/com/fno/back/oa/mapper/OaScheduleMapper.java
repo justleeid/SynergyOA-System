@@ -5,9 +5,7 @@ import com.fno.back.oa.domain.OaSchedule;
 
 /**
  * 日程管理Mapper接口
- * 
- * @author fno
- * @date 2023-09-25
+ *
  */
 public interface OaScheduleMapper
 {

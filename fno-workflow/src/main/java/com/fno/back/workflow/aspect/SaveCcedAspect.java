@@ -17,8 +17,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 /***
  * @des
- * @author Ly
- * @date 2023/11/20
  */
 
 @Aspect
@@ -50,7 +48,7 @@ public class SaveCcedAspect {
             JSONArray jsonArr = JSONArray.parseArray(JSON.toJSONString(joinPoint.getArgs()));
             JSONObject obj = jsonArr.getJSONObject(0);
             JSONArray ccedArr = obj.getJSONArray("ccedList");
-            if(ccedArr!=null && ccedArr.size()>0){
+            if(ccedArr!=null && !ccedArr.isEmpty()){
                 //删除历史抄送数据
                 flowCcedService.deleteCcedByBillTypeAndBusinessId(obj.getString("billType"),Long.parseLong(obj.getString("id")));
                 //首次保存检查是否需要保存抄送人

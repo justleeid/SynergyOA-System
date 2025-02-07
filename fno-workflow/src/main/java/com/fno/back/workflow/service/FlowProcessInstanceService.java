@@ -36,8 +36,6 @@ import java.util.stream.Collectors;
 
 /***
  * @des
- * @author Ly
- * @date 2023/5/31
  */
 @Service
 public class FlowProcessInstanceService {
@@ -175,11 +173,12 @@ public class FlowProcessInstanceService {
             String endId = endNodes.get(0).getId();
             //2、执行终止----查出所有的执行流（可能有并行的）。所有执行流均跳转到结束节点
             List<Execution> executions = runtimeService.createExecutionQuery().parentId(processInstanceId).list();
-            if(executions!=null && executions.size()>0){
+            if(executions!=null && !executions.isEmpty()){
                 //查出任意一个执行流---设置处理方式为。驳回
                 runtimeService.setVariable(executions.get(0).getId(), CommonConstants.FLOW_FINISH_TYPE, CommonConstants.FLOW_FINISH_TYPE_REJECT);
             }
             List<String> executionIds = new ArrayList<>();
+            assert executions != null;
             executions.forEach(execution -> executionIds.add(execution.getId()));
             runtimeService.createChangeActivityStateBuilder().moveExecutionsToSingleActivityId(executionIds, endId).changeState();
         }
@@ -203,9 +202,8 @@ public class FlowProcessInstanceService {
         SysUser user = SecurityUtils.getLoginUser().getUser();
         Map<String,Object> vars = FlowUtil.buildFlowVars(title,user.getUserId(),user.getNickName(),
                 DateUtil.formatDateTime(new Date()), CommonConstants.NO, sysBillType.getAppStatus());
-        ProcessInstance procIns = runtimeService.startProcessInstanceByKeyAndTenantId(defKey,billType+":"+tableName+":"+id,vars,SecurityUtils.getTenantId().toString());
 
-        return procIns;
+        return runtimeService.startProcessInstanceByKeyAndTenantId(defKey,billType+":"+tableName+":"+id,vars,SecurityUtils.getTenantId().toString());
     }
 
 

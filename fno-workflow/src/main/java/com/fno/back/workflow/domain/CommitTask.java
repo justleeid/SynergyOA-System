@@ -3,9 +3,6 @@ package com.fno.back.workflow.domain;
 import lombok.Data;
 
 /***
- * @des
- * @author Ly
- * @date 2023/6/1
  */
 @Data
 public class CommitTask {

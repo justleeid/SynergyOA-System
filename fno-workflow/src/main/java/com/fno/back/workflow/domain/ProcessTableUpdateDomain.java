@@ -6,8 +6,6 @@ import java.util.Date;
 
 /***
  * @des
- * @author Ly
- * @date 2023/8/30
  */
 @Data
 public class ProcessTableUpdateDomain {

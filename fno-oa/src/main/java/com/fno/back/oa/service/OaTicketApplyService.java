@@ -13,9 +13,7 @@ import com.fno.back.oa.domain.OaTicketApply;
 
 /**
  * 车票申请Service业务层处理
- * 
- * @author fno
- * @date 2023-05-29
+ *
  */
 @Service
 public class OaTicketApplyService

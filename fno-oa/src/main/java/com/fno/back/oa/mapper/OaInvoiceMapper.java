@@ -5,9 +5,7 @@ import com.fno.back.oa.domain.OaInvoice;
 
 /**
  * 发票管理Mapper接口
- * 
- * @author fno
- * @date 2023-08-12
+ *
  */
 public interface OaInvoiceMapper 
 {

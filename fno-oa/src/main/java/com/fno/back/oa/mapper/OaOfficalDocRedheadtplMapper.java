@@ -5,9 +5,7 @@ import com.fno.back.oa.domain.OaOfficalDocRedheadtpl;
 
 /**
  * 套红模版Mapper接口
- * 
- * @author fno
- * @date 2023-08-20
+ *
  */
 public interface OaOfficalDocRedheadtplMapper 
 {

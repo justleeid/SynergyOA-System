@@ -5,9 +5,7 @@ import com.fno.back.oa.domain.OaOfficeGoods;
 
 /**
  * 办公用品Mapper接口
- * 
- * @author fno
- * @date 2023-08-09
+ *
  */
 public interface OaOfficeGoodsMapper 
 {

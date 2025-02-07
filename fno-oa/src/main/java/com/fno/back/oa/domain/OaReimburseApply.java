@@ -12,9 +12,7 @@ import com.fno.common.core.domain.BaseEntity;
 
 /**
  * 报销申请对象 oa_reimburse_apply
- * 
- * @author fno
- * @date 2023-05-29
+ *
  */
 @Data
 public class OaReimburseApply extends BaseEntity

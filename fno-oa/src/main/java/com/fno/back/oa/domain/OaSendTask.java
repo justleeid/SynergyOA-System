@@ -11,9 +11,7 @@ import com.fno.common.core.domain.BaseEntity;
 
 /**
  * 任务分配对象 oa_send_task
- * 
- * @author fno
- * @date 2023-08-19
+ *
  */
 @Data
 public class OaSendTask extends BaseEntity

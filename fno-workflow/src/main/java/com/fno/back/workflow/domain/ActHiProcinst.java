@@ -11,9 +11,7 @@ import java.util.Date;
 
 /**
  * 流程实例对象 act_hi_procinst
- * 
- * @author fno
- * @date 2023-08-08
+ *
  */
 @Data
 public class ActHiProcinst extends BaseEntity

@@ -10,9 +10,7 @@ import com.fno.common.core.domain.BaseEntity;
 
 /**
  * 税号管理对象 oa_tax_num
- * 
- * @author fno
- * @date 2023-08-12
+ *
  */
 @Data
 public class OaTaxNum extends BaseEntity

@@ -8,9 +8,7 @@ import com.fno.common.core.domain.BaseEntity;
 
 /**
  * 会议室管理对象 oa_bd_meetingroom
- * 
- * @author fno
- * @date 2023-05-29
+ *
  */
 @Data
 public class OaBdMeetingroom extends BaseEntity

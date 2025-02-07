@@ -10,9 +10,7 @@ import com.fno.common.core.domain.BaseEntity;
 
 /**
  * 日程管理对象 oa_schedule
- * 
- * @author fno
- * @date 2023-09-25
+ *
  */
 @Data
 public class OaSchedule extends BaseEntity

@@ -5,9 +5,7 @@ import com.fno.back.oa.domain.OaDutyApply;
 
 /**
  * 假勤申请Mapper接口
- * 
- * @author fno
- * @date 2023-06-01
+ *
  */
 public interface OaDutyApplyMapper 
 {

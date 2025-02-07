@@ -5,9 +5,7 @@ import com.fno.back.oa.domain.OaCarApply;
 
 /**
  * 车辆申请Mapper接口
- * 
- * @author fno
- * @date 2023-06-05
+ *
  */
 public interface OaCarApplyMapper 
 {

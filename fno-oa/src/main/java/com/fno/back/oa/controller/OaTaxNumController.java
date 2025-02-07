@@ -25,9 +25,7 @@ import com.fno.common.core.page.TableDataInfo;
 
 /**
  * 税号管理Controller
- * 
- * @author fno
- * @date 2023-08-12
+ *
  */
 @RestController
 @RequestMapping("/oa/taxNum")

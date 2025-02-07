@@ -5,9 +5,7 @@ import com.fno.back.oa.domain.OaSendTask;
 
 /**
  * 任务分配Mapper接口
- * 
- * @author fno
- * @date 2023-08-19
+ *
  */
 public interface OaSendTaskMapper 
 {

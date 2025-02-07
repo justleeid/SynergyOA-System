@@ -6,9 +6,7 @@ import java.util.List;
 
 /**
  * 流程实例Mapper接口
- * 
- * @author fno
- * @date 2023-08-08
+ *
  */
 public interface ActHiProcinstMapper 
 {

@@ -8,9 +8,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 
 /**
  * 抄送我的对象 oa_flow_cced
- * 
- * @author fno
- * @date 2023-08-04
+ *
  */
 @Data
 public class FlowCced extends BaseEntity

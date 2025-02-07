@@ -5,9 +5,7 @@ import com.fno.back.oa.domain.OaMeetingroomApply;
 
 /**
  * 会议室申请Mapper接口
- * 
- * @author fno
- * @date 2023-05-29
+ *
  */
 public interface OaMeetingroomApplyMapper 
 {

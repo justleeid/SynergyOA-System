@@ -14,8 +14,6 @@ import org.springframework.stereotype.Component;
 
 /***
  * @des
- * @author Ly
- * @date 2023/8/7
  */
 @Component
 public class SetAssigneeByApplyUserDeptPostListener implements TaskListener {

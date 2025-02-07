@@ -10,9 +10,7 @@ import com.fno.common.core.domain.BaseEntity;
 
 /**
  * 个人通讯录对象 oa_user_communicate_book
- * 
- * @author fno
- * @date 2023-07-31
+ *
  */
 @Data
 public class OaUserCommunicateBook extends BaseEntity

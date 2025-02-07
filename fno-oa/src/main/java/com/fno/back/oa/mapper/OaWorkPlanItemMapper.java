@@ -5,9 +5,7 @@ import com.fno.back.oa.domain.OaWorkPlanItem;
 
 /**
  * 工作计划安排Mapper接口
- * 
- * @author fno
- * @date 2023-08-18
+ *
  */
 public interface OaWorkPlanItemMapper 
 {

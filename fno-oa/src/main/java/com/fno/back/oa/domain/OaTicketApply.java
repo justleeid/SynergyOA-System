@@ -11,9 +11,7 @@ import com.fno.common.core.domain.BaseEntity;
 
 /**
  * 车票申请对象 oa_ticket_apply
- * 
- * @author fno
- * @date 2023-05-29
+ *
  */
 @Data
 public class OaTicketApply extends BaseEntity

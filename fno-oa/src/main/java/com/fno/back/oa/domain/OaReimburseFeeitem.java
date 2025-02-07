@@ -10,9 +10,7 @@ import com.fno.common.core.domain.BaseEntity;
 
 /**
  * 报销费用明细对象 oa_reimburse_feeitem
- * 
- * @author fno
- * @date 2023-05-29
+ *
  */
 public class OaReimburseFeeitem extends BaseEntity
 {

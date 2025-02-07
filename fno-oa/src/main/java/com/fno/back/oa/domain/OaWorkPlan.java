@@ -11,9 +11,7 @@ import com.fno.common.core.domain.BaseEntity;
 
 /**
  * 工作计划对象 oa_work_plan
- * 
- * @author fno
- * @date 2023-08-13
+ *
  */
 @Data
 public class OaWorkPlan extends BaseEntity

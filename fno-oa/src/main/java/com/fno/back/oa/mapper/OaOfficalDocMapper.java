@@ -5,9 +5,7 @@ import com.fno.back.oa.domain.OaOfficalDoc;
 
 /**
  * 公文发文Mapper接口
- * 
- * @author fno
- * @date 2023-11-05
+ *
  */
 public interface OaOfficalDocMapper 
 {

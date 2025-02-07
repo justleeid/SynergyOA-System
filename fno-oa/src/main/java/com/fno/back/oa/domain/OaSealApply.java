@@ -10,9 +10,7 @@ import com.fno.common.core.domain.BaseEntity;
 
 /**
  * 公章使用对象 oa_seal_apply
- * 
- * @author fno
- * @date 2023-05-29
+ *
  */
 @Data
 public class OaSealApply extends BaseEntity

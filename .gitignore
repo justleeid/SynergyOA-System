@@ -8,3 +8,6 @@
 /fno-quartz/target/
 /fno-system/target/
 /fno-workflow/target/
+.idea
+*.iml
+bin/

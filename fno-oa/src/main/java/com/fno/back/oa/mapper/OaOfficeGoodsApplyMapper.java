@@ -6,9 +6,7 @@ import com.fno.back.oa.domain.OaOfficeGoodsApplyItem;
 
 /**
  * 办公用品领用Mapper接口
- * 
- * @author fno
- * @date 2023-08-09
+ *
  */
 public interface OaOfficeGoodsApplyMapper 
 {

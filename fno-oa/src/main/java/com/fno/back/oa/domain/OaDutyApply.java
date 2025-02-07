@@ -11,9 +11,7 @@ import com.fno.common.core.domain.BaseEntity;
 
 /**
  * 假勤申请对象 oa_duty_apply
- * 
- * @author fno
- * @date 2023-06-01
+ *
  */
 @Data
 public class OaDutyApply extends BaseEntity

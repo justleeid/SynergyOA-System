@@ -9,9 +9,7 @@ import com.fno.common.core.domain.BaseEntity;
 
 /**
  * 办公用品对象 oa_office_goods
- * 
- * @author fno
- * @date 2023-08-09
+ *
  */
 @Data
 public class OaOfficeGoods extends BaseEntity

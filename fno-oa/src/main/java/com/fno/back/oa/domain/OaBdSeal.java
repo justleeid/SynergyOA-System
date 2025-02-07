@@ -8,9 +8,7 @@ import com.fno.common.core.domain.BaseEntity;
 
 /**
  * 公章管理对象 oa_bd_seal
- * 
- * @author fno
- * @date 2023-05-29
+ *
  */
 @Data
 public class OaBdSeal extends BaseEntity

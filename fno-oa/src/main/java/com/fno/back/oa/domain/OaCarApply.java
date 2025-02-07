@@ -12,9 +12,7 @@ import java.util.Date;
 
 /**
  * 车辆申请对象 oa_car_apply
- * 
- * @author fno
- * @date 2023-06-05
+ *
  */
 @Data
 public class OaCarApply extends BaseEntity

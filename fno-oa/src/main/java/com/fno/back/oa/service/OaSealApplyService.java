@@ -14,9 +14,7 @@ import java.util.List;
 
 /**
  * 公章使用Service业务层处理
- * 
- * @author fno
- * @date 2023-05-29
+ *
  */
 @Service
 public class OaSealApplyService
