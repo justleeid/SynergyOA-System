@@ -26,7 +26,12 @@
    配置文件中的 profile 属性表示文件下载存储路径，根据需要配置 Windows 和 Linux 下的路径。
 ### 4. 启动项目
    启动入口为 fno-admin 模块中的 Application 类。
-   控制台打印出“启动成功，欢迎使用”表示项目启动成功。
+   控制台打印出类似以下内容，表示项目后端服务启动成功：
+ ```bash
+   23:03:04.740 [restartedMain] INFO  com.fno.Application - [run,35] - --------------------启动成功------------------------
+   23:03:04.740 [restartedMain] INFO  com.fno.Application - [run,36] - --------------------访问端口8090---------------------
+   23:03:04.741 [restartedMain] INFO  com.fno.Application - [onApplicationReady,42] - 项目启动花费时间：11秒
+  ```
 ### 5. 打包部署
    在项目根目录执行以下命令进行打包：
    ```bash
