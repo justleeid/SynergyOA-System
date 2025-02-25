@@ -11,16 +11,16 @@ spring:
         druid:
             # 主库数据源
             master:
-                url: jdbc:mysql://172.16.1.52:3306/jxoa?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8
+                url: jdbc:mysql://172.16.8.52:3306/jxoa?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8
                 username: lan
                 password: a123456
             # 从库数据源
             slave:
                 # 从数据源开关/默认关闭
-                enabled: false
-                url: 
-                username: 
-                password: 
+                enabled: true
+                url: jdbc:mysql://172.16.8.15:3306/jxoa?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8
+                username: root
+                password: a123456
             # 初始连接数
             initialSize: 5
             # 最小连接池数量
@@ -81,7 +81,7 @@ spring:
     redis:
         # 地址
         #    host: asmalllion.space
-        host: 172.16.1.76
+        host: 172.16.8.15
         # 端口，默认为6379
         port: 6379
         # 数据库索引

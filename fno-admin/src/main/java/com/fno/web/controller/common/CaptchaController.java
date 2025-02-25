@@ -80,6 +80,7 @@ public class CaptchaController
         FastByteArrayOutputStream os = new FastByteArrayOutputStream();
         try
         {
+            assert image != null;
             ImageIO.write(image, "jpg", os);
         }
         catch (IOException e)
